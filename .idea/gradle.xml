@@ -28,6 +28,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/auth" />
+            <option value="$PROJECT_DIR$/auth/common" />
           </set>
         </option>
       </GradleProjectSettings>
@@ -44,6 +45,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/interaction" />
+            <option value="$PROJECT_DIR$/interaction/common" />
           </set>
         </option>
       </GradleProjectSettings>

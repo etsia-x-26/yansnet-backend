@@ -34,7 +34,7 @@ dependencies {
     implementation(project(":user"))
     implementation(project(":interaction"))
     implementation(project(":notification"))
-    implementation(project(":auth"))
+    //implementation(project(":auth"))
     implementation(project(":common"))
     implementation(project(":message"))
 
