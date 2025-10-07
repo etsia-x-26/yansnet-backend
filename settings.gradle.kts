@@ -1,4 +1,5 @@
 rootProject.name = "etsia-backend"
+include("common", "interaction")
 
 include(
     "application",
