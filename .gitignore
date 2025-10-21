@@ -48,3 +48,14 @@ database
 /DIAGNOSTIC.md
 /nul
 /README.md
+
+### Secrets et configurations sensibles ###
+.env
+*.env
+!.env.example
+application-dev.properties
+application-local.properties
+application-prod.properties
+**/application-*.properties
+!**/application.properties
+!**/application.properties.template

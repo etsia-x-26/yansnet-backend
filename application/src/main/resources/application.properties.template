@@ -1,0 +1,35 @@
+# Template de configuration Spring Boot - ETSIA Backend
+# Copier ce fichier vers application-dev.properties et remplir les valeurs
+
+spring.application.name=application
+server.port=8085
+# spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+logging.level.org.springframework.web=DEBUG
+logging.level.org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration = DEBUG
+
+# Database Configuration
+spring.datasource.url=jdbc:postgresql://localhost:5432/YOUR_DATABASE_NAME
+spring.datasource.username=YOUR_DB_USERNAME
+spring.datasource.password=YOUR_DB_PASSWORD
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.show-sql=true
+
+# Keycloak Configuration
+spring.security.oauth2.resourceserver.jwt.issuer-uri=http://localhost:8080/realms/YOUR_REALM
+spring.security.oauth2.resourceserver.jwt.jwk-set-uri=http://localhost:8080/realms/YOUR_REALM/protocol/openid-connect/certs
+
+# Keycloak Client Configuration
+keycloak.server-url=http://localhost:8080
+keycloak.realm=YOUR_REALM
+keycloak.admin-client-id=admin-cli
+keycloak.admin-username=YOUR_ADMIN_USERNAME
+keycloak.admin-password=YOUR_ADMIN_PASSWORD
+keycloak.client-id=YOUR_CLIENT_ID
+keycloak.client-secret=YOUR_CLIENT_SECRET
+
+# Swagger/OpenAPI Configuration
+springdoc.api-docs.path=/api-docs
+springdoc.swagger-ui.path=/swagger-ui.html
+springdoc.swagger-ui.enabled=true
+springdoc.swagger-ui.operationsSorter=method
+springdoc.swagger-ui.tagsSorter=alpha
