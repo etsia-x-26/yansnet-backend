@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @EntityScan(basePackages = {"com.etsia.common.infrastructure.entities", "com.etsia.auth.infrastructure.repository"})
 public class Application {
 
+
+
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }

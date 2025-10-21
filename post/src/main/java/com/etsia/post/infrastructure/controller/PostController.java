@@ -35,7 +35,7 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<PostDto> save(@RequestBody CreatePostRequest request) {
         return ResponseEntity.ok(postService.save(request));
     }

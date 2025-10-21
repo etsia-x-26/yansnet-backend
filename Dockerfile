@@ -1,55 +1,36 @@
-# Multi-stage build pour optimiser la taille de l'image finale
-
-# Stage 1: Build l'application avec Gradle
+# Utiliser une étape de build séparée pour compiler l'application
 FROM eclipse-temurin:21-jdk-jammy AS builder
 
 WORKDIR /app
 
-# Copier les fichiers Gradle wrapper
-COPY gradlew .
-COPY gradlew.bat .
-COPY gradle gradle/
-COPY settings.gradle.kts .
-COPY build.gradle.kts .
+# Copier uniquement les fichiers nécessaires pour la construction
+COPY . .
 
-# Copier tous les modules
-COPY application application/
-COPY auth auth/
-COPY common common/
-COPY interaction interaction/
-COPY message message/
-COPY notification notification/
-COPY post post/
-COPY user user/
+
 
 # Rendre gradlew exécutable et construire l'application
-RUN chmod +x ./gradlew && \
-    ./gradlew :application:build -x test --no-daemon
+RUN cd application/ && chmod +x ./gradlew && ./gradlew build -x test --no-daemon
 
-# Stage 2: Image finale légère avec JRE
+# Étape finale avec une image plus légère
+
 FROM eclipse-temurin:21-jre-jammy
 
 WORKDIR /app
 
-# Copier le JAR construit depuis le builder
-COPY --from=builder /app/application/build/libs/*.jar app.jar
+# Copier uniquement le JAR construit de l'étape précédente
+COPY --from=builder /app/application/build/libs/application-0.0.1-SNAPSHOT.jar app.jar
 
-# Créer un utilisateur non-root pour la sécurité
+# Créer un utilisateur non-root pour des raisons de sécurité
 RUN addgroup --system springuser && \
     adduser --system --ingroup springuser springuser
-
 USER springuser
 
-# Variables d'environnement (peuvent être overridées au runtime)
-ENV SPRING_PROFILES_ACTIVE=prod \
-    JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
+# Configuration de l'environnement de production
+ENV SPRING_PROFILES_ACTIVE=prod
+#    JAVA_TOOL_OPTIONS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
 
-# Exposer le port de l'application
-EXPOSE 8085
+EXPOSE 8080
+EXPOSE 8080:8080
 
-# Healthcheck pour Docker Compose/Kubernetes
-HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:8085/actuator/health || exit 1
-
-# Lancer l'application
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+# Utiliser exec form pour permettre la propagation des signaux
+ENTRYPOINT ["java", "-jar", "app.jar"]
