@@ -21,21 +21,6 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/application" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/application" />
-            <option value="$PROJECT_DIR$/application/auth" />
-            <option value="$PROJECT_DIR$/application/common" />
-            <option value="$PROJECT_DIR$/application/interaction" />
-            <option value="$PROJECT_DIR$/application/message" />
-            <option value="$PROJECT_DIR$/application/notification" />
-            <option value="$PROJECT_DIR$/application/post" />
-            <option value="$PROJECT_DIR$/application/user" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/auth" />
         <option name="modules">
           <set>

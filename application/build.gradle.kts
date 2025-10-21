@@ -37,7 +37,7 @@ dependencies {
     implementation(project(":auth"))
     implementation(project(":common"))
     implementation(project(":message"))
-
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.projectlombok:lombok")

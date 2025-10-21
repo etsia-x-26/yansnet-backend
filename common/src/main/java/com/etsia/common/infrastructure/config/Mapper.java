@@ -4,6 +4,7 @@ import com.etsia.common.domain.model.*;
 import com.etsia.common.infrastructure.entities.*;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,9 +22,6 @@ public class Mapper {
                 .url(entity.getUrl())
                 .uploadedAt(entity.getUploadedAt())
                 .type(entity.getType())
-                .post(PostDto.builder()
-                        .id(entity.getPost() != null ? entity.getPost().getId() : null)
-                        .build())
                 .build();
 
 
@@ -85,9 +83,6 @@ public class Mapper {
                 .url(Dto.getUrl())
                 .uploadedAt(Dto.getUploadedAt())
                 .type(Dto.getType())
-                .post(Post.builder()
-                        .id(Dto.getPost() != null ? Dto.getPost().getId() : null)
-                        .build())
                 .build();
 
     }
@@ -343,6 +338,7 @@ public class Mapper {
                 .totalLikes(entity.getTotalLikes())
                 .deletedAt(entity.getDeletedAt())
                 .createdAt(entity.getCreatedAt())
+                .media(toMediaDtos(entity.getMedia().stream().toList()))
                 .user(UserDto.builder()
                         .id(entity.getUser() != null ? entity.getUser().getId() : null)
                         .build())
@@ -366,6 +362,7 @@ public class Mapper {
                 .totalLikes(dto.getTotalLikes())
                 .deletedAt(dto.getDeletedAt())
                 .createdAt(dto.getCreatedAt())
+                .media(new HashSet<>(( toMediaEntities(dto.getMedia()))))
                 .user(dto.getChannel() != null ?User.builder()
                         .id(dto.getUser().getId())
                         .build():null)
