@@ -18,7 +18,7 @@ FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
 # Copier uniquement le JAR construit de l'étape précédente
-COPY --from=builder /app/application/build/libs/application-1.0-SNAPSHOT.jar app.jar
+COPY --from=builder application/build/libs/application-1.0-SNAPSHOT.jar app.jar
 
 # Créer un utilisateur non-root pour des raisons de sécurité
 RUN addgroup --system springuser && \
