@@ -7,6 +7,7 @@ WORKDIR /app
 COPY . .
 
 
+
 # Rendre gradlew exécutable et construire l'application
 RUN cd application/ && chmod +x ./gradlew && ./gradlew build -x test --no-daemon
 
