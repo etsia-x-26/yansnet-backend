@@ -11,8 +11,6 @@ COPY . .
 # Rendre gradlew exécutable et construire l'application
 RUN cd application/ && chmod +x ./gradlew && ./gradlew build -x test --no-daemon
 
-RUN ls /application/build/libs/
-
 # Étape finale avec une image plus légère
 
 FROM eclipse-temurin:21-jre-jammy
@@ -20,7 +18,7 @@ FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
 # Copier uniquement le JAR construit de l'étape précédente
-COPY --from=builder application/build/libs/application-1.0-SNAPSHOT.jar app.jar
+COPY --from=builder /app/application/build/libs/application-0.0.1-SNAPSHOT.jar app.jar
 
 # Créer un utilisateur non-root pour des raisons de sécurité
 RUN addgroup --system springuser && \
