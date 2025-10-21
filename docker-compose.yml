@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: qwertyuiop
     ports:
-      - "5432:5432"
+      - "5000:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/migration:/docker-entrypoint-initdb.d
@@ -17,8 +17,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - etsia-network
+#    networks:
+#      - etsia-network
 
   # Keycloak
   keycloak:
@@ -48,8 +48,8 @@ services:
       timeout: 10s
       retries: 5
       start_period: 90s
-    networks:
-      - etsia-network
+#    networks:
+#      - etsia-network
 
   # Application Spring Boot
   app:
@@ -90,14 +90,14 @@ services:
         condition: service_healthy
       keycloak:
         condition: service_healthy
-    networks:
-      - etsia-network
+#    networks:
+#      - etsia-network
     restart: unless-stopped
 
 volumes:
   postgres_data:
     driver: local
 
-networks:
-  etsia-network:
-    driver: bridge
+#networks:
+#  etsia-network:
+#    driver: bridge

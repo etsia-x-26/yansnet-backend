@@ -10,6 +10,8 @@ import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -23,6 +25,8 @@ import java.util.Optional;
 
 @Service
 public class KeycloakAuthService implements AuthService {
+
+    private static final Logger log = LoggerFactory.getLogger(KeycloakAuthService.class);
 
     private final Keycloak keycloak;
     private final UserRepository userRepository;
@@ -41,10 +45,12 @@ public class KeycloakAuthService implements AuthService {
     private String clientSecret;
 
     @Autowired
-    public KeycloakAuthService(Keycloak keycloak, UserRepository userRepository) {
+    public KeycloakAuthService(Keycloak keycloak,
+                               UserRepository userRepository,
+                               RestTemplate keycloakRestTemplate) {
         this.keycloak = keycloak;
         this.userRepository = userRepository;
-        this.restTemplate = new RestTemplate();
+        this.restTemplate = keycloakRestTemplate;
     }
 
     @Override
@@ -121,6 +127,9 @@ public class KeycloakAuthService implements AuthService {
     }
 
     public String getTokenFromKeycloak(String email, String password) {
+        long startTime = System.currentTimeMillis();
+        log.info("🔵 Requesting Keycloak token for user: {}", email);
+
         try {
             String tokenUrl = keycloakServerUrl + "/realms/" + realm + "/protocol/openid-connect/token";
 
@@ -136,56 +145,116 @@ public class KeycloakAuthService implements AuthService {
 
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
+            long beforeRequest = System.currentTimeMillis();
             ResponseEntity<Map> response = restTemplate.exchange(
                     tokenUrl,
                     HttpMethod.POST,
                     request,
                     Map.class
             );
+            long afterRequest = System.currentTimeMillis();
 
             if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+                long totalDuration = afterRequest - startTime;
+                long requestDuration = afterRequest - beforeRequest;
+                log.info("✅ Keycloak token obtained in {}ms (request: {}ms)",
+                        totalDuration, requestDuration);
                 return (String) response.getBody().get("access_token");
             }
 
-            System.out.println("Keycloak token request failed with status: " + response.getStatusCode());
+            log.error("❌ Keycloak token request failed with status: {}",
+                    response.getStatusCode());
             return null;
         } catch (Exception e) {
-            System.out.println("Keycloak token request failed with exception: " + e.getMessage());
-            e.printStackTrace();
+            long duration = System.currentTimeMillis() - startTime;
+            log.error("❌ Keycloak token request failed after {}ms",
+                    duration, e);
             return null;
         }
     }
 
     private String createKeycloakUser(String email, String password) {
-        RealmResource realmResource = keycloak.realm(realm);
-        UsersResource usersResource = realmResource.users();
+        try {
+            // Étape 1 : Obtenir un token admin
+            String adminToken = getAdminToken();
 
-        UserRepresentation user = new UserRepresentation();
-        user.setUsername(email);
-        user.setEmail(email);
-        user.setEnabled(true);
-        user.setEmailVerified(true);
-        user.setFirstName("User");
-        user.setLastName("User");
+            // Étape 2 : Créer l'utilisateur via API REST
+            String createUserUrl = keycloakServerUrl + "/admin/realms/" + realm + "/users";
 
-        jakarta.ws.rs.core.Response response = usersResource.create(user);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setBearerAuth(adminToken);
 
-        if (response.getStatus() != 201) {
-            throw new RuntimeException("Failed to create user in Keycloak: " + response.getStatus());
+            // Construire le JSON de l'utilisateur
+            Map<String, Object> userPayload = new java.util.HashMap<>();
+            userPayload.put("username", email);
+            userPayload.put("email", email);
+            userPayload.put("enabled", true);
+            userPayload.put("emailVerified", true);
+            userPayload.put("firstName", "User");
+            userPayload.put("lastName", "User");
+
+            // Credentials
+            Map<String, Object> credential = new java.util.HashMap<>();
+            credential.put("type", "password");
+            credential.put("value", password);
+            credential.put("temporary", false);
+            userPayload.put("credentials", java.util.List.of(credential));
+
+            HttpEntity<Map<String, Object>> request = new HttpEntity<>(userPayload, headers);
+
+            log.info("Creating Keycloak user via REST API: {}", email);
+            ResponseEntity<String> response = restTemplate.exchange(
+                createUserUrl,
+                HttpMethod.POST,
+                request,
+                String.class
+            );
+
+            if (response.getStatusCode().is2xxSuccessful()) {
+                String locationHeader = response.getHeaders().getFirst("Location");
+                if (locationHeader != null) {
+                    String userId = locationHeader.substring(locationHeader.lastIndexOf('/') + 1);
+                    log.info("✅ Keycloak user created successfully: {}", userId);
+                    return userId;
+                }
+            }
+
+            log.error("❌ Failed to create Keycloak user: {}", response.getStatusCode());
+            throw new RuntimeException("Failed to create user in Keycloak: " + response.getStatusCode());
+
+        } catch (Exception e) {
+            log.error("❌ Error creating Keycloak user", e);
+            throw new RuntimeException("Error creating user in Keycloak", e);
+        }
+    }
+
+    private String getAdminToken() {
+        String tokenUrl = keycloakServerUrl + "/realms/master/protocol/openid-connect/token";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("grant_type", "password");
+        map.add("client_id", "admin-cli");
+        map.add("username", "admin");
+        map.add("password", "admin");
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        ResponseEntity<Map> response = restTemplate.exchange(
+            tokenUrl,
+            HttpMethod.POST,
+            request,
+            Map.class
+        );
+
+        if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+            return (String) response.getBody().get("access_token");
         }
 
-        String locationHeader = response.getHeaderString("Location");
-        String userId = locationHeader.substring(locationHeader.lastIndexOf('/') + 1);
-
-        // Définir le mot de passe après la création
-        CredentialRepresentation credential = new CredentialRepresentation();
-        credential.setType(CredentialRepresentation.PASSWORD);
-        credential.setValue(password);
-        credential.setTemporary(false);
-
-        usersResource.get(userId).resetPassword(credential);
-
-        return userId;
+        throw new RuntimeException("Failed to get admin token from Keycloak");
     }
 
     private void updateKeycloakPassword(String email, String newPassword) {
