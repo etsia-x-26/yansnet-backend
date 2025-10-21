@@ -18,7 +18,7 @@ import java.time.Instant;
 @NoArgsConstructor
 public class Media {
     @Id
-    @ColumnDefault("nextval('media_id_seq')")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 

@@ -22,7 +22,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Builder
 public class User {
     @Id
-    @ColumnDefault("nextval('users_id_seq')")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 

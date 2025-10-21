@@ -15,7 +15,7 @@ import org.hibernate.annotations.ColumnDefault;
 })
 public class Message {
     @Id
-    @ColumnDefault("nextval('messages_id_seq')")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 

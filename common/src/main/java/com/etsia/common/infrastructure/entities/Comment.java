@@ -20,7 +20,7 @@ import java.time.Instant;
 @AllArgsConstructor
 public class Comment {
     @Id
-    @ColumnDefault("nextval('comments_id_seq')")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
