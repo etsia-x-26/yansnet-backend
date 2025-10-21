@@ -7,6 +7,7 @@ WORKDIR /app
 COPY . .
 
 
+
 # Rendre gradlew exécutable et construire l'application
 RUN cd application/ && chmod +x ./gradlew && ./gradlew build -x test --no-daemon
 
@@ -18,9 +19,6 @@ WORKDIR /app
 
 # Copier uniquement le JAR construit de l'étape précédente
 COPY --from=builder /app/application/build/libs/application-1.0-SNAPSHOT.jar app.jar
-COPY . .
-# Copier uniquement le JAR construit de l'étape précédente
-COPY  application/build/libs/application-1.0-SNAPSHOT.jar app.jar
 
 # Créer un utilisateur non-root pour des raisons de sécurité
 RUN addgroup --system springuser && \
