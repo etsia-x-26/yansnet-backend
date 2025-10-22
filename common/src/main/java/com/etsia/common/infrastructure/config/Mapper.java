@@ -61,7 +61,6 @@ public class Mapper {
                 .title(entity.getTitle())
                 .description(entity.getDescription())
                 .type(entity.getType())
-                .role(entity.getRole())
                 .build();
     }
 
@@ -108,7 +107,6 @@ public class Mapper {
                 .title(Dto.getTitle())
                 .description(Dto.getDescription())
                 .type(Dto.getType())
-                .role(Dto.getRole())
                 .build();
     }
 
