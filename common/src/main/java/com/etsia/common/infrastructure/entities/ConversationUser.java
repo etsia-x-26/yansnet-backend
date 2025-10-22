@@ -1,5 +1,6 @@
 package com.etsia.common.infrastructure.entities;
 
+import com.etsia.common.domain.model.sub.ConversationRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -27,4 +28,7 @@ public class ConversationUser {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "role", columnDefinition = "conversation_role not null")
+    @Enumerated(EnumType.STRING)
+    private ConversationRole role;
 }

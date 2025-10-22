@@ -1,5 +1,6 @@
 package com.etsia.common.domain.model;
 
+import com.etsia.common.domain.model.sub.ConversationRole;
 import jakarta.validation.constraints.NotNull;
 import lombok.Value;
 
@@ -14,4 +15,6 @@ public class ConversationUserDto implements Serializable {
     @NotNull
     ConversationDto conversation;
     UserDto user;
+    ConversationRole role;
+
 }

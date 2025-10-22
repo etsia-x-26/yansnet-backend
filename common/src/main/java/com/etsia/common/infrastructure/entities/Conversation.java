@@ -32,9 +32,7 @@ public class Conversation {
     @Column(name = "type", columnDefinition = "conversation_type not null")
     @Enumerated(EnumType.STRING)
     private ConversationType type;
-    @Column(name = "role", columnDefinition = "conversation_role not null")
-    @Enumerated(EnumType.STRING)
-    private ConversationRole role;
+
 
     @OneToMany(mappedBy = "conversation")
     private Set<ConversationUser> conversationUsers = new LinkedHashSet<>();
