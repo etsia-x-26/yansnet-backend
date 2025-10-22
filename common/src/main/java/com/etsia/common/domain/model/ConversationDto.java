@@ -17,6 +17,4 @@ public class ConversationDto implements Serializable {
     String title;
     String description;
     ConversationType type;
-    ConversationRole role;
-
 }
