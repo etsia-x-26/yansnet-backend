@@ -5,6 +5,9 @@ import com.etsia.common.domain.model.sub.ConversationType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -26,19 +29,18 @@ public class Conversation {
     @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_one_id")
-    private User userOne;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_two_id")
-    private User userTwo;
-
     @Column(name = "type", columnDefinition = "conversation_type not null")
     @Enumerated(EnumType.STRING)
     private ConversationType type;
     @Column(name = "role", columnDefinition = "conversation_role not null")
     @Enumerated(EnumType.STRING)
     private ConversationRole role;
+
+    @OneToMany(mappedBy = "conversation")
+    private Set<ConversationUser> conversationUsers = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "conversation")
+    private Set<Message> messages = new LinkedHashSet<>();
+
 }
 

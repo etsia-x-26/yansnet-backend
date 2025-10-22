@@ -16,8 +16,6 @@ public class ConversationDto implements Serializable {
     Integer id;
     String title;
     String description;
-    UserDto userOne;
-    UserDto userTwo;
     ConversationType type;
     ConversationRole role;
 }
