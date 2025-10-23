@@ -61,13 +61,6 @@ public class Mapper {
                 .title(entity.getTitle())
                 .description(entity.getDescription())
                 .type(entity.getType())
-                .role(entity.getRole())
-                .userOne(UserDto.builder()
-                        .id(entity.getUserOne() != null ? entity.getUserOne().getId() : null)
-                        .build())
-                .userTwo(UserDto.builder()
-                        .id(entity.getUserTwo() != null ? entity.getUserTwo().getId() : null)
-                        .build())
                 .build();
     }
 
@@ -114,13 +107,6 @@ public class Mapper {
                 .title(Dto.getTitle())
                 .description(Dto.getDescription())
                 .type(Dto.getType())
-                .role(Dto.getRole())
-                .userOne(User.builder()
-                        .id(Dto.getUserOne() != null ? Dto.getUserOne().getId() : null)
-                        .build())
-                .userTwo(User.builder()
-                        .id(Dto.getUserTwo() != null ? Dto.getUserTwo().getId() : null)
-                        .build())
                 .build();
     }
 
