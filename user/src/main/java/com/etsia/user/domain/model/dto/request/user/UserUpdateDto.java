@@ -4,10 +4,10 @@ import com.etsia.common.domain.model.BatchDto;
 import com.etsia.common.domain.model.DepartmentDto;
 import com.etsia.common.domain.model.UserCategoryDto;
 import com.etsia.common.domain.model.sub.PhoneNumber;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
+//import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
 
@@ -16,10 +16,10 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class UserUpdateDto implements Serializable {
-    @NotBlank
+//    @NotBlank
     Integer id;
 
-    @NotBlank(message = "Email is required")
+//    @NotBlank(message = "Email is required")
     String email;
 
     String password;

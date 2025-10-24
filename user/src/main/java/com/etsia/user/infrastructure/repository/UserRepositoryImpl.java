@@ -8,16 +8,18 @@ import com.etsia.user.domain.model.dto.request.user.CreateUserDto;
 import com.etsia.user.domain.model.dto.request.user.UserUpdateDto;
 import com.etsia.user.domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 import static com.etsia.user.infrastructure.config.MapperUser.mapToUserDto;
 
-@Repository
+@Repository(value = "uURepository")
 @AllArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
+    @Qualifier("uJRepository")
     private final JpaUserRepository jpaUserRepository;
 
     @Override
