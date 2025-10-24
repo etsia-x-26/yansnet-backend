@@ -29,8 +29,7 @@ USER springuser
 ENV SPRING_PROFILES_ACTIVE=prod
 #    JAVA_TOOL_OPTIONS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
 
-EXPOSE 8080
-EXPOSE 8080:8080
+EXPOSE 8085
 
 # Utiliser exec form pour permettre la propagation des signaux
 ENTRYPOINT ["java", "-jar", "app.jar"]
