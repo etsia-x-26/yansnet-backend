@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
+@Service(value = "uUDomainService")
 @AllArgsConstructor
 public class UserDomainService {
 

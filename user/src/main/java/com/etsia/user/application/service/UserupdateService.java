@@ -5,12 +5,14 @@ import com.etsia.common.domain.model.UserDto;
 import com.etsia.user.domain.model.dto.request.user.UserUpdateDto;
 import com.etsia.user.domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class UserupdateService {
 
+    @Qualifier("uURepository")
     private final UserRepository userRepository;
     //private final UserDomainService userDomainService;
 

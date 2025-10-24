@@ -1,9 +1,9 @@
 package com.etsia.user.domain.model.dto.request.user;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.io.Serializable;
 
@@ -12,6 +12,6 @@ import java.io.Serializable;
 @Setter
 @Value
 public class DeleteUserDto implements Serializable {
-    @NotNull(message = "Id is required")
+    @NotNull()
     Integer id;
 }

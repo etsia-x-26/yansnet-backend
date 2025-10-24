@@ -7,6 +7,7 @@ import com.etsia.user.domain.repository.UserRepository;
 import com.etsia.user.domain.service.UserDomainService;
 import com.etsia.user.infrastructure.exception.EmailAlreadyUsedException;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import static com.etsia.user.infrastructure.config.MapperUser.mapToUserDto;
@@ -15,8 +16,10 @@ import static com.etsia.user.infrastructure.config.MapperUser.mapToUserDto;
 @AllArgsConstructor
 public class UserSaveService {
 
+    @Qualifier("uURepository")
     private final UserRepository userRepository;
-    private final UserDomainService userDomainService;
+    @Qualifier("uUDomainService")
+    private final  UserDomainService userDomainService;
 
     public UserDto execute(CreateUserDto user){
         if(!userDomainService.IsEmailUnique(user.getEmail())){

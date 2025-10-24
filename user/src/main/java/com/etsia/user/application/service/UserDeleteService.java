@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class UserDeleteService {
 
-    //@Qualifier("userRepositoryImpl")
+    @Qualifier("uURepository")
     private final UserRepository userRepository;
     //private final UserDomainService userDomainService;
 

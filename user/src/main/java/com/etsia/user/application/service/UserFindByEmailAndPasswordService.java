@@ -6,6 +6,7 @@ import com.etsia.user.domain.repository.UserRepository;
 import com.etsia.user.domain.service.UserDomainService;
 import com.etsia.user.infrastructure.exception.EmailNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,6 +15,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UserFindByEmailAndPasswordService {
 
+    @Qualifier("uURepository")
     private final UserRepository userRepository;
     private final UserDomainService userDomainService;
 
