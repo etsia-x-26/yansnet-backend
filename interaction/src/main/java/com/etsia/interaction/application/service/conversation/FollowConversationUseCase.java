@@ -14,11 +14,11 @@ public class FollowConversationUseCase {
     private final FollowConversationUserDomainService followConversationUserDomainService;
 
     public void execute(Integer[] FollowerIds, Integer ConversationId, ConversationRole role){
-        for(int i = 0; i < FollowerIds.length; i++){
-            if (followConversationUserDomainService.isFollowing(i, ConversationId)){
+        for (int i = 0; i < FollowerIds.length; i++){
+            if (followConversationUserDomainService.isFollowing(FollowerIds[i], ConversationId)){
                 throw new IllegalArgumentException("Follow already exists");
             }
-            conversationUserRepository.Follow(i, ConversationId, role);
+            conversationUserRepository.Follow(FollowerIds[i], ConversationId, role);
         }
     }
 }
