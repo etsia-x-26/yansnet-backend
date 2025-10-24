@@ -18,7 +18,7 @@ public class FollowConversationUseCase {
             if (followConversationUserDomainService.isFollowing(FollowerIds[i], ConversationId)){
                 throw new IllegalArgumentException("Follow already exists");
             }
-            conversationUserRepository.Follow(FollowerIds[i], ConversationId, role);
+            conversationUserRepository.Follow(new Integer[]{FollowerIds[i]}, ConversationId, role);
         }
     }
 }

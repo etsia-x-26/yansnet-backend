@@ -1,14 +1,18 @@
 package com.etsia.interaction.domain.model.conversation;
 
 import com.etsia.common.domain.model.sub.ConversationType;
-import lombok.Builder;
-import lombok.Value;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.io.Serializable;
 
+
 @Builder
-@Value
+@Data
 public class UpdateConversationDto implements Serializable {
+
+    @NotBlank(message = "ID is required")
     Integer id;
     String title;
     String description;

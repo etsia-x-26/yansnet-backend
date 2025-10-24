@@ -12,11 +12,11 @@ public class CreateConversationUseCase {
 
     private final ConversationRepository conversationRepository;
 
-    public ConversationDto execute(CreateConversationDto conversationDto){
+    public ConversationDto execute(CreateConversationDto conversationDto) {
         try {
             return conversationRepository.Save(conversationDto);
         } catch (Exception e) {
-            throw RessourceNotFoundException("Conversation Not Found "+conversationDto.id);
+            throw new IllegalArgumentException("Follow already exists");
         }
     }
 }
