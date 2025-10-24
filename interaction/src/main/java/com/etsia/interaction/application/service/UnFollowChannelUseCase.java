@@ -13,6 +13,7 @@ public class UnFollowChannelUseCase {
         this.channelFollowDomainService = channelFollowDomainService;
         this.channelFollowRepository = channelFollowRepository;
     }
+
     public void execute(Integer followerId, Integer followedId) {
         if (!channelFollowDomainService.isFollowing(followerId, followedId)) {
             throw new IllegalArgumentException("Follow does not exist");
