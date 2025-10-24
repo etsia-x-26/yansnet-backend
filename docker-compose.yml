@@ -52,6 +52,13 @@ services:
 #      - etsia-network
 
   # Application Spring Boot
+  backend:
+    image: gfriedtod/yansnet:dev
+    container_name: etsia-back
+    ports:
+      - "8085:8085"
+
+
   app:
     build:
       context: .

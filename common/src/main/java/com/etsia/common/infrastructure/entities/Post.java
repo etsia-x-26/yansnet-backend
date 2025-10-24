@@ -5,6 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -47,5 +49,8 @@ public class Post {
     @ColumnDefault("0")
     @Column(name = "total_comments", columnDefinition = "positive_int")
     private int totalComments;
+
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL , orphanRemoval = true)
+    private Set<Media> media = new LinkedHashSet<>();
 
 }
