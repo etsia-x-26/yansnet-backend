@@ -61,7 +61,11 @@ public class FollowConversationUserRepositoryImpl implements ConversationUserRep
     @Override
     public void Unfollow(Integer FollowerId, Integer ConversationId) {
         Conversation conversation = jpaConversationRepository.findById(ConversationId);
-
+        User user = jpaUserRepository.findById(FollowerId);
+        ConversationUser conversationUser = new ConversationUser();
+        conversationUser.setConversation(conversation);
+        conversationUser.setUser(user);
+        jpaConversationUserRepository.delete(conversationUser);
     }
 
     @Override
@@ -69,34 +73,5 @@ public class FollowConversationUserRepositoryImpl implements ConversationUserRep
         return jpaConversationUserRepository.existsByConversationIdAndUserId(ConversationId, FollowerId);
     }
 
-    @Override
-    public void Delete(Integer Id) {
-        jpaConversationUserRepository.deleteById(Id);
-    }
 
-    @Override
-    public Iterable<ConversationUserDto> FindAll() {
-        return null;
-    }
-
-    @Override
-    public Optional<ConversationUserDto> Update(ConversationUserDto conversationUserDto) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<ConversationUserDto> FindByUserId(Integer userId) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<ConversationUserDto> FindByConversationId(Integer conversationId) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<ConversationUserDto> FindByUserIdAndConversationId(Integer userId, Integer conversationId) {
-//        ConversationUser conversation_user = jpaConversationUserRepository.findBy
-        return null;
-    }
 }
