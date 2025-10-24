@@ -17,7 +17,7 @@ public class FollowConversationController {
     private final UnFollowConversationUserUseCase unFollowConversationUserUseCase;
 
     @PostMapping("/follow/{ConversationId}/{FollowerId}")
-    ResponseEntity follow(@PathVariable int FollowerId, @PathVariable int ConversationId, @RequestBody ConversationRole role) {
+    ResponseEntity follow(@PathVariable List<Integer> FollowerId, @PathVariable Integer ConversationId, @RequestBody ConversationRole role) {
         try {
             followConversationUseCase.execute(FollowerId, ConversationId, role);
             return ResponseEntity.ok().build();
@@ -27,7 +27,7 @@ public class FollowConversationController {
     }
 
     @DeleteMapping("/unfollow/{ConversationId}/{FollowerId}")
-    ResponseEntity unfollow(@PathVariable int FollowerId, @PathVariable int ConversationId) {
+    ResponseEntity unfollow(@PathVariable Integer FollowerId, @PathVariable Integer ConversationId) {
         try {
             unFollowConversationUserUseCase.execute(FollowerId, ConversationId);
             return ResponseEntity.ok().build();

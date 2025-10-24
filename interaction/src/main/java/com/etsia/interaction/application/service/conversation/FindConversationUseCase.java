@@ -2,7 +2,6 @@ package com.etsia.interaction.application.service.conversation;
 
 import com.etsia.common.domain.model.ConversationDto;
 import com.etsia.interaction.domain.repository.conversation.ConversationRepository;
-import com.etsia.interaction.infrastructure.exception.conversation.RessourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,7 @@ public class FindConversationUseCase {
         try{
             return conversationRepository.FindById(ConversationId);
         } catch(Exception e) {
-            throw new RessourceNotFoundException("Conversation Not Found"+ ConversationId);
+            throw new IllegalArgumentException("Follow already exists");
     }
     }
 }

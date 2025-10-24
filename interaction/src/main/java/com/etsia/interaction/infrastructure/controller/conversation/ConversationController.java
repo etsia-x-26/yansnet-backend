@@ -37,7 +37,7 @@ public class ConversationController {
     private final FindAllConversationUseCase findAllConversationUseCase;
 
     @GetMapping
-    public ResponseEntity<List<ConversationDto>> findAll() {
+    public ResponseEntity<?> findAll() {
         try{
             List<ConversationDto> conversations = findAllConversationUseCase.execute();
             return ResponseEntity.ok(conversations);
@@ -47,9 +47,9 @@ public class ConversationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ConversationDto> findById(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> findById(@PathVariable("id") Integer id) {
         try{
-            ConversationDto dto = findConversationUseCase.execute(id);
+            ConversationDto dto = findConversationUseCase.execute(id).get();
             return ResponseEntity.ok(dto);
         } catch(Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -58,7 +58,7 @@ public class ConversationController {
     }
 
     @PostMapping
-    public ResponseEntity<ConversationDto> create(@RequestBody CreateConversationDto request) {
+    public ResponseEntity<?> create(@RequestBody CreateConversationDto request) {
         try{
             ConversationDto created = createConversationUseCase.execute(request);
             return ResponseEntity.created(URI.create("/Conversation/" + created.getId()))
@@ -70,11 +70,11 @@ public class ConversationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ConversationDto> update(@PathVariable("id") Integer id,
+    public ResponseEntity<?> update(@PathVariable("id") Integer id,
                                                   @RequestBody UpdateConversationDto request) {
         try{
             request.setId(id);
-            ConversationDto updated = updateConversationUseCase.execute(request);
+            ConversationDto updated = updateConversationUseCase.execute(request,1).get();
             return ResponseEntity.ok(updated);
         }catch(Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -83,7 +83,7 @@ public class ConversationController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
         try{
             deleteConversationUseCase.execute(id);
             return ResponseEntity.noContent().build();

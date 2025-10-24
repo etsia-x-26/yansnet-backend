@@ -5,17 +5,19 @@ import com.etsia.interaction.domain.repository.conversation.ConversationReposito
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class FindAllConversationUseCase {
 
     private final ConversationRepository conversationRepository;
 
-    public ConversationDto[] execute(){
-        try{
+    public List<ConversationDto> execute() {
+        try {
             return conversationRepository.FindAll();
-        } catch(Exception e){
-            throw RessourceNotFoundException("Conversation Not Found")
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Follow already exists");
         }
     }
 }
