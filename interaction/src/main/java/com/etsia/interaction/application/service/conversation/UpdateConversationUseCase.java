@@ -1,0 +1,25 @@
+package com.etsia.interaction.application.service.conversation;
+
+import com.etsia.common.domain.model.ConversationDto;
+import com.etsia.interaction.domain.model.conversation.UpdateConversationDto;
+import com.etsia.interaction.domain.repository.conversation.ConversationRepository;
+import com.etsia.interaction.domain.service.conversation.ConversationDomainService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+@Service
+@AllArgsConstructor
+public class UpdateConversationUseCase {
+
+    private final ConversationRepository conversationRepository;
+    private final ConversationDomainService conversationDomainService;
+
+    public Optional<ConversationDto> execute(UpdateConversationDto conversationDto, Integer ConversationId){
+        if (!conversationDomainService.ExistsById(ConversationId)){
+            throw new IllegalArgumentException("Conversation Doesn't exist");
+        }
+        return conversationRepository.Update(conversationDto,ConversationId);
+    }
+}
