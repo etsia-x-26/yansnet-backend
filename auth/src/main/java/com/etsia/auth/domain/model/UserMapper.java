@@ -36,8 +36,7 @@ public class UserMapper {
             return null;
         }
 
-        return User.builder()
-                .id(authUser.getUserId())
+        User.UserBuilder builder = User.builder()
                 .email(authUser.getEmail())
                 .phoneNumber(authUser.getPhoneNumber())
                 .password(authUser.getPassword())
@@ -45,8 +44,15 @@ public class UserMapper {
                 .isBlocked(authUser.isBlocked())
                 .totalFollowers(authUser.getTotalFollowers())
                 .totalFollowing(authUser.getTotalFollowing())
-                .totalPosts(authUser.getTotalPosts())
-                .build();
+                .totalPosts(authUser.getTotalPosts());
+
+        // Only set ID if it's not null (for updates)
+        // For new users (null ID), let Hibernate generate it
+        if (authUser.getUserId() != null) {
+            builder.id(authUser.getUserId());
+        }
+
+        return builder.build();
     }
 
     public void updateEntity(User userEntity, AuthUser authUser) {

@@ -63,14 +63,34 @@ public class AuthApplicationService {
                 phoneNumber
         );
 
-        // Obtenir le token JWT depuis Keycloak après l'inscription
-        String jwtToken = keycloakAuthService.getTokenFromKeycloak(
-                registerRequest.getEmail(),
-                registerRequest.getPassword()
-        );
+        // Attendre un peu pour que Keycloak propage les changements
+        // puis obtenir le token JWT avec retry
+        String jwtToken = null;
+        int maxRetries = 3;
+        int retryDelay = 200; // milliseconds
+
+        for (int i = 0; i < maxRetries; i++) {
+            if (i > 0) {
+                try {
+                    Thread.sleep(retryDelay);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException("Interrupted while waiting for Keycloak", e);
+                }
+            }
+
+            jwtToken = keycloakAuthService.getTokenFromKeycloak(
+                    registerRequest.getEmail(),
+                    registerRequest.getPassword()
+            );
+
+            if (jwtToken != null) {
+                break;
+            }
+        }
 
         if (jwtToken == null) {
-            throw new IllegalStateException("Failed to obtain JWT token from Keycloak after registration");
+            throw new IllegalStateException("Failed to obtain JWT token from Keycloak after registration. Please try logging in manually.");
         }
 
         return new AuthResponse(

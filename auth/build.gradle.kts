@@ -34,6 +34,7 @@ dependencies {
     implementation("org.springframework.modulith:spring-modulith-starter-core")
     implementation("org.keycloak:keycloak-admin-client:26.0.6")
     implementation("jakarta.ws.rs:jakarta.ws.rs-api:3.1.0")
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.2.1")
     implementation(project(":common"))
     runtimeOnly("org.postgresql:postgresql")
     compileOnly("org.projectlombok:lombok")
