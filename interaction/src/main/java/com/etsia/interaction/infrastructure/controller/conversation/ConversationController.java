@@ -37,58 +37,58 @@ public class ConversationController {
     private final FindAllConversationUseCase findAllConversationUseCase;
 
     @GetMapping
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<List<ConversationDto>> findAll() {
         try{
             List<ConversationDto> conversations = findAllConversationUseCase.execute();
             return ResponseEntity.ok(conversations);
         } catch(Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable("id") Integer id) {
+    public ResponseEntity<ConversationDto> findById(@PathVariable("id") Integer id) {
         try{
             ConversationDto dto = findConversationUseCase.execute(id).get();
             return ResponseEntity.ok(dto);
         } catch(Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(null);
         }
 
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody CreateConversationDto request) {
+    public ResponseEntity<ConversationDto> create(@RequestBody CreateConversationDto request) {
         try{
             ConversationDto created = createConversationUseCase.execute(request);
             return ResponseEntity.created(URI.create("/Conversation/" + created.getId()))
                     .body(created);
         } catch(Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(null);
         }
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Integer id,
+    public ResponseEntity<ConversationDto> update(@PathVariable("id") Integer id,
                                                   @RequestBody UpdateConversationDto request) {
         try{
             request.setId(id);
             ConversationDto updated = updateConversationUseCase.execute(request,1).get();
             return ResponseEntity.ok(updated);
         }catch(Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(null);
         }
 
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
         try{
             deleteConversationUseCase.execute(id);
             return ResponseEntity.noContent().build();
         }catch(Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 }

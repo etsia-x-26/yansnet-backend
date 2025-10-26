@@ -22,26 +22,26 @@ public class ConversationRepositoryImpl implements ConversationRepository {
     @Override
     public Optional<ConversationDto> FindById(Integer id) {
         Conversation conversation = jpaConversationRepository.findById(id).get();
-        return Optional.ofNullable(null);
+        ConversationDto conversationDto = Mapper.toConversationDto(conversation);
+        return Optional.of(conversationDto);
+        //return jpaConversationRepository.findById(id)
+        //        .map(Mapper::toConversationDto);
     }
 
     @Override
     public boolean ExistsById(Integer id) {
-        Conversation conversation = jpaConversationRepository.findById(id).get();
-        if (conversation != null) return true;
-        else return false;
+        return jpaConversationRepository.existsById(id);
     }
 
     @Override
     public ConversationDto Save(CreateConversationDto conversationDto) {
-        Conversation conversation = new Conversation();
-        conversation.setTitle(conversationDto.getTitle());
-        conversation.setDescription(conversationDto.getDescription());
-        conversation.setType(conversationDto.getType());
-
-        Conversation conversation_save = jpaConversationRepository.save(conversation);
-        return null;
-
+        Conversation conversation = Conversation.builder()
+                .title(conversationDto.getTitle())
+                .description(conversationDto.getDescription())
+                .type(conversationDto.getType())
+                .build();
+        Conversation savedConversation = jpaConversationRepository.save(conversation);
+        return Mapper.toConversationDto(savedConversation);
     }
 
     @Override
@@ -51,18 +51,25 @@ public class ConversationRepositoryImpl implements ConversationRepository {
 
     @Override
     public List<ConversationDto> FindAll() {
-        Conversation conversation = (Conversation) jpaConversationRepository.findAll();
-        return null;
+        List<Conversation> conversations = jpaConversationRepository.findAll();
+        return Mapper.toConversationDtos(conversations);
     }
 
     @Override
-    public Optional<ConversationDto> Update(UpdateConversationDto conversationDto, Integer ConversationId) {
-        Conversation conversation = new Conversation();
-        conversation.setId(ConversationId);
+    public Optional<ConversationDto> Update(UpdateConversationDto conversationDto, Integer conversationId) {
+        Optional<Conversation> optionalConversation = jpaConversationRepository.findById(conversationId);
+
+        if (optionalConversation.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Conversation conversation = optionalConversation.get();
         conversation.setTitle(conversationDto.getTitle());
         conversation.setDescription(conversationDto.getDescription());
         conversation.setType(conversationDto.getType());
-        Conversation conversation_update = jpaConversationRepository.save(conversation);
-        return null;
+
+        Conversation updatedConversation = jpaConversationRepository.save(conversation);
+        return Optional.of(Mapper.toConversationDto(updatedConversation));
     }
+
 }
