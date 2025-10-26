@@ -30,7 +30,7 @@ public class FollowConversationUserRepositoryImpl implements ConversationUserRep
     @Override
     public Optional<ConversationUserDto> FindById(Integer Id) {
         ConversationUser conversation_user = jpaConversationUserRepository.findById(Id).get();
-        return toConversationEntity(conversation_user);
+        return Optional.of(Mapper.toConversationUserDto(conversation_user));
     }
 
     @Override
@@ -60,13 +60,17 @@ public class FollowConversationUserRepositoryImpl implements ConversationUserRep
 
     @Override
     public void Unfollow(Integer FollowerId, Integer ConversationId) {
-        Conversation conversation = jpaConversationRepository.findById(ConversationId);
-        User user = jpaUserRepository.findById(FollowerId);
-        ConversationUser conversationUser = new ConversationUser();
-        conversationUser.setConversation(conversation);
-        conversationUser.setUser(user);
-        jpaConversationUserRepository.delete(conversationUser);
-    }
+        Conversation conversation = jpaConversationRepository.findById(ConversationId)
+            .orElseThrow(() -> new IllegalArgumentException("Conversation not found"));
+        User user = jpaUserRepository.findById(FollowerId)
+            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    
+    ConversationUser conversationUser = jpaConversationUserRepository
+            .findByConversationIdAndUserId(ConversationId, FollowerId)
+            .orElseThrow(() -> new IllegalArgumentException("ConversationUser relationship not found"));
+    
+    jpaConversationUserRepository.delete(conversationUser);
+}
 
     @Override
     public boolean isFollowing(Integer FollowerId, Integer ConversationId) {

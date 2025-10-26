@@ -3,10 +3,7 @@ package com.etsia.common.infrastructure.entities;
 import com.etsia.common.domain.model.sub.ConversationRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -15,6 +12,8 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Embeddable
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Table(name = "conversation_users")
 public class ConversationUser {
     @Id
