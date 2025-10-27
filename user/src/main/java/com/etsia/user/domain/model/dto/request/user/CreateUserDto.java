@@ -13,7 +13,6 @@ import com.etsia.common.infrastructure.entities.Batch;
 import com.etsia.common.infrastructure.entities.Department;
 import com.etsia.common.infrastructure.entities.UserCategory;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Value;
 import org.hibernate.annotations.ColumnDefault;
@@ -26,13 +25,10 @@ import java.io.Serializable;
 @Value
 public class CreateUserDto implements Serializable {
 
-    @NotBlank(message = "ID is required")
     Integer id;
 
-    @NotBlank(message = "Email is required")
     String email;
 
-    @NotBlank
     String password;
 
     Boolean isActive;

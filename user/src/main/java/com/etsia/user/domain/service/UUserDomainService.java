@@ -1,7 +1,6 @@
 package com.etsia.user.domain.service;
 
 import com.etsia.common.domain.model.UserDto;
-import com.etsia.common.domain.model.sub.Email;
 import com.etsia.user.domain.model.dto.request.user.CreateUserDto;
 import com.etsia.user.domain.model.dto.request.user.UserUpdateDto;
 import com.etsia.user.domain.repository.UserRepository;
@@ -12,7 +11,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class UserDomainService {
+public class UUserDomainService {
 
     private final UserRepository userRepository;
 
