@@ -20,22 +20,6 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/common" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/common" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/interaction" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/interaction" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/message" />
       </GradleProjectSettings>
       <GradleProjectSettings>

@@ -38,6 +38,7 @@ dependencies {
     implementation(project(":common"))
     runtimeOnly("org.postgresql:postgresql")
     compileOnly("org.projectlombok:lombok")
+    compileOnly("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
