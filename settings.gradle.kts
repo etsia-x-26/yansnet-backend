@@ -8,7 +8,8 @@ include(
     "notification",
     "post",
     "user",
-    "auth"
+    "auth",
+    "channel"
 )
 
 project(":auth").projectDir = file("auth")
@@ -18,6 +19,8 @@ project(":message").projectDir = file("message")
 project(":notification").projectDir = file("notification")
 project(":post").projectDir = file("post")
 project(":user").projectDir = file("user")
+project(":channel").projectDir = file("channel")
+
 
 //pluginManagement {
 //    repositories {
