@@ -18,6 +18,7 @@ import java.time.Instant;
 @NoArgsConstructor
 public class Media {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ColumnDefault("nextval('media_id_seq')")
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -33,7 +34,7 @@ public class Media {
     private Post post;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", columnDefinition = "media_type not null")
+    @Column(name = "type")
     private MediaType type;
 
 }
