@@ -6,6 +6,8 @@ import com.etsia.interaction.domain.service.conversation.FollowConversationUserD
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 
 @Service
 @AllArgsConstructor
@@ -14,12 +16,18 @@ public class FollowConversationUseCase {
     private final ConversationUserRepository conversationUserRepository;
     private final FollowConversationUserDomainService followConversationUserDomainService;
 
-    public void execute(Integer[] FollowerIds, Integer ConversationId, ConversationRole role){
-        for (int i = 0; i < FollowerIds.length; i++){
-            if (followConversationUserDomainService.isFollowing(FollowerIds[i], ConversationId)){
+    public void execute(Integer[] followerIds, Integer conversationId, ConversationRole role) {
+        for (int i = 0; i < followerIds.length; i++) {
+            if (followConversationUserDomainService.isFollowing(followerIds[i], conversationId)) {
                 throw new IllegalArgumentException("Follow already exists");
             }
-            conversationUserRepository.Follow(new Integer[]{FollowerIds[i]}, ConversationId, role);
+
+            // ✅ Conversion du tableau en liste
+            conversationUserRepository.Follow(
+                    Arrays.asList(followerIds[i]), // conversion ici
+                    conversationId,
+                    role
+            );
         }
     }
 }
