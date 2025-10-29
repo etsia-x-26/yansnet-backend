@@ -4,26 +4,25 @@ package com.etsia.user.application.service;
 import com.etsia.common.domain.model.UserDto;
 import com.etsia.user.domain.model.dto.request.user.CreateUserDto;
 import com.etsia.user.domain.repository.UserRepository;
-import com.etsia.user.domain.service.UserDomainService;
-import com.etsia.user.infrastructure.exception.EmailAlreadyUsedException;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.etsia.user.domain.service.UUserDomainService;
 import org.springframework.stereotype.Service;
 
-import static com.etsia.user.infrastructure.config.MapperUser.mapToUserDto;
-
 @Service
-@AllArgsConstructor
 public class UserSaveService {
 
-    @Qualifier("uURepository")
+    //@Qualifier("uURepository")
     private final UserRepository userRepository;
-    @Qualifier("uUDomainService")
-    private final  UserDomainService userDomainService;
+    //@Qualifier("uUDomainService")
+    private final UUserDomainService UUserDomainService;
+
+    public UserSaveService( UserRepository userRepository, UUserDomainService UUserDomainService) {
+        this.userRepository = userRepository;
+        this.UUserDomainService = UUserDomainService;
+    }
 
     public UserDto execute(CreateUserDto user){
-        if(!userDomainService.IsEmailUnique(user.getEmail())){
-            throw new EmailAlreadyUsedException("Email already used");
+        if(!UUserDomainService.IsEmailUnique(user.getEmail())){
+            throw new IllegalArgumentException("Email already used");
         }
 
         // Correction ici : UserDto au lieu de User

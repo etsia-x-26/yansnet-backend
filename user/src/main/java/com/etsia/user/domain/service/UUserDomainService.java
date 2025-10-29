@@ -1,20 +1,25 @@
 package com.etsia.user.domain.service;
 
 import com.etsia.common.domain.model.UserDto;
-import com.etsia.common.domain.model.sub.Email;
 import com.etsia.user.domain.model.dto.request.user.CreateUserDto;
 import com.etsia.user.domain.model.dto.request.user.UserUpdateDto;
 import com.etsia.user.domain.repository.UserRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service(value = "uUDomainService")
-@AllArgsConstructor
-public class UserDomainService {
+//@Service
+public class UUserDomainService {
 
     private final UserRepository userRepository;
+
+    public UUserDomainService(
+            @Qualifier("uURepository")
+            UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public Boolean IsEmailUnique(String email){
         return !userRepository.existsByEmail(email);

@@ -7,7 +7,6 @@ import com.etsia.common.infrastructure.entities.User;
 import com.etsia.user.domain.model.dto.request.user.CreateUserDto;
 import com.etsia.user.domain.model.dto.request.user.UserUpdateDto;
 import com.etsia.user.domain.repository.UserRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
@@ -16,22 +15,28 @@ import java.util.Optional;
 import static com.etsia.user.infrastructure.config.MapperUser.mapToUserDto;
 
 @Repository(value = "uURepository")
-@AllArgsConstructor
+//@Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    @Qualifier("uJRepository")
-    private final JpaUserRepository jpaUserRepository;
+
+    private final JpaUUserRepository jpaUUserRepository;
+
+    public UserRepositoryImpl(
+            @Qualifier("uJRepository")
+            JpaUUserRepository jpaUUserRepository) {
+        this.jpaUUserRepository = jpaUUserRepository;
+    }
 
     @Override
     public Optional<UserDto> FindById(Integer id) {
-        User user = jpaUserRepository.findById(id).orElse(null);
+        User user = jpaUUserRepository.findById(id).orElse(null);
         return Optional.ofNullable(mapToUserDto(user));
     }
 
     @Override
     public Optional<UserDto> FindByEmail(String email) {
         Email email_ = new Email(email);
-        User user = jpaUserRepository.findByEmail(email_);
+        User user = jpaUUserRepository.findByEmail(email_);
         return Optional.ofNullable(mapToUserDto(user));
     }
 
@@ -53,7 +58,7 @@ public class UserRepositoryImpl implements UserRepository {
         userEntity.setTotalPosts(0);
         
         // Sauvegarder l'entité
-        User savedUser = jpaUserRepository.save(userEntity);
+        User savedUser = jpaUUserRepository.save(userEntity);
         
         // Convertir en DTO et retourner
         return mapToUserDto(savedUser);
@@ -62,13 +67,13 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Boolean existsByEmail(String email) {
         Email email_ = new Email(email);
-        return jpaUserRepository.existsByEmail(email_);
+        return jpaUUserRepository.existsByEmail(email_);
     }
 
     @Override
     public Optional<UserDto> FindByEmailAndPassword(String email, String password) {
         Email email_ = new Email(email);
-        User user_profile = jpaUserRepository.findByEmail(email_);
+        User user_profile = jpaUUserRepository.findByEmail(email_);
         if (user_profile != null && user_profile.getPassword().equals(password)) { throw new RuntimeException("User not found");}
         
         return Optional.ofNullable(mapToUserDto(user_profile));
@@ -81,13 +86,13 @@ public class UserRepositoryImpl implements UserRepository {
         user_update.setId(user.getId());
         user_update.setEmail(email_);
         user_update.setPassword(user.getPassword());
-        User user_update_ = jpaUserRepository.save(user_update);
+        User user_update_ = jpaUUserRepository.save(user_update);
         return mapToUserDto(user_update_);
     }
 
     @Override
     public void Delete(Integer id) {
-        jpaUserRepository.deleteById(id);
+        jpaUUserRepository.deleteById(id);
     }
 
 

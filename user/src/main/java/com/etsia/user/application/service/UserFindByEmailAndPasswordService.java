@@ -1,27 +1,27 @@
 package com.etsia.user.application.service;
 
 import com.etsia.common.domain.model.UserDto;
-import com.etsia.common.domain.model.sub.Email;
 import com.etsia.user.domain.repository.UserRepository;
-import com.etsia.user.domain.service.UserDomainService;
-import com.etsia.user.infrastructure.exception.EmailNotFoundException;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.etsia.user.domain.service.UUserDomainService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class UserFindByEmailAndPasswordService {
 
-    @Qualifier("uURepository")
+    //@Qualifier("uURepository")
     private final UserRepository userRepository;
-    private final UserDomainService userDomainService;
+    private final UUserDomainService UUserDomainService;
+
+    public UserFindByEmailAndPasswordService(UserRepository userRepository, UUserDomainService UUserDomainService) {
+        this.userRepository = userRepository;
+        this.UUserDomainService = UUserDomainService;
+    }
 
     public Optional<UserDto> exec(String Email, String password){
-        if(!userDomainService.existsByEmail(Email)){
-            throw new EmailNotFoundException("User not found");
+        if(!UUserDomainService.existsByEmail(Email)){
+            throw new IllegalArgumentException("User not found");
         }
 
         return userRepository.FindByEmailAndPassword(Email, password);

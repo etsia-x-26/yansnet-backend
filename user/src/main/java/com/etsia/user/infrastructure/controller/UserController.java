@@ -2,22 +2,18 @@ package com.etsia.user.infrastructure.controller;
 
 
 import com.etsia.common.domain.model.UserDto;
-import com.etsia.common.domain.model.sub.Email;
-import com.etsia.common.infrastructure.entities.User;
 import com.etsia.user.application.service.*;
 import com.etsia.user.domain.model.dto.request.user.CreateUserDto;
 import com.etsia.user.domain.model.dto.request.user.UserUpdateDto;
-import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-import static com.etsia.user.infrastructure.config.MapperUser.mapToUserDto;
 
 @RestController
 @RequestMapping("/api/user")
-@AllArgsConstructor
+@CrossOrigin("*")
 public class UserController {
     private final UserDeleteService userDeleteService;
     private final UserexistsByEmailService userexistsByEmailService;
@@ -25,7 +21,17 @@ public class UserController {
     private final UserFindByEmailService userFindByEmailService;
     private final UserFindByIdService userFindByIdService;
     private final UserSaveService userSaveService;
-    private UserupdateService userupdateService;
+    private final UserupdateService userupdateService;
+
+    public UserController(UserDeleteService userDeleteService, UserexistsByEmailService userexistsByEmailService, UserFindByEmailAndPasswordService userFindByEmailAndPasswordService, UserFindByEmailService userFindByEmailService, UserFindByIdService userFindByIdService, UserSaveService userSaveService, UserupdateService userupdateService) {
+        this.userDeleteService = userDeleteService;
+        this.userexistsByEmailService = userexistsByEmailService;
+        this.userFindByEmailAndPasswordService = userFindByEmailAndPasswordService;
+        this.userFindByEmailService = userFindByEmailService;
+        this.userFindByIdService = userFindByIdService;
+        this.userSaveService = userSaveService;
+        this.userupdateService = userupdateService;
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<UserDto>> FindById(@PathVariable Integer id) {
