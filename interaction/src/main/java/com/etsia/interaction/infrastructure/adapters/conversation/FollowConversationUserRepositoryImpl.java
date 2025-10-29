@@ -8,7 +8,7 @@ import com.etsia.common.infrastructure.entities.User;
 import com.etsia.interaction.domain.repository.conversation.ConversationUserRepository;
 import com.etsia.interaction.infrastructure.repository.conversation.JpaConversationRepository;
 import com.etsia.interaction.infrastructure.repository.conversation.JpaConversationUserRepository;
-import com.etsia.interaction.infrastructure.repository.conversation.JpaUserRepository;
+import com.etsia.interaction.infrastructure.repository.conversation.JpaInteractionUserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import java.util.List;
@@ -16,14 +16,12 @@ import java.util.List;
 
 import java.util.Optional;
 
-import static com.etsia.common.infrastructure.config.Mapper.toConversationEntity;
-
 @Repository
 @AllArgsConstructor
 public class FollowConversationUserRepositoryImpl implements ConversationUserRepository {
 
     private final JpaConversationUserRepository jpaConversationUserRepository;
-    private final JpaUserRepository jpaUserRepository;
+    private final JpaInteractionUserRepository jpaInteractionUserRepository;
     private final JpaConversationRepository jpaConversationRepository;
 
 
@@ -40,7 +38,7 @@ public class FollowConversationUserRepositoryImpl implements ConversationUserRep
                     .orElseThrow(() -> new IllegalArgumentException("Conversation not found"));
 
             for (Integer followerId : followerIds) {
-                User user = jpaUserRepository.findById(followerId)
+                User user = jpaInteractionUserRepository.findById(followerId)
                         .orElseThrow(() -> new IllegalArgumentException("User with ID " + followerId + " not found"));
 
                 ConversationUser conversationUser = new ConversationUser();
@@ -62,7 +60,7 @@ public class FollowConversationUserRepositoryImpl implements ConversationUserRep
     public void Unfollow(Integer FollowerId, Integer ConversationId) {
         Conversation conversation = jpaConversationRepository.findById(ConversationId)
             .orElseThrow(() -> new IllegalArgumentException("Conversation not found"));
-        User user = jpaUserRepository.findById(FollowerId)
+        User user = jpaInteractionUserRepository.findById(FollowerId)
             .orElseThrow(() -> new IllegalArgumentException("User not found"));
     
     ConversationUser conversationUser = jpaConversationUserRepository

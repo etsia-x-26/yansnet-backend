@@ -13,10 +13,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@AllArgsConstructor
 public class ConversationRepositoryImpl implements ConversationRepository {
 
     private final JpaConversationRepository jpaConversationRepository;
+
+    public ConversationRepositoryImpl(JpaConversationRepository jpaConversationRepository) {
+        this.jpaConversationRepository = jpaConversationRepository;
+    }
 
 
     @Override
@@ -35,11 +38,11 @@ public class ConversationRepositoryImpl implements ConversationRepository {
 
     @Override
     public ConversationDto Save(CreateConversationDto conversationDto) {
-        Conversation conversation = Conversation.builder()
-                .title(conversationDto.getTitle())
-                .description(conversationDto.getDescription())
-                .type(conversationDto.getType())
-                .build();
+        Conversation conversation = new Conversation();
+        conversation.setId(conversationDto.getId());
+        conversation.setTitle(conversationDto.getTitle());
+        conversation.setDescription(conversationDto.getDescription());
+        conversation.setType(conversationDto.getType());
         Conversation savedConversation = jpaConversationRepository.save(conversation);
         return Mapper.toConversationDto(savedConversation);
     }
