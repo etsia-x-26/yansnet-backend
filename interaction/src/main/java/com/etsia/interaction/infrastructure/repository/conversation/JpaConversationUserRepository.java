@@ -3,9 +3,11 @@ package com.etsia.interaction.infrastructure.repository.conversation;
 import com.etsia.common.infrastructure.entities.ConversationUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface JpaConversationUserRepository extends JpaRepository<ConversationUser, Integer> {
 
     @Query("select exists(select 1 from ConversationUser where conversation.id = :conversationId and user.id = :userId)")

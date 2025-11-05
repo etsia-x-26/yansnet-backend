@@ -55,6 +55,7 @@ public class ConversationRepositoryImpl implements ConversationRepository {
     @Override
     public List<ConversationDto> FindAll() {
         List<Conversation> conversations = jpaConversationRepository.findAll();
+        System.out.println("voici ce que j'ai : "+conversations);
         return Mapper.toConversationDtos(conversations);
     }
 
