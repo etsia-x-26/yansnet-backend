@@ -5,6 +5,7 @@ import com.etsia.common.domain.model.UserDto;
 import com.etsia.user.domain.model.dto.request.user.CreateUserDto;
 import com.etsia.user.domain.repository.UserRepository;
 import com.etsia.user.domain.service.UUserDomainService;
+import com.etsia.user.infrastructure.exception.EmailNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,7 +23,7 @@ public class UserSaveService {
 
     public UserDto execute(CreateUserDto user){
         if(!UUserDomainService.IsEmailUnique(user.getEmail())){
-            throw new IllegalArgumentException("Email already used");
+            throw new EmailNotFoundException("Email already used");
         }
 
         // Correction ici : UserDto au lieu de User

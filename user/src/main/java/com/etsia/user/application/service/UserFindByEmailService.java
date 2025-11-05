@@ -22,8 +22,8 @@ public class UserFindByEmailService {
 
     public Optional<UserDto> exec(String Email){
         if(!UUserDomainService.existsByEmail(Email)){
-            throw new IllegalArgumentException("Email Not found");
+            throw new EmailNotFoundException("Email Not found");
         }
-        return Optional.ofNullable(userRepository.FindByEmail(Email).orElseThrow(() -> new IllegalArgumentException("Email Not found")));
+        return userRepository.FindByEmail(Email);
     }
 }

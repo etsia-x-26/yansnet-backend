@@ -15,6 +15,22 @@ public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFounf(UserNotFoundException ex) {
+        logger.warn("User Not Found: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND.value()));
+    }
+
+    @ExceptionHandler(EmailNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotFounf(EmailNotFoundException ex) {
+        logger.warn("Email Not Found: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(ex.getMessage(), HttpStatus.NOT_FOUND.value()));
+    }
+
     @ExceptionHandler(EmailAlreadyUsedException.class)
     public ResponseEntity<ErrorResponse> handleEmailException(EmailAlreadyUsedException ex) {
         logger.warn("Email déjà utilisé: {}", ex.getMessage());

@@ -4,6 +4,7 @@ package com.etsia.user.application.service;
 import com.etsia.common.domain.model.UserDto;
 import com.etsia.user.domain.repository.UserRepository;
 import com.etsia.user.domain.service.UUserDomainService;
+import com.etsia.user.infrastructure.exception.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,7 +25,7 @@ public class UserFindByIdService {
 
     public Optional<UserDto> exec(Integer id){
         if(!UUserDomainService.FindById(id).isPresent()){
-            throw new IllegalArgumentException("User Not Found");
+            throw new UserNotFoundException("User not found");
         }
         return userRepository.FindById(id);
     }
