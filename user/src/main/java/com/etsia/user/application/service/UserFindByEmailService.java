@@ -3,6 +3,7 @@ package com.etsia.user.application.service;
 import com.etsia.common.domain.model.UserDto;
 import com.etsia.user.domain.repository.UserRepository;
 import com.etsia.user.domain.service.UUserDomainService;
+import com.etsia.user.infrastructure.exception.EmailNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -23,7 +24,6 @@ public class UserFindByEmailService {
         if(!UUserDomainService.existsByEmail(Email)){
             throw new IllegalArgumentException("Email Not found");
         }
-
-        return userRepository.FindByEmail(Email);
+        return Optional.ofNullable(userRepository.FindByEmail(Email).orElseThrow(() -> new IllegalArgumentException("Email Not found")));
     }
 }

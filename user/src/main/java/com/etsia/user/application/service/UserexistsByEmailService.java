@@ -10,11 +10,9 @@ public class UserexistsByEmailService {
     //@Qualifier("uURepository")
     private final UserRepository userRepository;
     //@Qualifier("uUDomainService")
-    private final UUserDomainService UUserDomainService;
 
     public UserexistsByEmailService(UserRepository userRepository, UUserDomainService UUserDomainService) {
         this.userRepository = userRepository;
-        this.UUserDomainService = UUserDomainService;
     }
 
     public Boolean exec(String Email){

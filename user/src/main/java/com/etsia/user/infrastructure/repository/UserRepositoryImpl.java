@@ -37,6 +37,7 @@ public class UserRepositoryImpl implements UserRepository {
     public Optional<UserDto> FindByEmail(String email) {
         Email email_ = new Email(email);
         User user = jpaUUserRepository.findByEmail(email_);
+        System.out.println(user);
         return Optional.ofNullable(mapToUserDto(user));
     }
 
