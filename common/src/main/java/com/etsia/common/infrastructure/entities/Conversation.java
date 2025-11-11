@@ -2,6 +2,7 @@ package com.etsia.common.infrastructure.entities;
 
 import com.etsia.common.domain.model.sub.ConversationRole;
 import com.etsia.common.domain.model.sub.ConversationType;
+import com.etsia.common.domain.model.sub.ConversationTypeConverter;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,9 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@Table(name = "conversations", schema = "public", uniqueConstraints = {
-        @UniqueConstraint(name = "conversations_user_one_id_user_two_id_key", columnNames = {"user_one_id", "user_two_id"})
-})
+@Table(name = "conversations")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,7 +29,8 @@ public class Conversation {
     private String description;
 
     @Column(name = "type", columnDefinition = "conversation_type not null")
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
+    @Convert(converter = ConversationTypeConverter.class)
     private ConversationType type;
 
 

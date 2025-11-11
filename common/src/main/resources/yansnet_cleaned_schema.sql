@@ -129,7 +129,7 @@ CREATE TABLE user_follows
     followed_id INT REFERENCES users (id),
     PRIMARY KEY (follower_id, followed_id),
     CHECK (follower_id != followed_id)
-);
+    );
 
 -- Table channel_users
 CREATE TABLE channel_users

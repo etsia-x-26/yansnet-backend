@@ -15,8 +15,10 @@ public class FindAllConversationUseCase {
 
     public List<ConversationDto> execute() {
         try {
+            System.out.println("Find All service");
             return conversationRepository.FindAll();
         } catch (Exception e) {
+            System.out.println(e);
             throw new IllegalArgumentException("Follow already exists");
         }
     }
