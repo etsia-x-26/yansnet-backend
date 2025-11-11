@@ -14,6 +14,7 @@ public class CreateConversationUseCase {
 
     public ConversationDto execute(CreateConversationDto conversationDto) {
         try {
+            System.out.println("service");
             return conversationRepository.Save(conversationDto);
         } catch (Exception e) {
             throw new IllegalArgumentException("Follow already exists");

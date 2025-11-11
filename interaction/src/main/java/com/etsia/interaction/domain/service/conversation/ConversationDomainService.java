@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
+@Service("conversation_domain_service")
 @AllArgsConstructor
 public class ConversationDomainService {
 

@@ -7,17 +7,18 @@ import com.etsia.interaction.domain.model.conversation.UpdateConversationDto;
 import com.etsia.interaction.domain.repository.conversation.ConversationRepository;
 import com.etsia.interaction.infrastructure.repository.conversation.JpaConversationRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Repository("conversation_impl")
 public class ConversationRepositoryImpl implements ConversationRepository {
 
     private final JpaConversationRepository jpaConversationRepository;
 
-    public ConversationRepositoryImpl(JpaConversationRepository jpaConversationRepository) {
+    public ConversationRepositoryImpl(  @Qualifier("conversation_rep") JpaConversationRepository jpaConversationRepository) {
         this.jpaConversationRepository = jpaConversationRepository;
     }
 
@@ -38,13 +39,18 @@ public class ConversationRepositoryImpl implements ConversationRepository {
 
     @Override
     public ConversationDto Save(CreateConversationDto conversationDto) {
-        Conversation conversation = new Conversation();
-        conversation.setId(conversationDto.getId());
-        conversation.setTitle(conversationDto.getTitle());
-        conversation.setDescription(conversationDto.getDescription());
-        conversation.setType(conversationDto.getType());
-        Conversation savedConversation = jpaConversationRepository.save(conversation);
-        return Mapper.toConversationDto(savedConversation);
+        try{
+            System.out.println("voici le dto : "+conversationDto);
+            Conversation conversation = new Conversation();
+            conversation.setTitle(conversationDto.getTitle());
+            conversation.setDescription(conversationDto.getDescription());
+            conversation.setType(conversationDto.getType());
+            System.out.println("voici le conversation : "+conversation);
+            Conversation savedConversation = jpaConversationRepository.save(conversation);
+            return Mapper.toConversationDto(savedConversation);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

@@ -42,6 +42,7 @@ public class ConversationController {
             List<ConversationDto> conversations = findAllConversationUseCase.execute();
             return ResponseEntity.ok(conversations);
         } catch(Exception e){
+            System.out.println(e.getMessage());
             return ResponseEntity.badRequest().body(null);
         }
     }
