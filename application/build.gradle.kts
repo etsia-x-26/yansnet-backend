@@ -41,8 +41,7 @@ dependencies {
     implementation(project(":message"))
     implementation(project(":channel"))
     implementation(project(":comment"))
-
-
+    implementation(project(":group"))
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     compileOnly("org.projectlombok:lombok")
