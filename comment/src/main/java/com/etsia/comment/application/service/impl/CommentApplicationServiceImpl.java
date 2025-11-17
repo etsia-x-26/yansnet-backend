@@ -1,10 +1,13 @@
 package com.etsia.comment.application.service.impl;
 
-import com.etsia.comment.application.dto.CommentDto;
 import com.etsia.comment.application.dto.CreateCommentRequest;
 import com.etsia.comment.application.service.CommentApplicationService;
-import com.etsia.comment.domain.model.Comment;
+import com.etsia.common.domain.model.CommentDto;
+import com.etsia.common.infrastructure.config.Mapper;
+import com.etsia.common.infrastructure.entities.Comment;
 import com.etsia.comment.domain.repository.CommentRepository;
+import com.etsia.common.infrastructure.entities.Post;
+import com.etsia.common.infrastructure.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,13 +22,17 @@ public class CommentApplicationServiceImpl implements CommentApplicationService 
     @Override
     public Page<CommentDto> getAllComments(Integer postId, Pageable pageable) {
         return commentRepository.findByPostId(postId, pageable)
-                .map(Comment::toDto);
+                .map(Mapper::toCommentDto);
     }
 
     @Override
     public CommentDto save(CreateCommentRequest req) {
-        Comment comment = Comment.fromRequest(req);
-        return commentRepository.save(comment).toDto();
+        Comment comment = Comment.builder()
+                .content(req.getContent())
+                .user(User.builder().id(req.getUserId()).build())
+                .post(Post.builder().id(req.getPostId()).build())
+                .build();
+        return Mapper.toCommentDto(commentRepository.save(comment));
     }
 
     @Override
@@ -34,7 +41,7 @@ public class CommentApplicationServiceImpl implements CommentApplicationService 
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
 
         existing.setContent(dto.getContent());
-        return commentRepository.save(existing).toDto();
+        return Mapper.toCommentDto(commentRepository.save(existing));
     }
 
     @Override

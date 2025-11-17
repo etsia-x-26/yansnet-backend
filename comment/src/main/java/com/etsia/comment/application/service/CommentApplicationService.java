@@ -1,7 +1,7 @@
 package com.etsia.comment.application.service;
 
-import com.etsia.comment.application.dto.CommentDto;
 import com.etsia.comment.application.dto.CreateCommentRequest;
+import com.etsia.common.domain.model.CommentDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

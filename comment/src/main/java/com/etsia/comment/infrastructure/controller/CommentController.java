@@ -1,9 +1,9 @@
 package com.etsia.comment.infrastructure.controller;
 
 import com.etsia.comment.application.dto.CreateCommentRequest;
-import com.etsia.comment.application.dto.CommentDto;
 import com.etsia.comment.application.dto.PageResponse;
 import com.etsia.comment.application.service.CommentApplicationService;
+import com.etsia.common.domain.model.CommentDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

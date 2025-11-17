@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages = {
-		"com.etsia.auth","com.etsia.interaction","com.etsia.common.infrastructure.controller", "com.etsia.notification.infrastructure.controller", "com.etsia.post", "com.etsia.user.infrastructure.controller", "com.etsia.message.infrastructure.controller", "com.etsia.interaction.infrastructure.controller", "com.etsia"
+		"com.etsia.auth","com.etsia.interaction","com.etsia.common.infrastructure.controller", "com.etsia.notification.infrastructure.controller", "com.etsia.post", "com.etsia.user.infrastructure.controller", "com.etsia.message.infrastructure.controller", "com.etsia.interaction.infrastructure.controller", "com.etsia","com.etsia.comment"
 })
 @EnableJpaRepositories(basePackages = {
         "com.etsia"

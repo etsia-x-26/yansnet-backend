@@ -1,6 +1,6 @@
 package com.etsia.comment.domain.repository;
 
-import com.etsia.comment.domain.model.Comment;
+import com.etsia.common.infrastructure.entities.Comment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

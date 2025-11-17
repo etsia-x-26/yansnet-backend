@@ -9,7 +9,8 @@ include(
     "post",
     "user",
     "auth",
-    "channel"
+    "channel",
+    "comment"
 )
 
 project(":auth").projectDir = file("auth")
@@ -20,6 +21,7 @@ project(":notification").projectDir = file("notification")
 project(":post").projectDir = file("post")
 project(":user").projectDir = file("user")
 project(":channel").projectDir = file("channel")
+project(":comment").projectDir = file("comment")
 
 
 //pluginManagement {
