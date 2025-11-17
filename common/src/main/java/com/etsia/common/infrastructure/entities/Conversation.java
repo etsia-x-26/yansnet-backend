@@ -28,7 +28,7 @@ public class Conversation {
     @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
 
-    @Column(name = "type", columnDefinition = "conversation_type not null")
+    @Column(name = "type",columnDefinition = "not null")
     //@Enumerated(EnumType.STRING)
     @Convert(converter = ConversationTypeConverter.class)
     private ConversationType type;
