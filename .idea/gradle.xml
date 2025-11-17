@@ -5,42 +5,18 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="C:\gradle" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/application" />
             <option value="$PROJECT_DIR$/auth" />
             <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/group" />
             <option value="$PROJECT_DIR$/interaction" />
             <option value="$PROJECT_DIR$/message" />
             <option value="$PROJECT_DIR$/notification" />
             <option value="$PROJECT_DIR$/post" />
             <option value="$PROJECT_DIR$/user" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/application" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/application" />
-            <option value="$PROJECT_DIR$/application/auth" />
-            <option value="$PROJECT_DIR$/application/common" />
-            <option value="$PROJECT_DIR$/application/interaction" />
-            <option value="$PROJECT_DIR$/application/message" />
-            <option value="$PROJECT_DIR$/application/notification" />
-            <option value="$PROJECT_DIR$/application/post" />
-            <option value="$PROJECT_DIR$/application/user" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/auth" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/auth" />
-            <option value="$PROJECT_DIR$/auth/common" />
           </set>
         </option>
       </GradleProjectSettings>
@@ -57,6 +33,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/interaction" />
+            <option value="$PROJECT_DIR$/interaction/common" />
           </set>
         </option>
       </GradleProjectSettings>

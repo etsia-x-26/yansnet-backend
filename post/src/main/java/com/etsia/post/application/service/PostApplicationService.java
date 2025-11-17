@@ -27,6 +27,8 @@ public class PostApplicationService {
         PostDto postDto = PostDto.builder()
                 .content(request.getContent())
                 .createdAt(Instant.now())
+                .user(postService.findUser(request.getUserId()))
+                .media(request.getMedias())
                 .build();
 
         return postService.save(postDto);

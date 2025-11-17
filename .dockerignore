@@ -1,0 +1,47 @@
+# Ignore build artifacts
+**/build/
+**/target/
+**/.gradle/
+*.jar
+*.war
+*.ear
+
+# Ignore IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+*.swo
+*~
+
+# Ignore git
+.git/
+.gitignore
+.gitattributes
+
+# Ignore documentation
+*.md
+docs/
+
+# Ignore test files
+**/test/
+**/*Test.java
+**/*Tests.java
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore local env files
+.env
+.env.local
+*.log
+
+# Keep necessary files
+!gradle/
+!gradlew
+!gradlew.bat
+!settings.gradle.kts
+!build.gradle.kts

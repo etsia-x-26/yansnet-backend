@@ -4,6 +4,7 @@ import com.etsia.common.domain.model.*;
 import com.etsia.common.infrastructure.entities.*;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,9 +22,6 @@ public class Mapper {
                 .url(entity.getUrl())
                 .uploadedAt(entity.getUploadedAt())
                 .type(entity.getType())
-                .post(PostDto.builder()
-                        .id(entity.getPost() != null ? entity.getPost().getId() : null)
-                        .build())
                 .build();
 
 
@@ -63,13 +61,6 @@ public class Mapper {
                 .title(entity.getTitle())
                 .description(entity.getDescription())
                 .type(entity.getType())
-                .role(entity.getRole())
-                .userOne(UserDto.builder()
-                        .id(entity.getUserOne() != null ? entity.getUserOne().getId() : null)
-                        .build())
-                .userTwo(UserDto.builder()
-                        .id(entity.getUserTwo() != null ? entity.getUserTwo().getId() : null)
-                        .build())
                 .build();
     }
 
@@ -85,9 +76,6 @@ public class Mapper {
                 .url(Dto.getUrl())
                 .uploadedAt(Dto.getUploadedAt())
                 .type(Dto.getType())
-                .post(Post.builder()
-                        .id(Dto.getPost() != null ? Dto.getPost().getId() : null)
-                        .build())
                 .build();
 
     }
@@ -119,13 +107,6 @@ public class Mapper {
                 .title(Dto.getTitle())
                 .description(Dto.getDescription())
                 .type(Dto.getType())
-                .role(Dto.getRole())
-                .userOne(User.builder()
-                        .id(Dto.getUserOne() != null ? Dto.getUserOne().getId() : null)
-                        .build())
-                .userTwo(User.builder()
-                        .id(Dto.getUserTwo() != null ? Dto.getUserTwo().getId() : null)
-                        .build())
                 .build();
     }
 
@@ -343,6 +324,7 @@ public class Mapper {
                 .totalLikes(entity.getTotalLikes())
                 .deletedAt(entity.getDeletedAt())
                 .createdAt(entity.getCreatedAt())
+                .media(toMediaDtos(entity.getMedia().stream().toList()))
                 .user(UserDto.builder()
                         .id(entity.getUser() != null ? entity.getUser().getId() : null)
                         .build())
@@ -366,6 +348,7 @@ public class Mapper {
                 .totalLikes(dto.getTotalLikes())
                 .deletedAt(dto.getDeletedAt())
                 .createdAt(dto.getCreatedAt())
+                .media(new HashSet<>(( toMediaEntities(dto.getMedia()))))
                 .user(dto.getChannel() != null ?User.builder()
                         .id(dto.getUser().getId())
                         .build():null)
@@ -486,6 +469,78 @@ public class Mapper {
                 .category(toUserCategoryEntity(dto.getCategory()))
                 .department(toDepartmentEntity(dto.getDepartment()))
                 .batch(toBatchEntity(dto.getBatch()))
+                .build();
+    }
+
+    public static List<GroupDto> toGroupDtos(List<Group> entities) {
+        if (entities == null) return Collections.emptyList();
+        return entities.stream().map(Mapper::toGroupDto).collect(Collectors.toList());
+    }
+
+    public static GroupDto toGroupDto(Group entity) {
+        if (entity == null) return null;
+        return GroupDto.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .description(entity.getDescription())
+                .profileImageUrl(entity.getProfileImageUrl())
+                .createdBy(entity.getCreatedBy() != null ? entity.getCreatedBy().getId() : null)
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
+                .build();
+    }
+
+    public static List<Group> toGroupEntities(List<GroupDto> dtos) {
+        if (dtos == null) return Collections.emptyList();
+        return dtos.stream().map(Mapper::toGroupEntity).collect(Collectors.toList());
+    }
+
+    public static Group toGroupEntity(GroupDto dto) {
+        if (dto == null) return null;
+        return Group.builder()
+                .id(dto.getId())
+                .name(dto.getName())
+                .description(dto.getDescription())
+                .profileImageUrl(dto.getProfileImageUrl())
+                .createdBy(dto.getCreatedBy() != null ? User.builder().id(dto.getCreatedBy()).build() : null)
+                .createdAt(dto.getCreatedAt())
+                .updatedAt(dto.getUpdatedAt())
+                .build();
+    }
+
+    public static List<GroupMemberDto> toGroupMemberDtos(List<GroupMember> entities) {
+        if (entities == null) return Collections.emptyList();
+        return entities.stream().map(Mapper::toGroupMemberDto).collect(Collectors.toList());
+    }
+
+    public static GroupMemberDto toGroupMemberDto(GroupMember entity) {
+        if (entity == null) return null;
+        return GroupMemberDto.builder()
+                .userId(entity.getId() != null ? entity.getId().getUserId() : null)
+                .groupId(entity.getId() != null ? entity.getId().getGroupId() : null)
+                .role(entity.getRole())
+                .joinedAt(entity.getJoinedAt())
+                .user(entity.getUser() != null ? UserDto.builder().id(entity.getUser().getId()).build() : null)
+                .group(entity.getGroup() != null ? GroupDto.builder().id(entity.getGroup().getId()).build() : null)
+                .build();
+    }
+
+    public static List<GroupMember> toGroupMemberEntities(List<GroupMemberDto> dtos) {
+        if (dtos == null) return Collections.emptyList();
+        return dtos.stream().map(Mapper::toGroupMemberEntity).collect(Collectors.toList());
+    }
+
+    public static GroupMember toGroupMemberEntity(GroupMemberDto dto) {
+        if (dto == null) return null;
+        return GroupMember.builder()
+                .id(GroupMemberId.builder()
+                        .userId(dto.getUserId())
+                        .groupId(dto.getGroupId())
+                        .build())
+                .role(dto.getRole())
+                .joinedAt(dto.getJoinedAt())
+                .user(dto.getUser() != null ? User.builder().id(dto.getUser().getId()).build() : null)
+                .group(dto.getGroup() != null ? Group.builder().id(dto.getGroup().getId()).build() : null)
                 .build();
     }
 }
