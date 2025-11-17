@@ -9,6 +9,8 @@ include(
     "post",
     "user",
     "auth",
+    "channel",
+    "comment",
     "group"
 )
 
@@ -21,3 +23,14 @@ project(":notification").projectDir = file("notification")
 project(":post").projectDir = file("post")
 project(":user").projectDir = file("user")
 project(":group").projectDir = file("group")
+project(":channel").projectDir = file("channel")
+project(":comment").projectDir = file("comment")
+
+
+//pluginManagement {
+//    repositories {
+//        maven("https://repo.spring.io/milestone")
+//        maven("https://repo.spring.io/snapshot")
+//        gradlePluginPortal()
+//    }
+//}
