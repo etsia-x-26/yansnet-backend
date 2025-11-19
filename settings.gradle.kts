@@ -8,9 +8,13 @@ include(
     "notification",
     "post",
     "user",
-    "auth"
+    "auth",
+    "channel",
+    "comment",
+    "group"
 )
 
+project(":application").projectDir = file("application")
 project(":auth").projectDir = file("auth")
 project(":common").projectDir = file("common")
 project(":interaction").projectDir = file("interaction")
@@ -18,6 +22,10 @@ project(":message").projectDir = file("message")
 project(":notification").projectDir = file("notification")
 project(":post").projectDir = file("post")
 project(":user").projectDir = file("user")
+project(":group").projectDir = file("group")
+project(":channel").projectDir = file("channel")
+project(":comment").projectDir = file("comment")
+
 
 //pluginManagement {
 //    repositories {

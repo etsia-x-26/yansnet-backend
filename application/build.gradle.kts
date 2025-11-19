@@ -28,6 +28,8 @@ extra["snippetsDir"] = file("build/generated-snippets")
 extra["springModulithVersion"] = "1.4.1"
 
 dependencies {
+    implementation ("org.springframework.boot:spring-boot-starter-data-jpa")
+
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.modulith:spring-modulith-starter-core")
     implementation(project(":post"))
@@ -37,6 +39,9 @@ dependencies {
     implementation(project(":auth"))
     implementation(project(":common"))
     implementation(project(":message"))
+    implementation(project(":channel"))
+    implementation(project(":comment"))
+    implementation(project(":group"))
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     compileOnly("org.projectlombok:lombok")

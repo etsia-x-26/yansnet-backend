@@ -20,7 +20,7 @@ import java.time.Instant;
 @AllArgsConstructor
 public class Comment {
     @Id
-    @ColumnDefault("nextval('comments_id_seq')")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -45,7 +45,7 @@ public class Comment {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id")
     private Post post;
 

@@ -35,4 +35,9 @@ public class Channel {
     @ColumnDefault("0")
     @Column(name = "total_followers", columnDefinition = "positive_int")
     private int totalFollowers;
+
+    public Channel(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
 }
