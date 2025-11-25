@@ -1,7 +1,6 @@
 package com.etsia.common.infrastructure.entities;
 
 import com.etsia.common.domain.model.sub.ConversationType;
-import com.etsia.common.domain.model.sub.ConversationTypeRenew;
 import com.etsia.common.infrastructure.config.ConversationTypeConverter;
 import jakarta.persistence.*;
 import lombok.*;

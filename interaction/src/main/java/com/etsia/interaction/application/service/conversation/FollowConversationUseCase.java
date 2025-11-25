@@ -1,7 +1,6 @@
 package com.etsia.interaction.application.service.conversation;
 
 import com.etsia.common.domain.model.sub.ConversationRole;
-import com.etsia.common.domain.model.sub.ConversationRoleRenew;
 import com.etsia.interaction.domain.repository.conversation.ConversationUserRepository;
 import com.etsia.interaction.domain.service.conversation.FollowConversationUserDomainService;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,6 @@
 package com.etsia.common.domain.model;
 
-import com.etsia.common.domain.model.sub.ConversationRole;
 import com.etsia.common.domain.model.sub.ConversationType;
-import com.etsia.common.domain.model.sub.ConversationTypeRenew;
 import lombok.Builder;
 import lombok.Value;
 

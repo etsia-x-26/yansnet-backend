@@ -1,12 +1,16 @@
 package com.etsia.common.infrastructure.entities;
 
 import com.etsia.common.domain.model.sub.ConversationRole;
-import com.etsia.common.domain.model.sub.ConversationRoleRenew;
+import com.etsia.common.infrastructure.config.ConversationRoleConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.SQLInsert;
+import org.hibernate.annotations.SQLUpdate;
+import org.hibernate.type.SqlTypes;
 
 @Getter
 @Setter
@@ -15,6 +19,8 @@ import org.hibernate.annotations.OnDeleteAction;
 @NoArgsConstructor
 @Builder
 @Table(name = "conversation_users")
+@SQLInsert(sql = "INSERT INTO conversation_users (conversation_id, role, user_id) VALUES (?, ?::conversation_role, ?)")
+@SQLUpdate(sql = "UPDATE conversation_users SET conversation_id = ?, role = ?::conversation_role, user_id = ? WHERE id = ?")
 public class ConversationUser {
     @Id
     @Column(name = "id", nullable = false)
@@ -33,6 +39,7 @@ public class ConversationUser {
     private User user;
 
     @Column(name = "role", columnDefinition = "conversation_role not null")
-    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
+    @Convert(converter = ConversationRoleConverter.class)
     private ConversationRole role;
 }

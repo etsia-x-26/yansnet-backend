@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,4 +16,10 @@ public interface JpaConversationUserRepository extends JpaRepository<Conversatio
 
     @Query("select cu from ConversationUser cu where cu.conversation.id = :conversationId and cu.user.id = :userId")
     Optional<ConversationUser> findByConversationIdAndUserId(int conversationId, int userId);
+
+    @Query("select cu from ConversationUser cu join fetch cu.conversation join fetch cu.user where cu.id = :id")
+    Optional<ConversationUser> findByIdWithRelations(Integer id);
+
+    @Query("select cu from ConversationUser cu join fetch cu.conversation join fetch cu.user where cu.conversation.id = :conversationId")
+    List<ConversationUser> findByConversationIdWithRelations(Integer conversationId);
 }

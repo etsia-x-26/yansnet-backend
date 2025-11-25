@@ -2,7 +2,6 @@ package com.etsia.interaction.domain.repository.conversation;
 
 import com.etsia.common.domain.model.ConversationUserDto;
 import com.etsia.common.domain.model.sub.ConversationRole;
-import com.etsia.common.domain.model.sub.ConversationRoleRenew;
 
 import java.util.List;
 import java.util.Optional;
