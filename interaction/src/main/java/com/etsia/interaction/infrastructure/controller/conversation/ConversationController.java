@@ -75,7 +75,7 @@ public class ConversationController {
                                                   @RequestBody UpdateConversationDto request) {
         try{
             request.setId(id);
-            ConversationDto updated = updateConversationUseCase.execute(request,1).get();
+            ConversationDto updated = updateConversationUseCase.execute(request,id);
             return ResponseEntity.ok(updated);
         }catch(Exception e){
             return ResponseEntity.badRequest().body(null);

@@ -23,7 +23,7 @@ public class UpdateConversationUseCase {
         this.conversationDomainService = conversationDomainService;
     }
 
-    public Optional<ConversationDto> execute(UpdateConversationDto conversationDto, Integer ConversationId){
+    public ConversationDto execute(UpdateConversationDto conversationDto, Integer ConversationId){
         if (!conversationDomainService.ExistsById(ConversationId)){
             throw new IllegalArgumentException("Conversation Doesn't exist");
         }

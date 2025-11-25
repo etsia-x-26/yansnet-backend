@@ -11,4 +11,6 @@ public enum ConversationType {
     ConversationType(String value) {
         this.value = value;
     }
+    //PRIVATE,
+    //PUBLIC;
 }

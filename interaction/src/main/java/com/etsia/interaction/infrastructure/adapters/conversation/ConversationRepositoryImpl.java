@@ -1,6 +1,7 @@
 package com.etsia.interaction.infrastructure.adapters.conversation;
 
 import com.etsia.common.domain.model.ConversationDto;
+import com.etsia.common.domain.model.sub.ConversationType;
 import com.etsia.common.infrastructure.entities.Conversation;
 import com.etsia.interaction.domain.model.conversation.CreateConversationDto;
 import com.etsia.interaction.domain.model.conversation.UpdateConversationDto;
@@ -26,6 +27,7 @@ public class ConversationRepositoryImpl implements ConversationRepository {
     @Override
     public Optional<ConversationDto> FindById(Integer id) {
         Conversation conversation = jpaConversationRepository.findById(id).get();
+        System.out.println("voici le conversation : "+conversation);
         ConversationDto conversationDto = Mapper.toConversationDto(conversation);
         return Optional.of(conversationDto);
         //return jpaConversationRepository.findById(id)
@@ -66,20 +68,28 @@ public class ConversationRepositoryImpl implements ConversationRepository {
     }
 
     @Override
-    public Optional<ConversationDto> Update(UpdateConversationDto conversationDto, Integer conversationId) {
-        Optional<Conversation> optionalConversation = jpaConversationRepository.findById(conversationId);
+    public ConversationDto Update(UpdateConversationDto conversationDto, Integer conversationId) {
+        Conversation optionalConversation = jpaConversationRepository.findById(conversationId).orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (optionalConversation.isEmpty()) {
-            return Optional.empty();
+        System.out.println("voici le dto : "+optionalConversation);
+
+        if(conversationDto.getTitle() != null){
+            optionalConversation.setTitle(conversationDto.getTitle());
         }
 
-        Conversation conversation = optionalConversation.get();
-        conversation.setTitle(conversationDto.getTitle());
-        conversation.setDescription(conversationDto.getDescription());
-        conversation.setType(conversationDto.getType());
+        if(conversationDto.getDescription() != null){
+            optionalConversation.setDescription(conversationDto.getDescription());
+        }
 
-        Conversation updatedConversation = jpaConversationRepository.save(conversation);
-        return Optional.of(Mapper.toConversationDto(updatedConversation));
+        if(conversationDto.getType() != null){
+            optionalConversation.setType(conversationDto.getType());
+        }
+
+
+
+        System.out.println("voici le conversation : "+optionalConversation);
+        Conversation updatedConversation = jpaConversationRepository.save(optionalConversation);
+        return Mapper.toConversationDto(updatedConversation);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.etsia.interaction.domain.model.conversation;
 
 import com.etsia.common.domain.model.sub.ConversationType;
+import com.etsia.common.domain.model.sub.ConversationTypeRenew;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
