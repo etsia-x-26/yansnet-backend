@@ -24,6 +24,10 @@ public class UserDto implements Serializable {
     BatchDto batch;
     Email email;
     PhoneNumber phoneNumber;
+    String name;
+    String username;
+    String description;
+    String urlprofile;
     int totalFollowers;
     int totalFollowing;
     int totalPosts;

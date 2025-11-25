@@ -37,11 +37,16 @@ public class CreateUserDto implements Serializable {
     String password;
 
     Boolean isActive;
-    UserCategoryDto category;
+
+    Integer category_id;
     Boolean isBlocked;
-    DepartmentDto department;
-    BatchDto batch;
-    PhoneNumber phoneNumber;
+    Integer department_id;
+    Integer batch_id;
+    String phoneNumber;
+    String name;
+    String username;
+    String description;
+    String urlprofile;
     int totalFollowers;
     int totalFollowing;
     int totalPosts;

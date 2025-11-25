@@ -293,7 +293,8 @@ public class Mapper {
         if (entity == null) return null;
         return BatchDto.builder()
                 .id(entity.getId())
-                .name(entity.getName())
+                .departement(entity.getDepartement())
+                .endYear(entity.getEndYear())
                 .build();
     }
 
@@ -306,7 +307,8 @@ public class Mapper {
         if (dto == null) return null;
         return Batch.builder()
                 .id(dto.getId())
-                .name(dto.getName())
+                .departement(dto.getDepartement())
+                .endYear(dto.getEndYear())
                 .build();
     }
 
@@ -440,6 +442,10 @@ public class Mapper {
                 .isBlocked(entity.getIsBlocked())
                 .email(entity.getEmail())
                 .phoneNumber(entity.getPhoneNumber())
+                .name(entity.getName())
+                .username(entity.getUsername())
+                .description(entity.getDescription())
+                .urlprofile(entity.getUrlprofile())
                 .totalFollowers(entity.getTotalFollowers())
                 .totalFollowing(entity.getTotalFollowing())
                 .totalPosts(entity.getTotalPosts())

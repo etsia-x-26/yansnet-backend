@@ -14,5 +14,6 @@ import java.io.Serializable;
 @Value
 public class BatchDto implements Serializable {
     Integer id;
-    String name;
+    String departement;
+    Integer endYear;
 }
