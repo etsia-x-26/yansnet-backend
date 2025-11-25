@@ -2,7 +2,6 @@ package com.etsia.interaction.infrastructure.adapters.conversation;
 
 import com.etsia.common.domain.model.ConversationUserDto;
 import com.etsia.common.domain.model.sub.ConversationRole;
-import com.etsia.common.domain.model.sub.ConversationRoleRenew;
 import com.etsia.common.infrastructure.entities.Conversation;
 import com.etsia.common.infrastructure.entities.ConversationUser;
 import com.etsia.common.infrastructure.entities.User;
@@ -28,8 +27,16 @@ public class FollowConversationUserRepositoryImpl implements ConversationUserRep
 
     @Override
     public Optional<ConversationUserDto> FindById(Integer Id) {
-        ConversationUser conversation_user = jpaConversationUserRepository.findById(Id).get();
-        return Optional.of(Mapper.toConversationUserDto(conversation_user));
+        try {
+            Optional<ConversationUser> conversationUserOpt = jpaConversationUserRepository.findByIdWithRelations(Id);
+            if (conversationUserOpt.isEmpty()) {
+                return Optional.empty();
+            }
+            ConversationUser conversationUser = conversationUserOpt.get();
+            return Optional.of(Mapper.toConversationUserDto(conversationUser));
+        } catch (Exception e) {
+            throw new RuntimeException("Error finding ConversationUser with id " + Id + ": " + e.getMessage(), e);
+        }
     }
 
     @Override
@@ -65,7 +72,7 @@ public class FollowConversationUserRepositoryImpl implements ConversationUserRep
             .orElseThrow(() -> new IllegalArgumentException("User not found"));
     
     ConversationUser conversationUser = jpaConversationUserRepository
-            .findByConversationIdAndUserId(ConversationId, FollowerId)
+            .findByConversationIdAndUserId(conversation.getId(), user.getId())
             .orElseThrow(() -> new IllegalArgumentException("ConversationUser relationship not found"));
     
     jpaConversationUserRepository.delete(conversationUser);
