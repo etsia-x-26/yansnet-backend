@@ -11,4 +11,7 @@ public enum ConversationRole {
     ConversationRole(String value) {
         this.value = value;
     }
+
+    //USER,
+    //ADMIN
 }

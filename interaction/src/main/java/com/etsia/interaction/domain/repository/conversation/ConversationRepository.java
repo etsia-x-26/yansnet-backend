@@ -13,5 +13,5 @@ public interface ConversationRepository {
     ConversationDto Save(CreateConversationDto conversationDto);
     void Delete(Integer id);
     List<ConversationDto> FindAll();
-    Optional<ConversationDto> Update(UpdateConversationDto conversationDto, Integer ConversationId);
+    ConversationDto Update(UpdateConversationDto conversationDto, Integer ConversationId);
 }

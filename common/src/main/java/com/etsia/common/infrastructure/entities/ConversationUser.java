@@ -1,6 +1,7 @@
 package com.etsia.common.infrastructure.entities;
 
 import com.etsia.common.domain.model.sub.ConversationRole;
+import com.etsia.common.domain.model.sub.ConversationRoleRenew;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;

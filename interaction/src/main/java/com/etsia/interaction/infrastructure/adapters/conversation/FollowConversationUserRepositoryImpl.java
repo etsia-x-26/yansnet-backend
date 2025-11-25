@@ -2,6 +2,7 @@ package com.etsia.interaction.infrastructure.adapters.conversation;
 
 import com.etsia.common.domain.model.ConversationUserDto;
 import com.etsia.common.domain.model.sub.ConversationRole;
+import com.etsia.common.domain.model.sub.ConversationRoleRenew;
 import com.etsia.common.infrastructure.entities.Conversation;
 import com.etsia.common.infrastructure.entities.ConversationUser;
 import com.etsia.common.infrastructure.entities.User;
