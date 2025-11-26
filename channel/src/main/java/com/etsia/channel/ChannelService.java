@@ -6,25 +6,26 @@
 package com.etsia.channel;
 
 import com.etsia.common.infrastructure.entities.Channel;
-import jakarta.transaction.Transactional;
 import java.util.Optional;
-import org.springframework.stereotype.Component;
 
-@Component
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
+@Service(value = "channelService")
 public class ChannelService {
+
     private final JpaChannelRepository jpaChannelRepository;
 
-    public ChannelService(JpaChannelRepository jpaChannelRepository) {
+    public ChannelService( @Qualifier("jpaChannelRepository") JpaChannelRepository jpaChannelRepository) {
         this.jpaChannelRepository = jpaChannelRepository;
     }
 
-    @Transactional
     public Channel createGroup(String title, String description) {
         Channel group = new Channel(title, description);
-        return (Channel)this.jpaChannelRepository.save(group);
+        return jpaChannelRepository.save(group);
     }
 
     public Optional<Channel> getGroupById(Long id) {
-        return this.jpaChannelRepository.findById(id);
+        return jpaChannelRepository.findById(id);
     }
 }
