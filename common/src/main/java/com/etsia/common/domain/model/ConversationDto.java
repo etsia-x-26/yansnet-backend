@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.io.Serializable;
+import java.util.Set;
 
 /**
  * DTO for {@link com.etsia.common.infrastructure.entities.Conversation}
@@ -16,4 +17,5 @@ public class ConversationDto implements Serializable {
     String title;
     String description;
     ConversationType type;
+    Set<MessageDto> messages;
 }
