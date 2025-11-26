@@ -32,13 +32,10 @@ public class FollowConversationController {
     }
 
     @GetMapping("/follow/{ConversationId}")
-    ResponseEntity<ConversationUserDto> follow(@PathVariable Integer ConversationId){
+    ResponseEntity<ConversationUserDto> conversationFollow(@PathVariable Integer ConversationId){
         try{
             Optional<ConversationUserDto> result = findConversationUserUseCase.execute(ConversationId);
-            if (result.isEmpty()) {
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.ok(result.get());
+            return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

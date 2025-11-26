@@ -7,8 +7,10 @@ import lombok.*;
 import java.io.Serializable;
 
 
-@Builder
-@Data
+@Getter
+@Setter
+@Value
+
 public class UpdateConversationDto implements Serializable {
 
     @NotBlank(message = "ID is required")
