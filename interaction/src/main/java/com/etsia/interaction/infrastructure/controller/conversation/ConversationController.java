@@ -74,7 +74,7 @@ public class ConversationController {
     public ResponseEntity<ConversationDto> update(@PathVariable("id") Integer id,
                                                   @RequestBody UpdateConversationDto request) {
         try{
-            request.setId(id);
+            //request.setId(id);
             ConversationDto updated = updateConversationUseCase.execute(request,id);
             return ResponseEntity.ok(updated);
         }catch(Exception e){
