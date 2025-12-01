@@ -17,5 +17,4 @@ public class ConversationDto implements Serializable {
     String title;
     String description;
     ConversationType type;
-    Set<MessageDto> messages;
 }
