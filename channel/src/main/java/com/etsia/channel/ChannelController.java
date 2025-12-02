@@ -18,7 +18,7 @@ class ChannelController {
 
     private final ChannelService channelService;
 
-    ChannelController( @Qualifier("channelService") ChannelService channelService) {
+    ChannelController( ChannelService channelService) {
         this.channelService = channelService;
     }
 
