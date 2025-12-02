@@ -11,12 +11,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-@Service(value = "channelService")
+@Service
 public class ChannelService {
 
     private final JpaChannelRepository jpaChannelRepository;
 
-    public ChannelService( @Qualifier("jpaChannelRepository") JpaChannelRepository jpaChannelRepository) {
+    public ChannelService(JpaChannelRepository jpaChannelRepository) {
         this.jpaChannelRepository = jpaChannelRepository;
     }
 
