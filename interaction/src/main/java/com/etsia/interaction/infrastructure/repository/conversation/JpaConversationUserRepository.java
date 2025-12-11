@@ -3,6 +3,7 @@ package com.etsia.interaction.infrastructure.repository.conversation;
 import com.etsia.common.domain.model.sub.ConversationRole;
 import com.etsia.common.infrastructure.entities.ConversationUser;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -29,4 +30,8 @@ public interface JpaConversationUserRepository extends JpaRepository<Conversatio
 
     @Query("select cu from ConversationUser cu join fetch cu.conversation join fetch cu.user where cu.conversation.id = :conversationId and cu.role = :role")
     List<ConversationUser> findByConversationIdAndRoleWithRelations(Integer conversationId, ConversationRole role);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("delete from ConversationUser cu where cu.conversation.id = :conversationId")
+    void deleteByConversationId(Integer conversationId);
 }

@@ -8,9 +8,11 @@ import com.etsia.interaction.domain.model.conversation.CreateConversationDto;
 import com.etsia.interaction.domain.model.conversation.UpdateConversationDto;
 import com.etsia.interaction.domain.repository.conversation.ConversationRepository;
 import com.etsia.interaction.infrastructure.repository.conversation.JpaConversationRepository;
+import com.etsia.interaction.infrastructure.repository.conversation.JpaConversationUserRepository;
 import com.etsia.interaction.infrastructure.repository.conversation.JpaInteractionUserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +23,15 @@ public class ConversationRepositoryImpl implements ConversationRepository {
 
     private final JpaConversationRepository jpaConversationRepository;
     private final JpaInteractionUserRepository jpaInteractionUserRepository;
+    private final JpaConversationUserRepository jpaConversationUserRepository;
 
     public ConversationRepositoryImpl(
             @Qualifier("conversation_rep") JpaConversationRepository jpaConversationRepository,
-            JpaInteractionUserRepository jpaInteractionUserRepository) {
+            JpaInteractionUserRepository jpaInteractionUserRepository,
+            JpaConversationUserRepository jpaConversationUserRepository) {
         this.jpaConversationRepository = jpaConversationRepository;
         this.jpaInteractionUserRepository = jpaInteractionUserRepository;
+        this.jpaConversationUserRepository = jpaConversationUserRepository;
     }
 
 
@@ -80,8 +85,18 @@ public class ConversationRepositoryImpl implements ConversationRepository {
     }
 
     @Override
+    @Transactional
     public void Delete(Integer id) {
-        jpaConversationRepository.deleteById(id);
+        // Avant de supprimer une conversation, supprimer d'abord les entrées dans la table conversation_users.
+        try {
+            // Supprimer toutes les associations utilisateurs-conversation pour cette conversation
+            jpaConversationUserRepository.deleteByConversationId(id);
+
+            // Ensuite, supprimer la conversation elle-même
+            jpaConversationRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Impossible de supprimer la conversation avec id " + id + " : " + e.getMessage(), e);
+        }
     }
 
     @Override

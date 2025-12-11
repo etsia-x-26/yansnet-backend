@@ -109,6 +109,7 @@ public class ConversationController {
             deleteConversationUseCase.execute(id);
             return ResponseEntity.noContent().build();
         }catch(Exception e){
+            e.printStackTrace(); // Pour le débogage
             return ResponseEntity.badRequest().build();
         }
     }
