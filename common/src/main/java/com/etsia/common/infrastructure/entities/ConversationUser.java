@@ -12,6 +12,8 @@ import org.hibernate.annotations.SQLInsert;
 import org.hibernate.annotations.SQLUpdate;
 import org.hibernate.type.SqlTypes;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity

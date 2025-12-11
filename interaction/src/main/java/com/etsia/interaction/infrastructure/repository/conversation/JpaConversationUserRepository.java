@@ -1,5 +1,6 @@
 package com.etsia.interaction.infrastructure.repository.conversation;
 
+import com.etsia.common.domain.model.sub.ConversationRole;
 import com.etsia.common.infrastructure.entities.ConversationUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,4 +23,10 @@ public interface JpaConversationUserRepository extends JpaRepository<Conversatio
 
     @Query("select cu from ConversationUser cu join fetch cu.conversation join fetch cu.user where cu.conversation.id = :conversationId")
     List<ConversationUser> findByConversationIdWithRelations(Integer conversationId);
+
+    @Query("select cu from ConversationUser cu join fetch cu.conversation join fetch cu.user where cu.user.id = :userId")
+    List<ConversationUser> findByUserIdWithRelations(Integer userId);
+
+    @Query("select cu from ConversationUser cu join fetch cu.conversation join fetch cu.user where cu.conversation.id = :conversationId and cu.role = :role")
+    List<ConversationUser> findByConversationIdAndRoleWithRelations(Integer conversationId, ConversationRole role);
 }

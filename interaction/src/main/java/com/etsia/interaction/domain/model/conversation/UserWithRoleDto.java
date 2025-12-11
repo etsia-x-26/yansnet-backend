@@ -1,19 +1,18 @@
 package com.etsia.interaction.domain.model.conversation;
 
+import com.etsia.common.domain.model.UserDto;
 import com.etsia.common.domain.model.sub.ConversationRole;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
 
 import java.io.Serializable;
-import java.util.Map;
 
+@Value
 @Getter
 @Setter
-@Value
-
-public class FollowConversationDto implements Serializable {
-
-    // Permettre d'associer un role différent à chaque followerId
-    Map<Integer, ConversationRole> followerRoles;
+public class UserWithRoleDto implements Serializable {
+    UserDto user;
+    ConversationRole role;
 }
+

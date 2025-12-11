@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Map;
 
 
 @Service
@@ -16,15 +17,22 @@ public class FollowConversationUseCase {
     private final ConversationUserRepository conversationUserRepository;
     private final FollowConversationUserDomainService followConversationUserDomainService;
 
-    public void execute(Integer[] followerIds, Integer conversationId, ConversationRole role) {
-        for (int i = 0; i < followerIds.length; i++) {
-            if (followConversationUserDomainService.isFollowing(followerIds[i], conversationId)) {
-                throw new IllegalArgumentException("Follow already exists");
+    public void execute(Map<Integer, ConversationRole> followerRoles, Integer conversationId) {
+        if (followerRoles == null || followerRoles.isEmpty()) {
+            return;
+        }
+
+        for (Map.Entry<Integer, ConversationRole> entry : followerRoles.entrySet()) {
+            Integer followerId = entry.getKey();
+            ConversationRole role = entry.getValue();
+
+            if (followConversationUserDomainService.isFollowing(followerId, conversationId)) {
+                throw new IllegalArgumentException("Follow already exists for user " + followerId);
             }
 
-            // ✅ Conversion du tableau en liste
+            // Ajouter le follower avec son rôle spécifique
             conversationUserRepository.Follow(
-                    Arrays.asList(followerIds[i]), // conversion ici
+                    Arrays.asList(followerId),
                     conversationId,
                     role
             );
