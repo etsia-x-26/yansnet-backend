@@ -58,7 +58,7 @@ jobs:
         with:
           host: 148.230.111.196
           username: root
-          key_path: id_rsa
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: gfried
           source: "docker-compose.yml"
           target: "yansnet/"
