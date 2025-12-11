@@ -1,11 +1,8 @@
 package com.etsia.interaction.infrastructure.controller.conversation;
 
-import com.etsia.interaction.application.service.conversation.FindAllConversationUseCase;
-import com.etsia.interaction.application.service.conversation.FindConversationUseCase;
-import com.etsia.interaction.application.service.conversation.UpdateConversationUseCase;
-import com.etsia.interaction.application.service.conversation.CreateConversationUseCase;
-import com.etsia.interaction.application.service.conversation.DeleteConversationUseCase;
+import com.etsia.interaction.application.service.conversation.*;
 import com.etsia.interaction.domain.model.conversation.CreateConversationDto;
+import com.etsia.interaction.domain.model.conversation.FindAllUserByConversationDto;
 import com.etsia.interaction.domain.model.conversation.UpdateConversationDto;
 
 import com.etsia.common.domain.model.ConversationDto;
@@ -35,6 +32,8 @@ public class ConversationController {
     private final FindConversationUseCase findConversationUseCase;
     private final UpdateConversationUseCase updateConversationUseCase;
     private final FindAllConversationUseCase findAllConversationUseCase;
+    private final FollowConversationUseCase followConversationUseCase;
+    private final FindAllUserByConversation findAllUserByConversation;
 
     @GetMapping
     public ResponseEntity<List<ConversationDto>> findAll() {
@@ -59,15 +58,36 @@ public class ConversationController {
     }
 
     @PostMapping
-    public ResponseEntity<ConversationDto> create(@RequestBody CreateConversationDto request) {
+    public ResponseEntity<FindAllUserByConversationDto> create(@RequestBody CreateConversationDto request) {
         try{
+            // La logique de génération du titre pour les conversations PRIVATE
+            // est maintenant gérée dans ConversationRepositoryImpl
             ConversationDto created = createConversationUseCase.execute(request);
+
+            // Si la conversation est privée et qu'il y a des followers à ajouter,
+            // utiliser le contrôleur "follow" de FollowConversationController.
+            if (created.getType() != null 
+                && request.getFollowerRoles() != null 
+                && !request.getFollowerRoles().isEmpty()) {
+
+                // Préparer l'appel à FollowConversationController pour ajouter les followers après la création
+                // Ici nous injectons le service directement pour garder la couche service commune.
+                // NOTE : Modifiez le design si besoin pour déplacer/restructurer cette logique (e.g., un DomainService).
+
+                // Suivre le pattern de "FollowConversationController"
+                followConversationUseCase.execute(
+                    request.getFollowerRoles(), 
+                    created.getId()
+                );
+            }
+            
+            // Return the conversation with its users
+            FindAllUserByConversationDto result = findAllUserByConversation.executeSingle(created.getId());
             return ResponseEntity.created(URI.create("/Conversation/" + created.getId()))
-                    .body(created);
+                    .body(result);
         } catch(Exception e){
             return ResponseEntity.badRequest().body(null);
         }
-
     }
 
     @PutMapping("/{id}")
