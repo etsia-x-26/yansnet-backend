@@ -53,9 +53,6 @@ public class User {
     @Convert(converter = EmailConverter.class)
     private Email email;
 
-    @Column(name = "username")
-    private String username;
-
     @Column(name = "phone_number", columnDefinition = "phone_type")
     @Convert(converter = PhoneNumberConverter.class)
     private PhoneNumber phoneNumber;

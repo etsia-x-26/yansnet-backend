@@ -61,7 +61,7 @@ public class FollowConversationController {
         }
     }
 
-    @GetMapping("/role/{ConversationId}")
+    /**@GetMapping("/role/{ConversationId}")
     public ResponseEntity<List<ConversationUserDto>> findUserConversationRoleFollowers(
             @PathVariable Integer ConversationId,
             @RequestBody ConversationRole role) {
@@ -82,6 +82,7 @@ public class FollowConversationController {
             return ResponseEntity.badRequest().build();
         }
     }
+     */
 
     @DeleteMapping("/unfollow/{ConversationId}/{FollowerId}")
     ResponseEntity<String> unfollow(@PathVariable Integer FollowerId, @PathVariable Integer ConversationId) {
