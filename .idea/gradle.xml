@@ -23,17 +23,6 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/channel" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/channel" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/comment" />
-      </GradleProjectSettings>
-      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/common" />
         <option name="modules">
           <set>
@@ -42,14 +31,10 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/common/coment" />
-      </GradleProjectSettings>
-      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/interaction" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/interaction" />
-            <option value="$PROJECT_DIR$/interaction/common" />
           </set>
         </option>
       </GradleProjectSettings>
