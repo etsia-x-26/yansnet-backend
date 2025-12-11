@@ -33,7 +33,7 @@ services:
       KC_DB_URL: jdbc:postgresql://postgres:5432/yansnet-db
       KC_DB_USERNAME: postgres
       KC_DB_PASSWORD: qwertyuiop
-      KC_HOSTNAME: localhost
+      KC_HOSTNAME: postgres
       KC_HOSTNAME_STRICT: false
       KC_HTTP_ENABLED: true
       KC_HEALTH_ENABLED: true
@@ -91,7 +91,7 @@ services:
       # JVM Options
       JAVA_OPTS: -Xmx512m -Xms256m
     ports:
-      - "8085:8085"
+      - "8086:8086"
     depends_on:
       postgres:
         condition: service_healthy

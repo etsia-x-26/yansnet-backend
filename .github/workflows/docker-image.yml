@@ -41,3 +41,37 @@ jobs:
           push: true
           tags: |
             gfriedtod/yansnet:dev
+
+  deploy:
+
+    runs-on: ubuntu-latest
+    needs:
+      - docker-build
+    steps:
+      - uses: actions/checkout@v1
+      - name: List files
+        run: ls -al
+      - name: Copy repository contents via scp
+        uses: appleboy/scp-action@master
+        with:
+          host: 148.230.111.196
+          username: root
+          key_path: id_rsa
+          passphrase: gfried
+          source: "docker-compose.yaml"
+          target: "yansnet/"
+      - uses: appleboy/ssh-action@v1.0.3
+        name: Deploy the application
+        with:
+          host: 148.230.111.196
+          username: root
+          passphrase: gfried
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd yansnet/
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d
+
+ 
+
