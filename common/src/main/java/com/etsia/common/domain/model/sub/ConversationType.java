@@ -5,10 +5,12 @@ import lombok.Getter;
 @Getter
 public enum ConversationType {
     PRIVATE("private"),
-    PUBLIC("group");
+    PUBLIC("public");
     private final String value;
 
     ConversationType(String value) {
         this.value = value;
     }
+    //PRIVATE,
+    //PUBLIC;
 }
