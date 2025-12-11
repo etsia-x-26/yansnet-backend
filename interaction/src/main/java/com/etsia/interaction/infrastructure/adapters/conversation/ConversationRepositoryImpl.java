@@ -2,6 +2,7 @@ package com.etsia.interaction.infrastructure.adapters.conversation;
 
 import com.etsia.common.domain.model.ConversationDto;
 import com.etsia.common.domain.model.sub.ConversationType;
+import com.etsia.common.infrastructure.config.Mapper;
 import com.etsia.common.infrastructure.entities.Conversation;
 import com.etsia.common.infrastructure.entities.User;
 import com.etsia.interaction.domain.model.conversation.CreateConversationDto;
@@ -102,7 +103,6 @@ public class ConversationRepositoryImpl implements ConversationRepository {
     @Override
     public List<ConversationDto> FindAll() {
         List<Conversation> conversations = jpaConversationRepository.findAll();
-        System.out.println("voici ce que j'ai : "+conversations);
         return Mapper.toConversationDtos(conversations);
     }
 

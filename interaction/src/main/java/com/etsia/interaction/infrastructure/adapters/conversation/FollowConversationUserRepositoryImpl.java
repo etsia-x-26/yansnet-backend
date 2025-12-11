@@ -4,6 +4,7 @@ import com.etsia.common.domain.model.ConversationDto;
 import com.etsia.common.domain.model.ConversationUserDto;
 import com.etsia.common.domain.model.UserDto;
 import com.etsia.common.domain.model.sub.ConversationRole;
+import com.etsia.common.infrastructure.config.Mapper;
 import com.etsia.common.infrastructure.entities.Conversation;
 import com.etsia.common.infrastructure.entities.ConversationUser;
 import com.etsia.common.infrastructure.entities.User;
