@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 @Entity
@@ -24,7 +26,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Builder
 public class User {
     @Id
-    @ColumnDefault("nextval('users_id_seq')")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -49,23 +51,23 @@ public class User {
     @JoinColumn(name = "batch_id")
     private Batch batch;
 
-    @Column(name = "email", columnDefinition = "email_type", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     @Convert(converter = EmailConverter.class)
     private Email email;
 
-    @Column(name = "phone_number", columnDefinition = "phone_type")
+    @Column(name = "phone_number")
     @Convert(converter = PhoneNumberConverter.class)
     private PhoneNumber phoneNumber;
 
     @ColumnDefault("0")
-    @Column(name = "total_followers", columnDefinition = "positive_int")
+    @Column(name = "total_followers")
     private int totalFollowers;
 
     @ColumnDefault("0")
-    @Column(name = "total_following", columnDefinition = "positive_int")
+    @Column(name = "total_following")
     private int totalFollowing;
     @ColumnDefault("0")
-    @Column(name = "total_posts", columnDefinition = "positive_int")
+    @Column(name = "total_posts")
     private int totalPosts;
 
     @Size(max = 50)
@@ -78,11 +80,21 @@ public class User {
     @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "description", length = Integer.MAX_VALUE)
-    private String description;
+    @Column(name = "bio", length = Integer.MAX_VALUE)
+    private String bio;
 
-    @Column(name = "urlprofile", length = Integer.MAX_VALUE)
-    private String urlprofile;
+    @Column(name = "profile_picture_url", length = Integer.MAX_VALUE)
+    private String profilePictureUrl;
+
+    @ColumnDefault("false")
+    @Column(name = "is_mentor")
+    private Boolean isMentor;
+
+    @Column(name = "last_login")
+    private Instant lastLogin;
+
+    @Column(name = "promotion_year")
+    private Integer promotionYear;
 
     public User() {
 

@@ -45,10 +45,13 @@ public class CreateUserDto implements Serializable {
     String phoneNumber;
     String name;
     String username;
-    String description;
-    String urlprofile;
+    String bio;
+    String profilePictureUrl;
     int totalFollowers;
     int totalFollowing;
     int totalPosts;
+
+    Boolean isMentor;
+    Integer promotionYear;
 
 }

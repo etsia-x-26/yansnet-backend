@@ -13,8 +13,10 @@
             <option value="$PROJECT_DIR$/channel" />
             <option value="$PROJECT_DIR$/comment" />
             <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/event" />
             <option value="$PROJECT_DIR$/group" />
             <option value="$PROJECT_DIR$/interaction" />
+            <option value="$PROJECT_DIR$/job" />
             <option value="$PROJECT_DIR$/message" />
             <option value="$PROJECT_DIR$/notification" />
             <option value="$PROJECT_DIR$/post" />

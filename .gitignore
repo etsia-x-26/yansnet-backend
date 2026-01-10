@@ -39,7 +39,8 @@ bin/
 .vscode/
 .idea/*
 .qodo
-database
+database/
+!database/migration/
 
 ### Mac OS ###
 .DS_Store

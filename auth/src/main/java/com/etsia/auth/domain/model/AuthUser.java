@@ -8,6 +8,8 @@ import java.util.Objects;
 public class AuthUser {
     private final Integer userId;
     private final Email email;
+    private final String name;
+    private final String username;
     private PhoneNumber phoneNumber;
     private String password;
     private boolean isActive;
@@ -19,9 +21,11 @@ public class AuthUser {
     private Integer departmentId;
     private Integer batchId;
 
-    public AuthUser(Integer userId, Email email, String password) {
-        this.userId = Objects.requireNonNull(userId, "User ID cannot be null");
+    public AuthUser(Integer userId, Email email, String name, String username, String password) {
+        this.userId = userId;
         this.email = Objects.requireNonNull(email, "Email cannot be null");
+        this.name = Objects.requireNonNull(name, "Name cannot be null");
+        this.username = Objects.requireNonNull(username, "Username cannot be null");
         this.password = Objects.requireNonNull(password, "Password cannot be null");
         this.isActive = true;
         this.isBlocked = false;
@@ -30,11 +34,13 @@ public class AuthUser {
         this.totalPosts = 0;
     }
 
-    public AuthUser(Integer userId, Email email, PhoneNumber phoneNumber, String password,
+    public AuthUser(Integer userId, Email email, String name, String username, PhoneNumber phoneNumber, String password,
                     boolean isActive, boolean isBlocked, int totalFollowers, int totalFollowing,
                     int totalPosts, Integer categoryId, Integer departmentId, Integer batchId) {
-        this.userId = Objects.requireNonNull(userId, "User ID cannot be null");
+        this.userId = userId;
         this.email = Objects.requireNonNull(email, "Email cannot be null");
+        this.name = name;
+        this.username = username;
         this.phoneNumber = phoneNumber;
         this.password = Objects.requireNonNull(password, "Password cannot be null");
         this.isActive = isActive;
@@ -127,6 +133,14 @@ public class AuthUser {
 
     public PhoneNumber getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {

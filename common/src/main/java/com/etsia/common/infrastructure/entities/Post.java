@@ -21,7 +21,6 @@ import java.util.Set;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ColumnDefault("nextval('posts_id_seq')")
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -44,12 +43,13 @@ public class Post {
     private Channel channel;
 
     @ColumnDefault("0")
-    @Column(name = "total_likes", columnDefinition = "positive_int")
+    @Column(name = "total_likes")
     private int totalLikes;
     @ColumnDefault("0")
-    @Column(name = "total_comments", columnDefinition = "positive_int")
+    @Column(name = "total_comments")
     private int totalComments;
 
+    @Builder.Default
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL , orphanRemoval = true)
     private Set<Media> media = new LinkedHashSet<>();
 

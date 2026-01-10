@@ -85,11 +85,14 @@ public class UserRepositoryImpl implements UserRepository {
         userEntity.setBatch(batch);
 
         // Champs simples
+        // Champs simples
         userEntity.setName(createUserDto.getName());
         userEntity.setUsername(createUserDto.getUsername());
-        userEntity.setDescription(createUserDto.getDescription());
-        userEntity.setUrlprofile(createUserDto.getUrlprofile());
+        userEntity.setBio(createUserDto.getBio());
+        userEntity.setProfilePictureUrl(createUserDto.getProfilePictureUrl());
         userEntity.setPhoneNumber(phone);
+        userEntity.setIsMentor(createUserDto.getIsMentor());
+        userEntity.setPromotionYear(createUserDto.getPromotionYear());
 
         // Valeurs par défaut
         userEntity.setIsActive(true);
@@ -183,13 +186,24 @@ public class UserRepositoryImpl implements UserRepository {
         }
 
         // DESCRIPTION
-        if (userDto.getDescription() != null) {
-            user.setDescription(userDto.getDescription());
+        // DESCRIPTION
+        if (userDto.getBio() != null) {
+            user.setBio(userDto.getBio());
         }
 
         // URL PROFILE
-        if (userDto.getUrlprofile() != null) {
-            user.setUrlprofile(userDto.getUrlprofile());
+        if (userDto.getProfilePictureUrl() != null) {
+            user.setProfilePictureUrl(userDto.getProfilePictureUrl());
+        }
+
+        // IS MENTOR
+        if (userDto.getIsMentor() != null) {
+            user.setIsMentor(userDto.getIsMentor());
+        }
+
+        // PROMOTION YEAR
+        if (userDto.getPromotionYear() != null) {
+            user.setPromotionYear(userDto.getPromotionYear());
         }
 
         // FOLLOWERS

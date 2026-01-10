@@ -33,7 +33,7 @@ public class Channel {
     }
 
     @ColumnDefault("0")
-    @Column(name = "total_followers", columnDefinition = "positive_int")
+    @Column(name = "total_followers")
     private int totalFollowers;
 
     public Channel(String title, String description) {

@@ -18,6 +18,8 @@ public class UserMapper {
         return new AuthUser(
                 userEntity.getId(),
                 userEntity.getEmail(),
+                userEntity.getName(),
+                userEntity.getUsername(),
                 userEntity.getPhoneNumber(),
                 userEntity.getPassword(),
                 userEntity.getIsActive() != null ? userEntity.getIsActive() : true,
@@ -39,6 +41,8 @@ public class UserMapper {
         return User.builder()
                 .id(authUser.getUserId())
                 .email(authUser.getEmail())
+                .name(authUser.getName())
+                .username(authUser.getUsername())
                 .phoneNumber(authUser.getPhoneNumber())
                 .password(authUser.getPassword())
                 .isActive(authUser.isActive())
@@ -55,6 +59,8 @@ public class UserMapper {
         }
 
         userEntity.setEmail(authUser.getEmail());
+        userEntity.setName(authUser.getName());
+        userEntity.setUsername(authUser.getUsername());
         userEntity.setPhoneNumber(authUser.getPhoneNumber());
         userEntity.setPassword(authUser.getPassword());
         userEntity.setIsActive(authUser.isActive());

@@ -15,7 +15,7 @@ import org.hibernate.annotations.ColumnDefault;
 })
 public class Message {
     @Id
-    @ColumnDefault("nextval('messages_id_seq')")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -32,7 +32,7 @@ public class Message {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "type", columnDefinition = "message_type not null")
+    @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     private MessageType type;
 
