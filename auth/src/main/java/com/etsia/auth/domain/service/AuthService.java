@@ -7,7 +7,7 @@ import com.etsia.common.domain.model.sub.PhoneNumber;
 public interface AuthService {
     AuthUser authenticate(Email email, String password);
 
-    AuthUser register(Email email, String password, PhoneNumber phoneNumber);
+    AuthUser register(Email email, String name, String username, String password, PhoneNumber phoneNumber);
 
     void logout(Integer userId);
 

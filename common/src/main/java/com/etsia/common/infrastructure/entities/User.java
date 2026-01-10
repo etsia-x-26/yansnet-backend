@@ -26,7 +26,7 @@ import java.time.Instant;
 @Builder
 public class User {
     @Id
-    @ColumnDefault("nextval('users_id_seq')")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -51,23 +51,23 @@ public class User {
     @JoinColumn(name = "batch_id")
     private Batch batch;
 
-    @Column(name = "email", columnDefinition = "email_type", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     @Convert(converter = EmailConverter.class)
     private Email email;
 
-    @Column(name = "phone_number", columnDefinition = "phone_type")
+    @Column(name = "phone_number")
     @Convert(converter = PhoneNumberConverter.class)
     private PhoneNumber phoneNumber;
 
     @ColumnDefault("0")
-    @Column(name = "total_followers", columnDefinition = "positive_int")
+    @Column(name = "total_followers")
     private int totalFollowers;
 
     @ColumnDefault("0")
-    @Column(name = "total_following", columnDefinition = "positive_int")
+    @Column(name = "total_following")
     private int totalFollowing;
     @ColumnDefault("0")
-    @Column(name = "total_posts", columnDefinition = "positive_int")
+    @Column(name = "total_posts")
     private int totalPosts;
 
     @Size(max = 50)

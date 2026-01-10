@@ -21,8 +21,6 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Table(name = "conversation_users")
-@SQLInsert(sql = "INSERT INTO conversation_users (conversation_id, role, user_id) VALUES (?, ?::conversation_role, ?)")
-@SQLUpdate(sql = "UPDATE conversation_users SET conversation_id = ?, role = ?::conversation_role, user_id = ? WHERE id = ?")
 public class ConversationUser {
     @Id
     @Column(name = "id", nullable = false)
@@ -40,8 +38,7 @@ public class ConversationUser {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "role", columnDefinition = "conversation_role not null")
-    @JdbcTypeCode(SqlTypes.VARCHAR)
+    @Column(name = "role", nullable = false)
     @Convert(converter = ConversationRoleConverter.class)
     private ConversationRole role;
 }

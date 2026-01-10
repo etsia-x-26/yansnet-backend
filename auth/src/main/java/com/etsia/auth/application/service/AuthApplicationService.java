@@ -59,6 +59,8 @@ public class AuthApplicationService {
 
         AuthUser user = authService.register(
                 email,
+                registerRequest.getName(),
+                registerRequest.getUsername(),
                 registerRequest.getPassword(),
                 phoneNumber
         );

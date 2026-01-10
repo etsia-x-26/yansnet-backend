@@ -57,7 +57,7 @@ public class Comment {
     private Comment replyToComment;
 
     @ColumnDefault("0")
-    @Column(name = "total_likes", columnDefinition = "positive_int")
+    @Column(name = "total_likes")
     private int totalLikes;
 
     public Comment() {

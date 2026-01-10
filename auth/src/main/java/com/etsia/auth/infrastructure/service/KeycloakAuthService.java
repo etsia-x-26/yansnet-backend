@@ -70,7 +70,7 @@ public class KeycloakAuthService implements AuthService {
     }
 
     @Override
-    public AuthUser register(Email email, String password, PhoneNumber phoneNumber) {
+    public AuthUser register(Email email, String name, String username, String password, PhoneNumber phoneNumber) {
         // Vérifier si l'utilisateur existe déjà
         if (userRepository.existsByEmail(email)) {
             throw new IllegalArgumentException("User already exists with this email");
@@ -80,7 +80,7 @@ public class KeycloakAuthService implements AuthService {
         String keycloakUserId = createKeycloakUser(email.toString(), password);
 
         // Créer l'utilisateur dans notre base de données avec un hash du mot de passe
-        AuthUser user = new AuthUser(null, email, "KEYCLOAK_MANAGED");
+        AuthUser user = new AuthUser(null, email, name, username, "KEYCLOAK_MANAGED");
         user.updatePhoneNumber(phoneNumber);
 
         return userRepository.save(user);

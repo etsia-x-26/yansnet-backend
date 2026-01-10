@@ -16,8 +16,6 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "conversations")
-@SQLInsert(sql = "INSERT INTO conversations (description, title, type) VALUES (?, ?, ?::conversation_type)")
-@SQLUpdate(sql = "UPDATE conversations SET description = ?, title = ?, type = ?::conversation_type WHERE id = ?")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,8 +31,7 @@ public class Conversation {
     @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
 
-    @Column(name = "type", columnDefinition = "conversation_type NOT NULL")
-    @JdbcTypeCode(SqlTypes.VARCHAR)
+    @Column(name = "type", nullable = false)
     @Convert(converter = ConversationTypeConverter.class)
     private ConversationType type;
 
