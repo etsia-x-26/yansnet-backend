@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 @Entity
@@ -78,11 +80,21 @@ public class User {
     @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name = "description", length = Integer.MAX_VALUE)
-    private String description;
+    @Column(name = "bio", length = Integer.MAX_VALUE)
+    private String bio;
 
-    @Column(name = "urlprofile", length = Integer.MAX_VALUE)
-    private String urlprofile;
+    @Column(name = "profile_picture_url", length = Integer.MAX_VALUE)
+    private String profilePictureUrl;
+
+    @ColumnDefault("false")
+    @Column(name = "is_mentor")
+    private Boolean isMentor;
+
+    @Column(name = "last_login")
+    private Instant lastLogin;
+
+    @Column(name = "promotion_year")
+    private Integer promotionYear;
 
     public User() {
 

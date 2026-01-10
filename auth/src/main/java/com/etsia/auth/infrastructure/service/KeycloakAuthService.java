@@ -80,7 +80,7 @@ public class KeycloakAuthService implements AuthService {
         String keycloakUserId = createKeycloakUser(email.toString(), password);
 
         // Créer l'utilisateur dans notre base de données avec un hash du mot de passe
-        AuthUser user = new AuthUser(generateUserId(), email, "KEYCLOAK_MANAGED");
+        AuthUser user = new AuthUser(null, email, "KEYCLOAK_MANAGED");
         user.updatePhoneNumber(phoneNumber);
 
         return userRepository.save(user);
@@ -208,9 +208,4 @@ public class KeycloakAuthService implements AuthService {
         usersResource.get(user.getId()).resetPassword(credential);
     }
 
-    private Integer generateUserId() {
-        // Logique pour générer un ID unique
-        // Vous pouvez utiliser une séquence ou un UUID
-        return (int) (Math.random() * 1000000);
-    }
 }

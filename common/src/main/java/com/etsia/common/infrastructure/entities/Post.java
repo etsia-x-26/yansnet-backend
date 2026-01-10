@@ -50,6 +50,7 @@ public class Post {
     @Column(name = "total_comments", columnDefinition = "positive_int")
     private int totalComments;
 
+    @Builder.Default
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL , orphanRemoval = true)
     private Set<Media> media = new LinkedHashSet<>();
 

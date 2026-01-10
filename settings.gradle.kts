@@ -11,7 +11,9 @@ include(
     "auth",
     "channel",
     "comment",
-    "group"
+    "group",
+    "event",
+    "job"
 )
 
 project(":application").projectDir = file("application")
@@ -25,6 +27,8 @@ project(":user").projectDir = file("user")
 project(":group").projectDir = file("group")
 project(":channel").projectDir = file("channel")
 project(":comment").projectDir = file("comment")
+project(":event").projectDir = file("event")
+project(":job").projectDir = file("job")
 
 
 //pluginManagement {

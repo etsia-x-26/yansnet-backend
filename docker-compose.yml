@@ -10,19 +10,63 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: qwertyuiop
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - yansnet_data:/var/lib/postgresql/data
       - ./database/migration:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
       - etsia-network
 
+  # Keycloak IAM
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.0
+    container_name: etsia-keycloak
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: qwertyuiop
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    command: start-dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - etsia-network
 
+  # MinIO Object Storage
+  minio:
+    image: minio/minio:latest
+    container_name: etsia-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - etsia-network
+
+  # Helper to create default bucket
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c " /usr/bin/mc config host add myminio http://minio:9000 minioadmin minioadmin; /usr/bin/mc mb myminio/yansnet-media; /usr/bin/mc anonymous set public myminio/yansnet-media; exit 0; "
+    networks:
+      - etsia-network
 
   # Application Spring Boot
   backend:
@@ -30,11 +74,27 @@ services:
     container_name: etsia-back
     ports:
       - "8085:8085"
-
-
+    environment:
+      KEYCLOAK_SERVER_URL: http://keycloak:8080
+      KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/yansnet
+      KEYCLOAK_JWK_SET_URI: http://keycloak:8080/realms/yansnet/protocol/openid-connect/certs
+      KEYCLOAK_REALM: yansnet
+      KEYCLOAK_ADMIN_USERNAME: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      # Ensure database connection variables are also passed if needed, though hardcoded in properties previously
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/yansnet-db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: qwertyuiop
+    depends_on:
+      - postgres
+      - keycloak
+    networks:
+      - etsia-network
 
 volumes:
-  postgres_data:
+  yansnet_data:
+    driver: local
+  minio_data:
     driver: local
 
 networks:

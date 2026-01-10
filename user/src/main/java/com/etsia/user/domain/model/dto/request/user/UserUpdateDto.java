@@ -34,8 +34,10 @@ public class UserUpdateDto implements Serializable {
     String phoneNumber;
     String name;
     String username;
-    String description;
-    String urlprofile;
+    String bio;
+    String profilePictureUrl;
+    Boolean isMentor;
+    Integer promotionYear;
     Integer totalFollowers;
     Integer totalFollowing;
     Integer totalPosts;

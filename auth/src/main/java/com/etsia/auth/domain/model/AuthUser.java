@@ -20,7 +20,7 @@ public class AuthUser {
     private Integer batchId;
 
     public AuthUser(Integer userId, Email email, String password) {
-        this.userId = Objects.requireNonNull(userId, "User ID cannot be null");
+        this.userId = userId;
         this.email = Objects.requireNonNull(email, "Email cannot be null");
         this.password = Objects.requireNonNull(password, "Password cannot be null");
         this.isActive = true;
@@ -33,7 +33,7 @@ public class AuthUser {
     public AuthUser(Integer userId, Email email, PhoneNumber phoneNumber, String password,
                     boolean isActive, boolean isBlocked, int totalFollowers, int totalFollowing,
                     int totalPosts, Integer categoryId, Integer departmentId, Integer batchId) {
-        this.userId = Objects.requireNonNull(userId, "User ID cannot be null");
+        this.userId = userId;
         this.email = Objects.requireNonNull(email, "Email cannot be null");
         this.phoneNumber = phoneNumber;
         this.password = Objects.requireNonNull(password, "Password cannot be null");

@@ -39,9 +39,11 @@ public class Conversation {
     private ConversationType type;
 
 
+    @Builder.Default
     @OneToMany(mappedBy = "conversation")
     private Set<ConversationUser> conversationUsers = new LinkedHashSet<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "conversation")
     private Set<Message> messages = new LinkedHashSet<>();
 

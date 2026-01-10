@@ -26,8 +26,10 @@ public class UserDto implements Serializable {
     PhoneNumber phoneNumber;
     String name;
     String username;
-    String description;
-    String urlprofile;
+    String bio;
+    String profilePictureUrl;
+    Boolean isMentor;
+    Integer promotionYear;
     int totalFollowers;
     int totalFollowing;
     int totalPosts;
