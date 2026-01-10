@@ -5,6 +5,8 @@ import com.etsia.common.domain.model.sub.PhoneNumber;
 import com.etsia.common.infrastructure.config.EmailConverter;
 import com.etsia.common.infrastructure.config.PhoneNumberConverter;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -65,6 +67,22 @@ public class User {
     @ColumnDefault("0")
     @Column(name = "total_posts", columnDefinition = "positive_int")
     private int totalPosts;
+
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "name", nullable = false, length = 50)
+    private String name;
+
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "username", nullable = false)
+    private String username;
+
+    @Column(name = "description", length = Integer.MAX_VALUE)
+    private String description;
+
+    @Column(name = "urlprofile", length = Integer.MAX_VALUE)
+    private String urlprofile;
 
     public User() {
 

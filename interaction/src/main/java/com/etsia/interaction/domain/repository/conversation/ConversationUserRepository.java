@@ -1,0 +1,25 @@
+package com.etsia.interaction.domain.repository.conversation;
+
+import com.etsia.common.domain.model.ConversationUserDto;
+import com.etsia.common.domain.model.sub.ConversationRole;
+import com.etsia.interaction.domain.model.conversation.FindAllConversationByUserDto;
+import com.etsia.interaction.domain.model.conversation.FindAllUserByConversationDto;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface ConversationUserRepository {
+    Optional<ConversationUserDto> FindById(Integer Id);
+
+    List<FindAllConversationByUserDto> FindAllConversationByUser(Integer UserId);
+
+    List<FindAllUserByConversationDto> FindAllUserByConversation(Integer ConversationId);
+
+    List<ConversationUserDto> FindAllUserByConversationAndRole(Integer ConversationId, ConversationRole role);
+
+    void Follow(List<Integer> FollowerId, Integer ConversationId, ConversationRole role);
+
+    void Unfollow(Integer FollowerId, Integer ConversationId);
+
+    boolean isFollowing(Integer FollowerId, Integer ConversationId);
+}

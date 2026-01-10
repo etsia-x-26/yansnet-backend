@@ -16,20 +16,27 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class UserUpdateDto implements Serializable {
-//    @NotBlank
+    //    @NotBlank(message = "ID is required")
     Integer id;
 
-//    @NotBlank(message = "Email is required")
+    //    @NotBlank(message = "Email is required")
     String email;
 
+    //    @NotBlank
     String password;
+
     Boolean isActive;
-    UserCategoryDto category;
+
+    Integer category_id;
     Boolean isBlocked;
-    DepartmentDto department;
-    BatchDto batch;
-    PhoneNumber phoneNumber;
-    int totalFollowers;
-    int totalFollowing;
-    int totalPosts;
+    Integer department_id;
+    Integer batch_id;
+    String phoneNumber;
+    String name;
+    String username;
+    String description;
+    String urlprofile;
+    Integer totalFollowers;
+    Integer totalFollowing;
+    Integer totalPosts;
 }
