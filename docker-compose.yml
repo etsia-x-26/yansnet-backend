@@ -34,7 +34,7 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
-      - "8080:8080"
+      - "8090:8080"
     command: start-dev
     depends_on:
       postgres:
@@ -51,8 +51,8 @@ services:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
     ports:
-      - "9000:9000"
-      - "9001:9001"
+#      - "9000:9000"
+      - "9010:9001"
     volumes:
       - minio_data:/data
     networks:
@@ -70,10 +70,11 @@ services:
 
   # Application Spring Boot
   backend:
+    pull_policy: always
     image: gfriedtod/yansnet:dev
     container_name: etsia-back
     ports:
-      - "8085:8085"
+      - "8095:8085"
     environment:
       KEYCLOAK_SERVER_URL: http://keycloak:8080
       KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/yansnet
