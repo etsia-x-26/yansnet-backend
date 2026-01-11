@@ -1,4 +1,6 @@
 package com.etsia.post.infrastructure.adapters;
+import com.etsia.common.infrastructure.entities.User;
+import lombok.extern.slf4j.Slf4j;
 
 import com.etsia.common.domain.model.PostDto;
 import com.etsia.common.domain.model.UserDto;
@@ -17,6 +19,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class PostRepositoryImpl implements PostRepository {
 
     private final JpaPostRepository jpaPostRepository;
@@ -24,8 +27,13 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public PostDto save(PostDto postDto) {
-        Post post = jpaPostRepository.save(Mapper.toPostEntity(postDto));
-        return Mapper.toPostDto(post);
+        Post post = Mapper.toPostEntity(postDto);
+        log.debug("Saving post with content: {}, User ID: {}, Media size: {}", 
+                post.getContent(), 
+                post.getUser() != null ? post.getUser().getId() : "null",
+                post.getMedia() != null ? post.getMedia().size() : 0);
+        Post savedPost = jpaPostRepository.save(post);
+        return Mapper.toPostDto(savedPost);
     }
 
     @Override
@@ -57,5 +65,12 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public UserDto findUserById(Integer userId) {
         return Mapper.toUserDto(this.jpaUserPostUserRepository.findById(userId).orElseThrow());
+    }
+
+    @Override
+    public void incrementPostCount(Integer userId) {
+        User user = this.jpaUserPostUserRepository.findById(userId).orElseThrow();
+        user.setTotalPosts(user.getTotalPosts() + 1);
+        this.jpaUserPostUserRepository.save(user);
     }
 }

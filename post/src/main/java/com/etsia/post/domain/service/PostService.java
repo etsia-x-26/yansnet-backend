@@ -22,7 +22,11 @@ public class PostService {
     }
 
     public PostDto save(PostDto post) {
-        return postRepository.save(post);
+        PostDto savedPost = postRepository.save(post);
+        if (savedPost.getUser() != null && savedPost.getUser().getId() != null) {
+            postRepository.incrementPostCount(savedPost.getUser().getId());
+        }
+        return savedPost;
     }
 
     public UserDto findUser(Integer userId){

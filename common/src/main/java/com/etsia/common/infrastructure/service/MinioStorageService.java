@@ -68,13 +68,13 @@ public class MinioStorageService implements StorageService {
     }
 
     @Override
-    public String uploadFile(String fileName, InputStream inputStream, String contentType) {
+    public String uploadFile(String fileName, InputStream inputStream, String contentType, long fileSize) {
         try {
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(bucketName)
                             .object(fileName)
-                            .stream(inputStream, -1, 10485760) // 10MB part size
+                            .stream(inputStream, fileSize, -1) // Use actual size, part size -1 for auto
                             .contentType(contentType)
                             .build()
             );

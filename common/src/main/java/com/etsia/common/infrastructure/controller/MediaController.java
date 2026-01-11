@@ -37,7 +37,7 @@ public class MediaController {
             // Generate unique filename to prevent collisions
             String fileName = UUID.randomUUID().toString() + extension;
             
-            String fileUrl = storageService.uploadFile(fileName, file.getInputStream(), file.getContentType());
+            String fileUrl = storageService.uploadFile(fileName, file.getInputStream(), file.getContentType(), file.getSize());
             
             return ResponseEntity.ok(Map.of("url", fileUrl));
         } catch (IOException e) {

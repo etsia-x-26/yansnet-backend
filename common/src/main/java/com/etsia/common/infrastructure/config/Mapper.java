@@ -6,6 +6,7 @@ import com.etsia.common.infrastructure.entities.*;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Mapper {
@@ -166,7 +167,6 @@ public class Mapper {
                 .uploadedAt(Dto.getUploadedAt())
                 .type(Dto.getType())
                 .build();
-
     }
 
     public static List<Message> toMessageEntities(List<MessageDto> Dtos) {
@@ -406,12 +406,8 @@ public class Mapper {
                 .deletedAt(entity.getDeletedAt())
                 .createdAt(entity.getCreatedAt())
                 .media(toMediaDtos(entity.getMedia().stream().toList()))
-                .user(UserDto.builder()
-                        .id(entity.getUser() != null ? entity.getUser().getId() : null)
-                        .build())
-                .channel(ChannelDto.builder()
-                        .id(entity.getChannel() != null ? entity.getChannel().getId() : null)
-                        .build())
+                .user(toUserDto(entity.getUser()))
+                .channel(toChannelDto(entity.getChannel()))
                 .build();
     }
 
@@ -422,21 +418,42 @@ public class Mapper {
 
     public static Post toPostEntity(PostDto dto) {
         if (dto == null) return null;
-        return Post.builder()
+        Post post = Post.builder()
                 .id(dto.getId())
                 .content(dto.getContent())
                 .totalComments(dto.getTotalComments())
                 .totalLikes(dto.getTotalLikes())
                 .deletedAt(dto.getDeletedAt())
                 .createdAt(dto.getCreatedAt())
-                .media(new HashSet<>(( toMediaEntities(dto.getMedia()))))
-                .user(dto.getChannel() != null ?User.builder()
-                        .id(dto.getUser().getId())
-                        .build():null)
-                .channel(dto.getChannel() != null ?Channel.builder()
-                        .id(dto.getChannel().getId())
-                        .build():null)
                 .build();
+
+        if (dto.getMedia() != null) {
+            Set<Media> mediaEntities = dto.getMedia().stream()
+                    .map(m -> {
+                        Media media = toMediaEntity(m);
+                        if (media != null) {
+                            media.setPost(post);
+                        }
+                        return media;
+                    })
+                    .filter(java.util.Objects::nonNull)
+                    .collect(Collectors.toSet());
+            post.setMedia(mediaEntities);
+        }
+
+        if (dto.getUser() != null) {
+            post.setUser(User.builder()
+                    .id(dto.getUser().getId())
+                    .build());
+        }
+
+        if (dto.getChannel() != null) {
+            post.setChannel(Channel.builder()
+                    .id(dto.getChannel().getId())
+                    .build());
+        }
+
+        return post;
     }
 
     public static List<UserCategoryDto> toUserCategoryDtos(List<UserCategory> entities) {
@@ -472,6 +489,7 @@ public class Mapper {
 
     public static UserFollowDto toUserFollowDto(UserFollow entity) {
         if (entity == null) return null;
+        // Builds UserFollowDto with follower information
         return UserFollowDto.builder()
                 .id(UserFollowIdDto.builder()
                         .followerId(entity.getFollower().getId())

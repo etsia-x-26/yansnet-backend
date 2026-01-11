@@ -17,4 +17,5 @@ public interface PostRepository {
     PostDto update(PostDto postDto);
 
     UserDto findUserById(Integer userId);
+    void incrementPostCount(Integer userId);
 }
