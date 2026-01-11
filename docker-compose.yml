@@ -51,7 +51,7 @@ services:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
     ports:
-#      - "9000:9000"
+      #      - "9000:9000"
       - "9010:9001"
     volumes:
       - minio_data:/data
@@ -87,7 +87,7 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: qwertyuiop
       MINIO_URL: http://minio:9000
-      MINIO_PUBLIC_URL: http://localhost:9000
+      MINIO_PUBLIC_URL: ${MINIO_PUBLIC_URL:-https://yansnetcdn.enlighteninnovation.com}
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
       MINIO_BUCKET_NAME: yansnet-media
