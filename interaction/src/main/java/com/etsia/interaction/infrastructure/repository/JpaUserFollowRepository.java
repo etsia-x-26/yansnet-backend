@@ -17,6 +17,7 @@ public interface JpaUserFollowRepository extends JpaRepository<UserFollow, UserF
   @Query("select exists(select 1 from UserFollow where follower.id = :followerId and followed.id = :followedId)")
   boolean existsByFollowerIdAndFollowedId(Integer followerId, Integer followedId);
 
+
   long countByFollowerId(Integer followerId);
 
   @Query("SELECT u FROM User u WHERE u.id != :userId AND u.id NOT IN (SELECT f.followed.id FROM UserFollow f WHERE f.follower.id = :userId) ORDER BY u.totalFollowers DESC")
