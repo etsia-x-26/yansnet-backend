@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/auth/login", "/auth/register", "/auth/refresh", "/auth/logout").permitAll()
-                        .requestMatchers("/docs/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        .requestMatchers("/docs/**", "/docs.yml", "/docs.json", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll() // Optional: restrict in prod
                         .requestMatchers("/ws/**").permitAll() // WebSocket handshake
                         .anyRequest().authenticated()

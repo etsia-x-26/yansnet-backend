@@ -1,6 +1,9 @@
 package com.etsia.common.infrastructure.controller;
 
 import com.etsia.common.domain.service.StorageService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +17,14 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/media")
 @RequiredArgsConstructor
+@Tag(name = "Media Management", description = "Endpoints for uploading and managing files in MinIO storage")
 public class MediaController {
 
     private final StorageService storageService;
 
+    @Operation(summary = "Upload a file", description = "Uploads a multipart file to MinIO and returns its public URL")
+    @ApiResponse(responseCode = "200", description = "File uploaded successfully")
+    @ApiResponse(responseCode = "500", description = "Internal server error during upload")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
