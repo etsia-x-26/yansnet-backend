@@ -1,5 +1,5 @@
 plugins {
-    java
+    `java-library`
     id("org.springframework.boot") version "3.5.3"
     id("io.spring.dependency-management") version "1.1.7"
 }
@@ -34,7 +34,7 @@ dependencies {
     implementation("org.projectlombok:lombok")
     implementation("org.springframework.modulith:spring-modulith-starter-core")
     testImplementation("org.springframework.modulith:spring-modulith-starter-test")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
+    api("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
