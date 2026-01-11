@@ -63,18 +63,19 @@ public class MinioStorageService implements StorageService {
                 log.info("Bucket '{}' already exists.", bucketName);
             }
         } catch (Exception e) {
-            log.error("Error initializing MinIO bucket", e);
+            log.error("Error initializing MinIO bucket. Bucket: {}, Error: {}", bucketName, e.getMessage());
         }
     }
 
     @Override
     public String uploadFile(String fileName, InputStream inputStream, String contentType, long fileSize) {
+        log.debug("Uploading file to MinIO: {}, size: {}, bucket: {}", fileName, fileSize, bucketName);
         try {
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(bucketName)
                             .object(fileName)
-                            .stream(inputStream, fileSize, -1) // Use actual size, part size -1 for auto
+                            .stream(inputStream, -1, 10485760) // Reverted to see if this fixes signature issue
                             .contentType(contentType)
                             .build()
             );

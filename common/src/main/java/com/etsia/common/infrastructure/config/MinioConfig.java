@@ -19,9 +19,18 @@ public class MinioConfig {
 
     @Bean
     public MinioClient minioClient() {
+        String trimmedUrl = url.trim();
+        String trimmedAccessKey = accessKey.trim();
+        String trimmedSecretKey = secretKey.trim();
+        
+        System.out.println("Initializing MinIO Client with Endpoint: " + trimmedUrl);
+        System.out.println("Access Key Hash: " + trimmedAccessKey.hashCode());
+        System.out.println("Secret Key Hash: " + trimmedSecretKey.hashCode());
+        
         return MinioClient.builder()
-                .endpoint(url)
-                .credentials(accessKey, secretKey)
+                .endpoint(trimmedUrl)
+                .credentials(trimmedAccessKey, trimmedSecretKey)
+                .region("us-east-1")
                 .build();
     }
 }
