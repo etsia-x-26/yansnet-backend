@@ -5,6 +5,7 @@ import com.etsia.post.application.dto.CreatePostRequest;
 import com.etsia.post.application.dto.PageResponse;
 import com.etsia.post.application.service.PostApplicationService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,39 @@ public class PostController {
         Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
         PageRequest pageRequest = PageRequest.of(page, size, sort);
         return ResponseEntity.ok(PageResponse.from(postService.getAllPosts(pageRequest)));
+    }
+
+    @Operation(summary = "Get post by ID", description = "Retrieves a single post by its ID")
+    @ApiResponse(responseCode = "200", description = "Post found")
+    @ApiResponse(responseCode = "404", description = "Post not found")
+    @GetMapping("/{id}")
+    public ResponseEntity<PostDto> getPostById(
+            @Parameter(description = "Post ID") @PathVariable Integer id) {
+        return postService.getPostById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Operation(summary = "Get posts by user", description = "Retrieves all posts from a specific user")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved user posts")
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<PageResponse<PostDto>> getPostsByUser(
+            @Parameter(description = "User ID") @PathVariable Integer userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return ResponseEntity.ok(PageResponse.from(postService.getPostsByUserId(userId, pageRequest)));
+    }
+
+    @Operation(summary = "Search posts", description = "Search posts by content")
+    @ApiResponse(responseCode = "200", description = "Search results returned")
+    @GetMapping("/search")
+    public ResponseEntity<PageResponse<PostDto>> searchPosts(
+            @Parameter(description = "Search query") @RequestParam String q,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return ResponseEntity.ok(PageResponse.from(postService.searchPosts(q, pageRequest)));
     }
 
     @Operation(summary = "Delete a post", description = "Permenantly removes a post by its ID")

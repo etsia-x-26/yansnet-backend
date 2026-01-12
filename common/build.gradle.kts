@@ -36,6 +36,10 @@ dependencies {
     testImplementation("org.springframework.modulith:spring-modulith-starter-test")
     api("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 
+    // Redis for caching
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.springframework.boot:spring-boot-starter-cache")
+
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.projectlombok:lombok")
