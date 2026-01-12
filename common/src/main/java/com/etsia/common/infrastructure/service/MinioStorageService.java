@@ -75,7 +75,7 @@ public class MinioStorageService implements StorageService {
                     PutObjectArgs.builder()
                             .bucket(bucketName)
                             .object(fileName)
-                            .stream(inputStream, -1, 10485760) // Reverted to see if this fixes signature issue
+                            .stream(inputStream, fileSize, -1)
                             .contentType(contentType)
                             .build()
             );
