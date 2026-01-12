@@ -14,7 +14,7 @@ import com.etsia.interaction.domain.model.conversation.UserWithRoleDto;
 import com.etsia.interaction.domain.repository.conversation.ConversationUserRepository;
 import com.etsia.interaction.infrastructure.repository.conversation.JpaConversationRepository;
 import com.etsia.interaction.infrastructure.repository.conversation.JpaConversationUserRepository;
-import com.etsia.interaction.infrastructure.repository.conversation.JpaInteractionUserRepository;
+import com.etsia.interaction.infrastructure.repository.JpaInteractionUserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import java.util.List;

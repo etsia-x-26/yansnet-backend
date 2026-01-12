@@ -1,0 +1,106 @@
+﻿> Task :common:compileJava UP-TO-DATE
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :jar UP-TO-DATE
+> Task :assemble UP-TO-DATE
+> Task :check
+> Task :build
+> Task :auth:compileJava UP-TO-DATE
+> Task :auth:processResources UP-TO-DATE
+> Task :auth:classes UP-TO-DATE
+> Task :auth:jar UP-TO-DATE
+> Task :channel:compileJava UP-TO-DATE
+> Task :channel:processResources UP-TO-DATE
+> Task :channel:classes UP-TO-DATE
+> Task :channel:jar UP-TO-DATE
+> Task :comment:compileJava UP-TO-DATE
+> Task :comment:processResources UP-TO-DATE
+> Task :comment:classes UP-TO-DATE
+> Task :comment:jar UP-TO-DATE
+> Task :event:compileJava UP-TO-DATE
+> Task :event:processResources NO-SOURCE
+> Task :event:classes UP-TO-DATE
+> Task :event:jar UP-TO-DATE
+> Task :group:compileJava UP-TO-DATE
+> Task :group:processResources UP-TO-DATE
+> Task :group:classes UP-TO-DATE
+> Task :group:jar UP-TO-DATE
+> Task :interaction:compileJava UP-TO-DATE
+> Task :interaction:processResources UP-TO-DATE
+> Task :interaction:classes UP-TO-DATE
+> Task :interaction:jar UP-TO-DATE
+> Task :job:compileJava UP-TO-DATE
+> Task :job:processResources NO-SOURCE
+> Task :job:classes UP-TO-DATE
+> Task :job:jar UP-TO-DATE
+> Task :message:compileJava UP-TO-DATE
+> Task :message:processResources UP-TO-DATE
+> Task :message:classes UP-TO-DATE
+> Task :message:jar UP-TO-DATE
+> Task :notification:compileJava UP-TO-DATE
+> Task :notification:processResources UP-TO-DATE
+> Task :notification:classes UP-TO-DATE
+> Task :notification:jar UP-TO-DATE
+> Task :post:compileJava UP-TO-DATE
+> Task :post:processResources UP-TO-DATE
+> Task :post:classes UP-TO-DATE
+> Task :post:jar UP-TO-DATE
+> Task :user:compileJava UP-TO-DATE
+> Task :user:processResources UP-TO-DATE
+> Task :user:classes UP-TO-DATE
+> Task :user:jar UP-TO-DATE
+> Task :application:compileJava UP-TO-DATE
+> Task :application:processResources UP-TO-DATE
+> Task :application:classes UP-TO-DATE
+> Task :application:resolveMainClassName UP-TO-DATE
+> Task :common:processResources UP-TO-DATE
+> Task :common:classes UP-TO-DATE
+> Task :common:jar UP-TO-DATE
+> Task :application:bootJar UP-TO-DATE
+> Task :application:jar UP-TO-DATE
+> Task :application:assemble UP-TO-DATE
+> Task :application:check
+> Task :application:build
+> Task :auth:resolveMainClassName UP-TO-DATE
+> Task :auth:bootJar UP-TO-DATE
+> Task :auth:assemble UP-TO-DATE
+> Task :auth:check
+> Task :auth:build
+> Task :channel:resolveMainClassName UP-TO-DATE
+> Task :channel:bootJar FAILED
+./gradlew : 
+At line:1 char:1
++ ./gradlew build -x test 2>&1 | Out-File -FilePath 
+build_error_2.txt - ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) 
+    [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':channel:bootJar'.
+> Could not resolve all files for configuration 
+':channel:runtimeClasspath'.
+   > Could not find org.springframework.modulith:sprin
+g-modulith-starter-core:.
+     Required by:
+         project :channel > project :common
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log 
+output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.7/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 8s
+44 actionable tasks: 1 executed, 43 up-to-date

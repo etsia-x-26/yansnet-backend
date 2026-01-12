@@ -19,7 +19,7 @@ public class EventMapper {
                 .organizer(User.builder().id(request.getOrganizerId()).build()) // Proxy
                 .maxParticipants(request.getMaxParticipants())
                 .imageUrl(request.getImageUrl())
-                // .createdAt() handled by database default
+                .createdAt(java.time.Instant.now())
                 .build();
     }
 

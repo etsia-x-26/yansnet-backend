@@ -6,22 +6,21 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "post_likes", schema = "public")
+@Table(name = "comment_dislikes", schema = "public")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostLike {
+public class CommentDislike {
     @EmbeddedId
-    private PostLikeId id;
+    private CommentDislikeId id;
 
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @MapsId("postId")
+    @MapsId("commentId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "post_id", nullable = false)
-    private Post post;
-
+    @JoinColumn(name = "comment_id", nullable = false)
+    private Comment comment;
 }

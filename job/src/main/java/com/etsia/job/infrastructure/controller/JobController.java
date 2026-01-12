@@ -2,6 +2,8 @@ package com.etsia.job.infrastructure.controller;
 
 import com.etsia.common.infrastructure.entities.JobOffer;
 import com.etsia.job.domain.service.JobService;
+import com.etsia.job.infrastructure.controller.dto.CreateJobOfferRequest;
+import com.etsia.job.infrastructure.mapper.JobMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,11 +20,13 @@ import org.springframework.web.bind.annotation.*;
 public class JobController {
 
     private final JobService jobService;
+    private final JobMapper jobMapper;
 
     @Operation(summary = "Create a job offer", description = "Publishes a new job or internship opportunity")
     @ApiResponse(responseCode = "200", description = "Job offer created successfully")
     @PostMapping
-    public ResponseEntity<JobOffer> createJobOffer(@RequestBody JobOffer jobOffer) {
+    public ResponseEntity<JobOffer> createJobOffer(@RequestBody CreateJobOfferRequest request) {
+        JobOffer jobOffer = jobMapper.toEntity(request);
         return ResponseEntity.ok(jobService.createJobOffer(jobOffer));
     }
 

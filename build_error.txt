@@ -1,0 +1,100 @@
+﻿
+> Task :common:compileJava FAILED
+./gradlew : C:\Users\wilfried\IdeaProjects\yansnet-bac
+kend\common\src\main\java\com\etsia\common\infrastruct
+ure\security\CurrentUserArgumentResolver.java:9: 
+error: package org.springframework.security.core does 
+not exist
+At line:1 char:1
++ ./gradlew :common:compileJava 2>&1 | Out-File 
+-FilePath build_error.t ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\Users 
+   \wilfri... does not exist:String) [], RemoteExcep  
+  tion
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+import 
+org.springframework.security.core.Authentication;
+                                        ^
+C:\Users\wilfried\IdeaProjects\yansnet-backend\common\
+src\main\java\com\etsia\common\infrastructure\security
+\CurrentUserArgumentResolver.java:10: error: package 
+org.springframework.security.core.context does not 
+exist
+import org.springframework.security.core.context.Secur
+ityContextHolder;
+                                                ^
+C:\Users\wilfried\IdeaProjects\yansnet-backend\common\
+src\main\java\com\etsia\common\infrastructure\security
+\CurrentUserArgumentResolver.java:11: error: package 
+org.springframework.security.oauth2.jwt does not exist
+import org.springframework.security.oauth2.jwt.Jwt;
+                                              ^
+C:\Users\wilfried\IdeaProjects\yansnet-backend\common\
+src\main\java\com\etsia\common\infrastructure\security
+\CurrentUserArgumentResolver.java:58: error: cannot 
+find symbol
+    private AuthenticatedUser extractUserFromJwt(Jwt 
+jwt) {
+                                                 ^
+  symbol:   class Jwt
+  location: class CurrentUserArgumentResolver
+C:\Users\wilfried\IdeaProjects\yansnet-backend\common\
+src\main\java\com\etsia\common\infrastructure\security
+\CurrentUserArgumentResolver.java:86: error: cannot 
+find symbol
+    private List<String> extractRoles(Jwt jwt) {
+                                      ^
+  symbol:   class Jwt
+  location: class CurrentUserArgumentResolver
+C:\Users\wilfried\IdeaProjects\yansnet-backend\common\
+src\main\java\com\etsia\common\infrastructure\security
+\UserIdInjectorAdvice.java:11: error: package 
+org.springframework.security.core does not exist
+import 
+org.springframework.security.core.Authentication;
+                                        ^
+C:\Users\wilfried\IdeaProjects\yansnet-backend\common\
+src\main\java\com\etsia\common\infrastructure\security
+\UserIdInjectorAdvice.java:12: error: package 
+org.springframework.security.core.context does not 
+exist
+import org.springframework.security.core.context.Secur
+ityContextHolder;
+                                                ^
+C:\Users\wilfried\IdeaProjects\yansnet-backend\common\
+src\main\java\com\etsia\common\infrastructure\security
+\UserIdInjectorAdvice.java:13: error: package 
+org.springframework.security.oauth2.jwt does not exist
+import org.springframework.security.oauth2.jwt.Jwt;
+                                              ^
+C:\Users\wilfried\IdeaProjects\yansnet-backend\common\
+src\main\java\com\etsia\common\infrastructure\security
+\UserIdInjectorAdvice.java:114: error: cannot find 
+symbol
+    private Integer extractUserIdFromJwt(Jwt jwt) {
+                                         ^
+  symbol:   class Jwt
+  location: class UserIdInjectorAdvice
+9 errors
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':common:compileJava'.
+> Compilation failed; see the compiler error output 
+for details.
+
+* Try:
+> Run with --info option to get more log output.
+> Run with --scan to get full insights.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.7/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 2s
+1 actionable task: 1 executed

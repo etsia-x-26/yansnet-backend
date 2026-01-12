@@ -46,6 +46,9 @@ public class Post {
     @Column(name = "total_likes")
     private int totalLikes;
     @ColumnDefault("0")
+    @Column(name = "total_dislikes")
+    private int totalDislikes;
+    @ColumnDefault("0")
     @Column(name = "total_comments")
     private int totalComments;
 

@@ -1,0 +1,49 @@
+﻿
+> Task :common:compileJava FAILED
+./gradlew : error: constructor CommentLikeId() is 
+already defined in class CommentLikeId
+At line:1 char:1
++ ./gradlew build -x test 2>&1 | Out-File -FilePath 
+build_error_likes_3 ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (error: c 
+   onstruc...s CommentLikeId:String) [], RemoteExcep  
+  tion
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+error: constructor CommentLike() is already defined 
+in class CommentLike
+C:\Users\wilfried\IdeaProjects\yansnet-backend\common\
+src\main\java\com\etsia\common\infrastructure\entities
+\CommentLike.java:12: error: constructor 
+CommentLike() is already defined in class CommentLike
+@NoArgsConstructor
+^
+C:\Users\wilfried\IdeaProjects\yansnet-backend\common\
+src\main\java\com\etsia\common\infrastructure\entities
+\CommentLikeId.java:16: error: constructor 
+CommentLikeId() is already defined in class 
+CommentLikeId
+@NoArgsConstructor
+^
+4 errors
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':common:compileJava'.
+> Compilation failed; see the compiler error output 
+for details.
+
+* Try:
+> Run with --info option to get more log output.
+> Run with --scan to get full insights.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.7/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 5s
+1 actionable task: 1 executed

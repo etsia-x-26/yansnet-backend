@@ -1,10 +1,7 @@
 package com.etsia.common.infrastructure.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -12,6 +9,7 @@ import lombok.Setter;
 @Table(name = "comment_likes", schema = "public")
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class CommentLike {
     @EmbeddedId
     private CommentLikeId id;
@@ -25,8 +23,4 @@ public class CommentLike {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "comment_id", nullable = false)
     private Comment comment;
-
-    public CommentLike() {
-
-    }
 }

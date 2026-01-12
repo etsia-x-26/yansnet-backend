@@ -1,4 +1,4 @@
-package com.etsia.interaction.infrastructure.repository.conversation;
+package com.etsia.interaction.infrastructure.repository;
 
 import com.etsia.common.infrastructure.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;

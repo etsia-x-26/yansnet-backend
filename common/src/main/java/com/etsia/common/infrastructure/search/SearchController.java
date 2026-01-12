@@ -1,5 +1,7 @@
 package com.etsia.common.infrastructure.search;
 
+import com.etsia.common.infrastructure.security.AuthenticatedUser;
+import com.etsia.common.infrastructure.security.CurrentUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,6 +25,7 @@ public class SearchController {
     @ApiResponse(responseCode = "200", description = "Search results returned successfully")
     @GetMapping
     public ResponseEntity<GlobalSearchResponse> globalSearch(
+            @CurrentUser AuthenticatedUser user,
             @Parameter(description = "Search query") @RequestParam String q,
             @Parameter(description = "Page number") @RequestParam(defaultValue = "0") int page,
             @Parameter(description = "Page size") @RequestParam(defaultValue = "10") int size) {

@@ -14,8 +14,7 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostLikeId implements Serializable {
-    private static final long serialVersionUID = 3818094297836645177L;
+public class PostDislikeId implements Serializable {
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
@@ -26,7 +25,7 @@ public class PostLikeId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        PostLikeId entity = (PostLikeId) o;
+        PostDislikeId entity = (PostDislikeId) o;
         return Objects.equals(this.postId, entity.postId) &&
                 Objects.equals(this.userId, entity.userId);
     }
@@ -35,5 +34,4 @@ public class PostLikeId implements Serializable {
     public int hashCode() {
         return Objects.hash(postId, userId);
     }
-
 }

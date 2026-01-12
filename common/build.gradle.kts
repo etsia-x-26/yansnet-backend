@@ -27,13 +27,13 @@ extra["springModulithVersion"] = "1.4.1"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.modulith:spring-modulith-starter-core")
-//    implementation("org.springframework.modulith:spring-modulith-starter-jdbc")
-//    implementation("org.springframework.modulith:spring-modulith-starter-jpa")
+    implementation("org.springframework.modulith:spring-modulith-starter-core:1.4.1")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.projectlombok:lombok")
-    implementation("org.springframework.modulith:spring-modulith-starter-core")
-    testImplementation("org.springframework.modulith:spring-modulith-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.modulith:spring-modulith-starter-test:1.4.1")
     api("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
 
     // Redis for caching
@@ -43,8 +43,6 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.projectlombok:lombok")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.modulith:spring-modulith-starter-test")
     implementation("io.minio:minio:8.5.7")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
