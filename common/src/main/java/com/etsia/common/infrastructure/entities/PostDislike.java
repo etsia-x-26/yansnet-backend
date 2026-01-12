@@ -6,13 +6,13 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "post_likes", schema = "public")
+@Table(name = "post_dislikes", schema = "public")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostLike {
+public class PostDislike {
     @EmbeddedId
-    private PostLikeId id;
+    private PostDislikeId id;
 
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -23,5 +23,4 @@ public class PostLike {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
-
 }

@@ -10,7 +10,7 @@ import com.etsia.interaction.domain.model.conversation.UpdateConversationDto;
 import com.etsia.interaction.domain.repository.conversation.ConversationRepository;
 import com.etsia.interaction.infrastructure.repository.conversation.JpaConversationRepository;
 import com.etsia.interaction.infrastructure.repository.conversation.JpaConversationUserRepository;
-import com.etsia.interaction.infrastructure.repository.conversation.JpaInteractionUserRepository;
+import com.etsia.interaction.infrastructure.repository.JpaInteractionUserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

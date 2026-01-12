@@ -1,6 +1,8 @@
 package com.etsia.post.infrastructure.controller;
 
 import com.etsia.common.domain.model.PostDto;
+import com.etsia.common.infrastructure.security.AuthenticatedUser;
+import com.etsia.common.infrastructure.security.CurrentUser;
 import com.etsia.post.application.dto.CreatePostRequest;
 import com.etsia.post.application.dto.PageResponse;
 import com.etsia.post.application.service.PostApplicationService;
@@ -36,6 +38,17 @@ public class PostController {
         return ResponseEntity.ok(PageResponse.from(postService.getAllPosts(pageRequest)));
     }
 
+    @Operation(summary = "Get my posts", description = "Retrieves all posts from the authenticated user")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved user posts")
+    @GetMapping("/me")
+    public ResponseEntity<PageResponse<PostDto>> getMyPosts(
+            @CurrentUser AuthenticatedUser user,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return ResponseEntity.ok(PageResponse.from(postService.getPostsByUserId(user.getUserId(), pageRequest)));
+    }
+
     @Operation(summary = "Get post by ID", description = "Retrieves a single post by its ID")
     @ApiResponse(responseCode = "200", description = "Post found")
     @ApiResponse(responseCode = "404", description = "Post not found")
@@ -69,17 +82,20 @@ public class PostController {
         return ResponseEntity.ok(PageResponse.from(postService.searchPosts(q, pageRequest)));
     }
 
-    @Operation(summary = "Delete a post", description = "Permenantly removes a post by its ID")
+    @Operation(summary = "Delete a post", description = "Permanently removes a post by its ID")
     @ApiResponse(responseCode = "204", description = "Post deleted successfully")
-    @DeleteMapping
-    public ResponseEntity<Void> deletePost(@RequestParam Integer id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePost(
+            @PathVariable Integer id,
+            @CurrentUser AuthenticatedUser user) {
+        // TODO: Add ownership check
         postService.deletePost(id);
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Create a new post", description = "Submits a new post with content and optional media")
     @ApiResponse(responseCode = "200", description = "Post created successfully")
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<PostDto> save(@RequestBody CreatePostRequest request) {
         return ResponseEntity.ok(postService.save(request));
     }
@@ -87,8 +103,10 @@ public class PostController {
     @Operation(summary = "Update a post", description = "Updates the content of an existing post")
     @ApiResponse(responseCode = "200", description = "Post updated successfully")
     @PatchMapping
-    public ResponseEntity<PostDto> update(@RequestBody PostDto postDto) {
+    public ResponseEntity<PostDto> update(
+            @CurrentUser AuthenticatedUser user,
+            @RequestBody PostDto postDto) {
+        // TODO: Add ownership check
         return ResponseEntity.ok(postService.update(postDto));
     }
-
 }

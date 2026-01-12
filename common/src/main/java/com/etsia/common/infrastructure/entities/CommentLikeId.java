@@ -2,10 +2,7 @@ package com.etsia.common.infrastructure.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import java.io.Serializable;
@@ -16,6 +13,7 @@ import java.util.Objects;
 @Embeddable
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class CommentLikeId implements Serializable {
     private static final long serialVersionUID = -7847099035710782417L;
     @Column(name = "user_id", nullable = false)
@@ -23,10 +21,6 @@ public class CommentLikeId implements Serializable {
 
     @Column(name = "comment_id", nullable = false)
     private Integer commentId;
-
-    public CommentLikeId() {
-
-    }
 
     @Override
     public boolean equals(Object o) {
