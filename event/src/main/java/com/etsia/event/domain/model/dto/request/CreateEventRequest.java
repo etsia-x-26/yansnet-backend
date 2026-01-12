@@ -1,5 +1,6 @@
 package com.etsia.event.domain.model.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.etsia.common.infrastructure.security.UserIdAware;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,7 @@ public class CreateEventRequest implements UserIdAware {
     private String title;
     private String description;
     private String category;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS", timezone = "UTC")
     private Instant eventDate;
     private String location;
     private Integer organizerId;
