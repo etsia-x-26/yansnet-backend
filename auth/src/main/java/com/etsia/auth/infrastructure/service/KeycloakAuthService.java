@@ -3,6 +3,7 @@ package com.etsia.auth.infrastructure.service;
 import com.etsia.auth.domain.model.AuthUser;
 import com.etsia.auth.domain.repository.UserRepository;
 import com.etsia.auth.domain.service.AuthService;
+import com.etsia.auth.infrastructure.dto.TokenResponse;
 import com.etsia.common.domain.model.sub.Email;
 import com.etsia.common.domain.model.sub.PhoneNumber;
 import org.keycloak.admin.client.Keycloak;
@@ -20,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class KeycloakAuthService implements AuthService {
@@ -27,6 +29,7 @@ public class KeycloakAuthService implements AuthService {
     private final Keycloak keycloak;
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
+    private final TokenCacheService tokenCacheService;
 
     @Value("${keycloak.server-url}")
     private String keycloakServerUrl;
@@ -40,22 +43,27 @@ public class KeycloakAuthService implements AuthService {
     @Value("${keycloak.client-secret}")
     private String clientSecret;
 
+    @Value("${auth.access-token-expiration:900000}")
+    private long accessTokenExpiration;
+
+    @Value("${auth.refresh-token-expiration:604800000}")
+    private long refreshTokenExpiration;
+
     @Autowired
-    public KeycloakAuthService(Keycloak keycloak, UserRepository userRepository) {
+    public KeycloakAuthService(Keycloak keycloak, UserRepository userRepository, TokenCacheService tokenCacheService) {
         this.keycloak = keycloak;
         this.userRepository = userRepository;
+        this.tokenCacheService = tokenCacheService;
         this.restTemplate = new RestTemplate();
     }
 
     @Override
     public AuthUser authenticate(Email email, String password) {
-        // Obtenir le token JWT depuis Keycloak
         String token = getTokenFromKeycloak(email.toString(), password);
         if (token == null) {
             throw new IllegalArgumentException("Invalid credentials");
         }
 
-        // Récupérer l'utilisateur depuis notre base de données
         Optional<AuthUser> userOpt = userRepository.findByEmail(email);
         if (userOpt.isEmpty()) {
             throw new IllegalArgumentException("User not found in local database");
@@ -69,17 +77,116 @@ public class KeycloakAuthService implements AuthService {
         return user;
     }
 
+    public TokenResponse authenticateWithTokens(Email email, String password) {
+        Map<String, Object> tokenData = getFullTokenFromKeycloak(email.toString(), password);
+        if (tokenData == null) {
+            throw new IllegalArgumentException("Invalid credentials");
+        }
+
+        Optional<AuthUser> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isEmpty()) {
+            throw new IllegalArgumentException("User not found in local database");
+        }
+
+        AuthUser user = userOpt.get();
+        if (!user.canAuthenticate()) {
+            throw new IllegalStateException("User account is inactive or blocked");
+        }
+
+        String accessToken = (String) tokenData.get("access_token");
+        String refreshToken = generateRefreshToken();
+        
+        // Store refresh token in Redis
+        tokenCacheService.storeRefreshToken(refreshToken, user.getUserId(), refreshTokenExpiration);
+
+        return TokenResponse.builder()
+                .userId(user.getUserId())
+                .email(user.getEmail().toString())
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .tokenType("Bearer")
+                .expiresIn(accessTokenExpiration / 1000)
+                .refreshExpiresIn(refreshTokenExpiration / 1000)
+                .build();
+    }
+
+    public TokenResponse refreshAccessToken(String refreshToken) {
+        Integer userId = tokenCacheService.getUserIdFromRefreshToken(refreshToken);
+        if (userId == null) {
+            throw new IllegalArgumentException("Invalid or expired refresh token");
+        }
+
+        Optional<AuthUser> userOpt = userRepository.findById(userId);
+        if (userOpt.isEmpty()) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        AuthUser user = userOpt.get();
+        if (!user.canAuthenticate()) {
+            throw new IllegalStateException("User account is inactive or blocked");
+        }
+
+        // Invalidate old refresh token (rotation)
+        tokenCacheService.invalidateRefreshToken(refreshToken);
+
+        // Generate new tokens
+        String newRefreshToken = generateRefreshToken();
+        String newAccessToken = getServiceAccountToken(user.getEmail().toString());
+
+        // Store new refresh token
+        tokenCacheService.storeRefreshToken(newRefreshToken, userId, refreshTokenExpiration);
+
+        return TokenResponse.builder()
+                .userId(user.getUserId())
+                .email(user.getEmail().toString())
+                .accessToken(newAccessToken)
+                .refreshToken(newRefreshToken)
+                .tokenType("Bearer")
+                .expiresIn(accessTokenExpiration / 1000)
+                .refreshExpiresIn(refreshTokenExpiration / 1000)
+                .build();
+    }
+
+    private String generateRefreshToken() {
+        return UUID.randomUUID().toString() + "-" + UUID.randomUUID().toString();
+    }
+
+    private String getServiceAccountToken(String userEmail) {
+        // For refresh, we use client credentials + impersonation or service account
+        // This is a simplified version - in production you might want to use Keycloak's token exchange
+        try {
+            String tokenUrl = keycloakServerUrl + "/realms/" + realm + "/protocol/openid-connect/token";
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+            MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+            map.add("grant_type", "client_credentials");
+            map.add("client_id", clientId);
+            map.add("client_secret", clientSecret);
+
+            HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+            ResponseEntity<Map> response = restTemplate.exchange(tokenUrl, HttpMethod.POST, request, Map.class);
+
+            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+                return (String) response.getBody().get("access_token");
+            }
+            return null;
+        } catch (Exception e) {
+            System.out.println("Failed to get service account token: " + e.getMessage());
+            return null;
+        }
+    }
+
     @Override
     public AuthUser register(Email email, String name, String username, String password, PhoneNumber phoneNumber) {
-        // Vérifier si l'utilisateur existe déjà
         if (userRepository.existsByEmail(email)) {
             throw new IllegalArgumentException("User already exists with this email");
         }
 
-        // Créer l'utilisateur dans Keycloak d'abord
         String keycloakUserId = createKeycloakUser(email.toString(), password);
 
-        // Créer l'utilisateur dans notre base de données avec un hash du mot de passe
         AuthUser user = new AuthUser(null, email, name, username, "KEYCLOAK_MANAGED");
         user.updatePhoneNumber(phoneNumber);
 
@@ -88,8 +195,7 @@ public class KeycloakAuthService implements AuthService {
 
     @Override
     public void logout(Integer userId) {
-        // Logique de déconnexion si nécessaire
-        // Keycloak gère automatiquement l'expiration des tokens
+        tokenCacheService.invalidateAllUserTokens(userId);
     }
 
     @Override
@@ -107,20 +213,25 @@ public class KeycloakAuthService implements AuthService {
 
         AuthUser user = userOpt.get();
 
-        // Vérifier l'ancien mot de passe avec Keycloak
         if (!isValidCredentials(user.getEmail(), oldPassword)) {
             throw new IllegalArgumentException("Invalid old password");
         }
 
-        // Mettre à jour le mot de passe dans Keycloak
         updateKeycloakPassword(user.getEmail().toString(), newPassword);
 
-        // Mettre à jour dans notre base de données
         user.updatePassword(newPassword);
         userRepository.save(user);
+        
+        // Invalidate all tokens after password change
+        tokenCacheService.invalidateAllUserTokens(userId);
     }
 
     public String getTokenFromKeycloak(String email, String password) {
+        Map<String, Object> tokenData = getFullTokenFromKeycloak(email, password);
+        return tokenData != null ? (String) tokenData.get("access_token") : null;
+    }
+
+    private Map<String, Object> getFullTokenFromKeycloak(String email, String password) {
         try {
             String tokenUrl = keycloakServerUrl + "/realms/" + realm + "/protocol/openid-connect/token";
 
@@ -136,15 +247,10 @@ public class KeycloakAuthService implements AuthService {
 
             HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
-            ResponseEntity<Map> response = restTemplate.exchange(
-                    tokenUrl,
-                    HttpMethod.POST,
-                    request,
-                    Map.class
-            );
+            ResponseEntity<Map> response = restTemplate.exchange(tokenUrl, HttpMethod.POST, request, Map.class);
 
             if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
-                return (String) response.getBody().get("access_token");
+                return response.getBody();
             }
 
             System.out.println("Keycloak token request failed with status: " + response.getStatusCode());
@@ -177,7 +283,6 @@ public class KeycloakAuthService implements AuthService {
         String locationHeader = response.getHeaderString("Location");
         String userId = locationHeader.substring(locationHeader.lastIndexOf('/') + 1);
 
-        // Définir le mot de passe après la création
         CredentialRepresentation credential = new CredentialRepresentation();
         credential.setType(CredentialRepresentation.PASSWORD);
         credential.setValue(password);
@@ -192,7 +297,6 @@ public class KeycloakAuthService implements AuthService {
         RealmResource realmResource = keycloak.realm(realm);
         UsersResource usersResource = realmResource.users();
 
-        // Rechercher l'utilisateur par email
         var users = usersResource.search(email);
         if (users.isEmpty()) {
             throw new IllegalArgumentException("User not found in Keycloak");
@@ -207,5 +311,4 @@ public class KeycloakAuthService implements AuthService {
 
         usersResource.get(user.getId()).resetPassword(credential);
     }
-
 }

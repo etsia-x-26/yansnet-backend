@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +18,18 @@ public class PostApplicationService {
 
     public Page<PostDto> getAllPosts(Pageable pageable) {
         return postService.getAllPosts(pageable);
+    }
+
+    public Optional<PostDto> getPostById(Integer id) {
+        return postService.getPostById(id);
+    }
+
+    public Page<PostDto> getPostsByUserId(Integer userId, Pageable pageable) {
+        return postService.getPostsByUserId(userId, pageable);
+    }
+
+    public Page<PostDto> searchPosts(String query, Pageable pageable) {
+        return postService.searchPosts(query, pageable);
     }
 
     public void deletePost(Integer id) {

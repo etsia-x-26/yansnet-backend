@@ -6,6 +6,7 @@ import com.etsia.auth.domain.service.AuthService;
 import com.etsia.auth.infrastructure.dto.AuthResponse;
 import com.etsia.auth.infrastructure.dto.LoginRequest;
 import com.etsia.auth.infrastructure.dto.RegisterRequest;
+import com.etsia.auth.infrastructure.dto.TokenResponse;
 import com.etsia.auth.infrastructure.service.KeycloakAuthService;
 import com.etsia.common.domain.model.sub.Email;
 import com.etsia.common.domain.model.sub.PhoneNumber;
@@ -26,33 +27,12 @@ public class AuthApplicationService {
         this.keycloakAuthService = keycloakAuthService;
     }
 
-    public AuthResponse login(LoginRequest loginRequest) {
+    public TokenResponse login(LoginRequest loginRequest) {
         Email email = new Email(loginRequest.getEmail());
-        AuthUser user = authService.authenticate(email, loginRequest.getPassword());
-
-        if (!user.canAuthenticate()) {
-            throw new IllegalStateException("User account is inactive or blocked");
-        }
-
-        // Obtenir le token JWT depuis Keycloak
-        String jwtToken = keycloakAuthService.getTokenFromKeycloak(
-                loginRequest.getEmail(),
-                loginRequest.getPassword()
-        );
-
-        if (jwtToken == null) {
-            throw new IllegalStateException("Failed to obtain JWT token from Keycloak");
-        }
-
-        return new AuthResponse(
-                user.getUserId(),
-                user.getEmail().toString(),
-                jwtToken,
-                "Bearer"
-        );
+        return keycloakAuthService.authenticateWithTokens(email, loginRequest.getPassword());
     }
 
-    public AuthResponse register(RegisterRequest registerRequest) {
+    public TokenResponse register(RegisterRequest registerRequest) {
         Email email = new Email(registerRequest.getEmail());
         PhoneNumber phoneNumber = registerRequest.getPhoneNumber() != null ?
                 new PhoneNumber(registerRequest.getPhoneNumber()) : null;
@@ -65,22 +45,12 @@ public class AuthApplicationService {
                 phoneNumber
         );
 
-        // Obtenir le token JWT depuis Keycloak après l'inscription
-        String jwtToken = keycloakAuthService.getTokenFromKeycloak(
-                registerRequest.getEmail(),
-                registerRequest.getPassword()
-        );
+        // Get tokens after registration
+        return keycloakAuthService.authenticateWithTokens(email, registerRequest.getPassword());
+    }
 
-        if (jwtToken == null) {
-            throw new IllegalStateException("Failed to obtain JWT token from Keycloak after registration");
-        }
-
-        return new AuthResponse(
-                user.getUserId(),
-                user.getEmail().toString(),
-                jwtToken,
-                "Bearer"
-        );
+    public TokenResponse refreshToken(String refreshToken) {
+        return keycloakAuthService.refreshAccessToken(refreshToken);
     }
 
     public void logout(Integer userId) {

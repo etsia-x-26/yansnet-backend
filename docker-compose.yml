@@ -22,6 +22,23 @@ services:
     networks:
       - etsia-network
 
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: etsia-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - etsia-network
+
   # Keycloak IAM
   keycloak:
     image: quay.io/keycloak/keycloak:26.0.0
@@ -54,7 +71,7 @@ services:
       #      - "9000:9000"
       - "9010:9001"
     volumes:
-      - minio_data:/data
+      - minio_yansnet_data:/data
     networks:
       - etsia-network
 
@@ -82,26 +99,34 @@ services:
       KEYCLOAK_REALM: yansnet
       KEYCLOAK_ADMIN_USERNAME: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      # Ensure database connection variables are also passed if needed, though hardcoded in properties previously
+      # Database
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/yansnet-db
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: qwertyuiop
+      # MinIO
       MINIO_URL: http://minio:9000
       MINIO_PUBLIC_URL: ${MINIO_PUBLIC_URL:-https://yansnetcdn.enlighteninnovation.com}
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
       MINIO_BUCKET_NAME: yansnet-media
+      # Redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ""
     depends_on:
       - postgres
       - keycloak
       - minio
+      - redis
     networks:
       - etsia-network
 
 volumes:
   yansnet_data:
     driver: local
-  minio_data:
+  minio_yansnet_data:
+    driver: local
+  redis_data:
     driver: local
 
 networks:
