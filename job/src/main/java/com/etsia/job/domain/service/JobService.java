@@ -11,11 +11,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@lombok.extern.slf4j.Slf4j
 public class JobService {
 
     private final JobRepository jobRepository;
 
     public JobOffer createJobOffer(JobOffer jobOffer) {
+        log.info("Creating job offer: {}", jobOffer.getTitle());
         return jobRepository.save(jobOffer);
     }
 
@@ -24,7 +26,9 @@ public class JobService {
     }
 
     public Page<JobOffer> getAllJobOffers(Pageable pageable) {
-        return jobRepository.findAll(pageable);
+        Page<JobOffer> jobs = jobRepository.findAll(pageable);
+        log.info("Retrieved {} jobs from database", jobs.getTotalElements());
+        return jobs;
     }
 
     public void deleteJobOffer(Integer id) {
