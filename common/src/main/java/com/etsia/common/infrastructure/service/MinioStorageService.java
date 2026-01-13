@@ -58,6 +58,7 @@ public class MinioStorageService implements StorageService {
             return publicUrl + "/" + bucketName + "/" + objectName;
 
         } catch (Exception e) {
+            log.error("Failed to upload file to bucket '{}': {}", bucketName, e.getMessage(), e);
             throw new BusinessException("Failed to upload file", "FILE_UPLOAD_FAILED");
         }
     }
