@@ -11,6 +11,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.etsia.common.infrastructure.exception.BusinessException;
+import com.etsia.common.infrastructure.exception.ValidationException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,23 +26,32 @@ public class SearchService {
     private EntityManager entityManager;
 
     public GlobalSearchResponse globalSearch(String query, Pageable pageable) {
-        String searchPattern = "%" + query.toLowerCase() + "%";
+        if (query == null || query.trim().length() < 2) {
+             throw new ValidationException("Search query must be at least 2 characters long");
+        }
         
-        List<SearchResult> users = searchUsers(searchPattern, pageable);
-        List<SearchResult> posts = searchPosts(searchPattern, pageable);
-        List<SearchResult> events = searchEvents(searchPattern, pageable);
-        List<SearchResult> jobs = searchJobs(searchPattern, pageable);
+        try {
+            String searchPattern = "%" + query.toLowerCase() + "%";
+            
+            List<SearchResult> users = searchUsers(searchPattern, pageable);
+            List<SearchResult> posts = searchPosts(searchPattern, pageable);
+            List<SearchResult> events = searchEvents(searchPattern, pageable);
+            List<SearchResult> jobs = searchJobs(searchPattern, pageable);
 
-        int total = users.size() + posts.size() + events.size() + jobs.size();
+            int total = users.size() + posts.size() + events.size() + jobs.size();
 
-        return GlobalSearchResponse.builder()
-                .users(users)
-                .posts(posts)
-                .events(events)
-                .jobs(jobs)
-                .totalResults(total)
-                .query(query)
-                .build();
+            return GlobalSearchResponse.builder()
+                    .users(users)
+                    .posts(posts)
+                    .events(events)
+                    .jobs(jobs)
+                    .totalResults(total)
+                    .query(query)
+                    .build();
+        } catch (Exception e) {
+            log.error("Error during global search execution: {}", e.getMessage(), e);
+            throw new BusinessException("An error occurred while performing key search", "SEARCH_ERROR");
+        }
     }
 
     @Cacheable(value = "search_users", key = "#query + '_' + #pageable.pageNumber")
@@ -134,16 +146,28 @@ public class SearchService {
     }
 
     // Search by specific type
+    // Search by specific type
     public Page<SearchResult> searchByType(String query, String type, Pageable pageable) {
-        String searchPattern = "%" + query.toLowerCase() + "%";
-        
-        return switch (type.toUpperCase()) {
-            case "USER" -> searchUsersPaged(searchPattern, pageable);
-            case "POST" -> searchPostsPaged(query, pageable);
-            case "EVENT" -> searchEventsPaged(searchPattern, pageable);
-            case "JOB" -> searchJobsPaged(searchPattern, pageable);
-            default -> Page.empty(pageable);
-        };
+        if (query == null || query.trim().length() < 2) {
+            throw new ValidationException("Search query must be at least 2 characters long");
+        }
+
+        try {
+            String searchPattern = "%" + query.toLowerCase() + "%";
+            
+            return switch (type.toUpperCase()) {
+                case "USER" -> searchUsersPaged(searchPattern, pageable);
+                case "POST" -> searchPostsPaged(query, pageable);
+                case "EVENT" -> searchEventsPaged(searchPattern, pageable);
+                case "JOB" -> searchJobsPaged(searchPattern, pageable);
+                default -> throw new ValidationException("Invalid search type: " + type);
+            };
+        } catch (ValidationException ve) {
+            throw ve;
+        } catch (Exception e) {
+            log.error("Error during search by type {}: {}", type, e.getMessage(), e);
+            throw new BusinessException("An error occurred while performing search", "SEARCH_ERROR");
+        }
     }
 
     private Page<SearchResult> searchUsersPaged(String query, Pageable pageable) {
