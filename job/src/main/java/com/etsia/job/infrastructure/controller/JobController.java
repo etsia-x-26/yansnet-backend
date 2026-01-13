@@ -3,6 +3,7 @@ package com.etsia.job.infrastructure.controller;
 import com.etsia.common.infrastructure.entities.JobOffer;
 import com.etsia.job.domain.service.JobService;
 import com.etsia.job.infrastructure.controller.dto.CreateJobOfferRequest;
+import com.etsia.job.infrastructure.controller.dto.JobResponse;
 import com.etsia.job.infrastructure.mapper.JobMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -25,17 +26,19 @@ public class JobController {
     @Operation(summary = "Create a job offer", description = "Publishes a new job or internship opportunity")
     @ApiResponse(responseCode = "200", description = "Job offer created successfully")
     @PostMapping
-    public ResponseEntity<JobOffer> createJobOffer(@RequestBody CreateJobOfferRequest request) {
+    public ResponseEntity<JobResponse> createJobOffer(@RequestBody CreateJobOfferRequest request) {
         JobOffer jobOffer = jobMapper.toEntity(request);
-        return ResponseEntity.ok(jobService.createJobOffer(jobOffer));
+        JobOffer savedJob = jobService.createJobOffer(jobOffer);
+        return ResponseEntity.ok(jobMapper.toResponse(savedJob));
     }
 
     @Operation(summary = "Get job offer by ID", description = "Retrieves details of a specific job offer")
     @ApiResponse(responseCode = "200", description = "Job offer found")
     @ApiResponse(responseCode = "404", description = "Job offer not found")
     @GetMapping("/{id}")
-    public ResponseEntity<JobOffer> getJobOffer(@PathVariable Integer id) {
+    public ResponseEntity<JobResponse> getJobOffer(@PathVariable Integer id) {
         return jobService.getJobOffer(id)
+                .map(jobMapper::toResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -43,8 +46,8 @@ public class JobController {
     @Operation(summary = "Get all job offers", description = "Retrieves a paginated list of all active job offers")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of job offers")
     @GetMapping
-    public ResponseEntity<Page<JobOffer>> getAllJobOffers(Pageable pageable) {
-        return ResponseEntity.ok(jobService.getAllJobOffers(pageable));
+    public ResponseEntity<Page<JobResponse>> getAllJobOffers(Pageable pageable) {
+        return ResponseEntity.ok(jobService.getAllJobOffers(pageable).map(jobMapper::toResponse));
     }
 
     @Operation(summary = "Delete a job offer", description = "Removes a job offer from the system")
