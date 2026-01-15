@@ -33,6 +33,9 @@ public class MessageController {
             @CurrentUser AuthenticatedUser user,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
+        if (user == null || user.getUserId() == null) {
+            return ResponseEntity.status(401).build();
+        }
         return ResponseEntity.ok(messageService.getUserConversations(user.getUserId(), PageRequest.of(page, size)));
     }
 
@@ -43,6 +46,9 @@ public class MessageController {
     public ResponseEntity<ConversationDto> getConversation(
             @PathVariable Integer conversationId,
             @CurrentUser AuthenticatedUser user) {
+        if (user == null || user.getUserId() == null) {
+            return ResponseEntity.status(401).build();
+        }
         return messageService.getConversation(conversationId, user.getUserId())
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -54,7 +60,9 @@ public class MessageController {
     public ResponseEntity<ConversationDto> createConversation(
             @CurrentUser AuthenticatedUser user,
             @Valid @RequestBody CreateConversationRequest request) {
-        
+        if (user == null || user.getUserId() == null) {
+            return ResponseEntity.status(401).build();
+        }
         ConversationDto conversation;
         if ("DIRECT".equalsIgnoreCase(request.getType())) {
             if (request.getParticipantIds().size() != 1) {
@@ -80,7 +88,9 @@ public class MessageController {
             @RequestParam(required = false) Integer before,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "50") int size) {
-        
+        if (user == null || user.getUserId() == null) {
+            return ResponseEntity.status(401).build();
+        }
         Page<MessageDto> messages;
         if (before != null) {
             messages = messageService.getMessagesBefore(conversationId, user.getUserId(), before, PageRequest.of(page, size));
@@ -96,7 +106,9 @@ public class MessageController {
     public ResponseEntity<MessageDto> sendMessage(
             @CurrentUser AuthenticatedUser user,
             @Valid @RequestBody SendMessageRequest request) {
-        
+        if (user == null || user.getUserId() == null) {
+            return ResponseEntity.status(401).build();
+        }
         MessageDto message = messageService.sendMessage(
                 request.getConversationId(),
                 user.getUserId(),
@@ -112,6 +124,9 @@ public class MessageController {
             @PathVariable Integer conversationId,
             @CurrentUser AuthenticatedUser user,
             @RequestParam Integer newMemberId) {
+        if (user == null || user.getUserId() == null) {
+            return ResponseEntity.status(401).build();
+        }
         messageService.addMemberToGroup(conversationId, user.getUserId(), newMemberId);
         return ResponseEntity.ok().build();
     }
@@ -121,6 +136,9 @@ public class MessageController {
     public ResponseEntity<Void> leaveConversation(
             @PathVariable Integer conversationId,
             @CurrentUser AuthenticatedUser user) {
+        if (user == null || user.getUserId() == null) {
+            return ResponseEntity.status(401).build();
+        }
         messageService.leaveConversation(conversationId, user.getUserId());
         return ResponseEntity.ok().build();
     }
