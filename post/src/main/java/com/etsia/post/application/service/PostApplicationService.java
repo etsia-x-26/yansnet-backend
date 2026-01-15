@@ -28,6 +28,10 @@ public class PostApplicationService {
         return postService.getPostsByUserId(userId, pageable);
     }
 
+    public Page<PostDto> getFeedPosts(Integer userId, Pageable pageable) {
+        return postService.getFeedPosts(userId, pageable);
+    }
+
     public Page<PostDto> searchPosts(String query, Pageable pageable) {
         return postService.searchPosts(query, pageable);
     }

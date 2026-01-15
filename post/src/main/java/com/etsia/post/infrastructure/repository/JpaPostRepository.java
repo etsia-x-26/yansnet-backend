@@ -23,4 +23,7 @@ public interface JpaPostRepository extends JpaRepository<Post, Integer> {
     
     @Query("SELECT p FROM Post p WHERE LOWER(p.content) LIKE LOWER(CONCAT('%', :query, '%')) AND p.deletedAt IS NULL")
     Page<Post> searchByContent(@Param("query") String query, Pageable pageable);
+
+    @Query("SELECT p FROM Post p WHERE p.user.id IN :userIds AND p.deletedAt IS NULL ORDER BY p.createdAt DESC")
+    Page<Post> findByUserIdIn(@Param("userIds") List<Integer> userIds, Pageable pageable);
 }

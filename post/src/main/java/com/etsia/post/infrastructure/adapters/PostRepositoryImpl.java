@@ -88,4 +88,9 @@ public class PostRepositoryImpl implements PostRepository {
     public Page<PostDto> searchByContent(String query, Pageable pageable) {
         return jpaPostRepository.searchByContent(query, pageable).map(Mapper::toPostDto);
     }
+
+    @Override
+    public Page<PostDto> findPostsByAuthorIds(List<Integer> authorIds, Pageable pageable) {
+        return jpaPostRepository.findByUserIdIn(authorIds, pageable).map(Mapper::toPostDto);
+    }
 }

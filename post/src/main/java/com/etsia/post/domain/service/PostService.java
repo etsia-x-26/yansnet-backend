@@ -17,6 +17,7 @@ import java.util.Optional;
 public class PostService {
     private final PostRepository postRepository;
     private final PostRepositoryImpl postRepositoryImpl;
+    private final com.etsia.interaction.domain.service.FollowDomainService followDomainService;
 
     @Cacheable(value = "posts")
     public Page<PostDto> getAllPosts(Pageable pageable) {
@@ -30,6 +31,14 @@ public class PostService {
 
     public Page<PostDto> getPostsByUserId(Integer userId, Pageable pageable) {
         return postRepositoryImpl.findByUserId(userId, pageable);
+    }
+
+    public Page<PostDto> getFeedPosts(Integer userId, Pageable pageable) {
+        java.util.List<Integer> followedUserIds = followDomainService.getFollowedUserIds(userId);
+        if (followedUserIds.isEmpty()) {
+            return Page.empty(pageable);
+        }
+        return postRepositoryImpl.findPostsByAuthorIds(followedUserIds, pageable);
     }
 
     public Page<PostDto> searchPosts(String query, Pageable pageable) {
