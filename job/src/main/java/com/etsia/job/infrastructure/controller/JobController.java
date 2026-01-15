@@ -57,4 +57,12 @@ public class JobController {
         jobService.deleteJobOffer(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Apply to a job", description = "Allows a user to apply for a specific job")
+    @ApiResponse(responseCode = "200", description = "Application submitted successfully")
+    @PostMapping("/{id}/apply")
+    public ResponseEntity<Void> applyToJob(@PathVariable Integer id, @RequestParam Integer userId) {
+        jobService.applyToJob(id, userId);
+        return ResponseEntity.ok().build();
+    }
 }
