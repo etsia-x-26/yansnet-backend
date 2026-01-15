@@ -5,6 +5,7 @@ import com.etsia.common.domain.model.UserDto;
 import com.etsia.post.domain.repository.PostRepository;
 import com.etsia.post.infrastructure.adapters.PostRepositoryImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,12 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostRepositoryImpl postRepositoryImpl;
 
+    @Cacheable(value = "posts")
     public Page<PostDto> getAllPosts(Pageable pageable) {
         return postRepository.findAll(pageable);
     }
 
+    @Cacheable(value = "posts", key = "#id")
     public Optional<PostDto> getPostById(Integer id) {
         return postRepository.findById(id);
     }

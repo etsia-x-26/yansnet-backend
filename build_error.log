@@ -1,0 +1,57 @@
+﻿> Task :clean
+> Task :application:clean UP-TO-DATE
+> Task :auth:clean
+> Task :channel:clean
+> Task :comment:clean
+> Task :common:clean
+> Task :event:clean
+> Task :group:clean
+> Task :interaction:clean
+> Task :job:clean
+> Task :message:clean UP-TO-DATE
+> Task :notification:clean UP-TO-DATE
+> Task :post:clean UP-TO-DATE
+> Task :user:clean UP-TO-DATE
+> Task :common:compileJava
+> Task :compileJava NO-SOURCE
+> Task :processResources NO-SOURCE
+> Task :classes UP-TO-DATE
+> Task :jar
+> Task :assemble
+> Task :check
+> Task :build
+
+> Task :auth:compileJava
+
+> Task :auth:processResources
+> Task :auth:classes
+> Task :auth:jar
+> Task :channel:compileJava
+> Task :channel:processResources
+> Task :channel:classes
+> Task :channel:jar
+> Task :comment:compileJava
+> Task :comment:processResources
+> Task :comment:classes
+> Task :comment:jar
+> Task :event:compileJava
+> Task :event:processResources NO-SOURCE
+> Task :event:classes
+> Task :event:jar
+> Task :group:compileJava
+> Task :group:processResources
+> Task :group:classes
+> Task :group:jar
+> Task :interaction:compileJava
+> Task :interaction:processResources
+> Task :interaction:classes
+> Task :interaction:jar
+
+> Task :job:compileJava FAILED
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.7/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+34 actionable tasks: 29 executed, 5 up-to-date
