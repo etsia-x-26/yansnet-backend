@@ -45,4 +45,9 @@ public class UserFollowRepositoryImpl implements FollowRepository {
     public Boolean isFollowing(Integer followerId, Integer followedId) {
         return jpaUserFollowRepository.existsByFollowerIdAndFollowedId(followerId, followedId);
     }
+
+    @Override
+    public java.util.List<Integer> getFollowedUserIds(Integer followerId) {
+        return jpaUserFollowRepository.findFollowedUserIds(followerId);
+    }
 }

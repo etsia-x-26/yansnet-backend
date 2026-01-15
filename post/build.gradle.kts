@@ -31,6 +31,7 @@ dependencies {
     implementation("org.springframework.modulith:spring-modulith-starter-core")
 
     implementation(project(":common"))
+    implementation(project(":interaction"))
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.projectlombok:lombok")

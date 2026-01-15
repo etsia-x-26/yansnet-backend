@@ -71,6 +71,17 @@ public class PostController {
         return ResponseEntity.ok(PageResponse.from(postService.getPostsByUserId(userId, pageRequest)));
     }
 
+    @Operation(summary = "Get feed", description = "Retrieves posts from users the current user follows")
+    @ApiResponse(responseCode = "200", description = "Successfully retrieved feed")
+    @GetMapping("/feed")
+    public ResponseEntity<PageResponse<PostDto>> getFeed(
+            @CurrentUser AuthenticatedUser user,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        return ResponseEntity.ok(PageResponse.from(postService.getFeedPosts(user.getUserId(), pageRequest)));
+    }
+
     @Operation(summary = "Search posts", description = "Search posts by content")
     @ApiResponse(responseCode = "200", description = "Search results returned")
     @GetMapping("/search")
