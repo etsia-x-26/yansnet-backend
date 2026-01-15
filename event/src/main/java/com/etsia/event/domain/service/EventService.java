@@ -7,8 +7,7 @@ import com.etsia.event.domain.repository.EventRSVPRepository;
 import com.etsia.event.domain.repository.EventRepository;
 import com.etsia.event.infrastructure.mapper.EventMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,22 +22,18 @@ public class EventService {
     private final EventRSVPRepository rsvpRepository;
     private final EventMapper eventMapper;
 
-    @CacheEvict(value = "events", allEntries = true)
     public Event createEvent(Event event) {
         return eventRepository.save(event);
     }
 
-    @Cacheable(value = "events", key = "#id")
     public Optional<EventResponse> getEvent(Integer id) {
         return eventRepository.findById(id).map(eventMapper::toResponse);
     }
 
-    @Cacheable(value = "events")
     public Page<EventResponse> getAllEvents(Pageable pageable) {
         return eventRepository.findAll(pageable).map(eventMapper::toResponse);
     }
 
-    @CacheEvict(value = "events", allEntries = true)
     public void deleteEvent(Integer id) {
         eventRepository.deleteById(id);
     }

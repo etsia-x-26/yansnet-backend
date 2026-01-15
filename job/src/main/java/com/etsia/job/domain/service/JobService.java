@@ -10,8 +10,7 @@ import com.etsia.job.infrastructure.controller.dto.JobResponse;
 import com.etsia.job.infrastructure.mapper.JobMapper;
 import com.etsia.job.infrastructure.repository.JobApplicationRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,25 +27,21 @@ public class JobService {
     private final JobApplicationRepository jobApplicationRepository;
     private final JobMapper jobMapper;
 
-    @CacheEvict(value = "jobs", allEntries = true)
     public JobOffer createJobOffer(JobOffer jobOffer) {
         log.info("Creating job offer: {}", jobOffer.getTitle());
         return jobRepository.save(jobOffer);
     }
 
-    @Cacheable(value = "jobs", key = "#id")
     public Optional<JobResponse> getJobOffer(Integer id) {
         return jobRepository.findById(id).map(jobMapper::toResponse);
     }
 
-    @Cacheable(value = "jobs")
     public Page<JobResponse> getAllJobOffers(Pageable pageable) {
         Page<JobOffer> jobs = jobRepository.findAll(pageable);
         log.info("Retrieved {} jobs from database", jobs.getTotalElements());
         return jobs.map(jobMapper::toResponse);
     }
 
-    @CacheEvict(value = "jobs", allEntries = true)
     public void deleteJobOffer(Integer id) {
         jobRepository.deleteById(id);
     }
