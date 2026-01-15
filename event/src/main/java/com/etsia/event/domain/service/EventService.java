@@ -1,8 +1,13 @@
 package com.etsia.event.domain.service;
 
 import com.etsia.common.infrastructure.entities.Event;
+import com.etsia.common.infrastructure.entities.User;
+import com.etsia.event.domain.model.dto.response.EventResponse;
+import com.etsia.event.domain.repository.EventRSVPRepository;
 import com.etsia.event.domain.repository.EventRepository;
+import com.etsia.event.infrastructure.mapper.EventMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,22 +20,25 @@ import java.util.Optional;
 public class EventService {
 
     private final EventRepository eventRepository;
-    private final com.etsia.event.domain.repository.EventRSVPRepository eventRSVPRepository;
+    private final EventRSVPRepository rsvpRepository;
+    private final EventMapper eventMapper;
 
+    @CacheEvict(value = "events", allEntries = true)
     public Event createEvent(Event event) {
         return eventRepository.save(event);
     }
 
     @Cacheable(value = "events", key = "#id")
-    public Optional<Event> getEvent(Integer id) {
-        return eventRepository.findById(id);
+    public Optional<EventResponse> getEvent(Integer id) {
+        return eventRepository.findById(id).map(eventMapper::toResponse);
     }
 
     @Cacheable(value = "events")
-    public Page<Event> getAllEvents(Pageable pageable) {
-        return eventRepository.findAll(pageable);
+    public Page<EventResponse> getAllEvents(Pageable pageable) {
+        return eventRepository.findAll(pageable).map(eventMapper::toResponse);
     }
 
+    @CacheEvict(value = "events", allEntries = true)
     public void deleteEvent(Integer id) {
         eventRepository.deleteById(id);
     }
@@ -49,7 +57,7 @@ public class EventService {
                 .createdAt(java.time.Instant.now())
                 .build();
 
-        return eventRSVPRepository.save(rsvp);
+        return rsvpRepository.save(rsvp);
     }
 
     public void cancelRsvp(Integer eventId, Integer userId) {
@@ -57,6 +65,6 @@ public class EventService {
                 .eventId(eventId)
                 .userId(userId)
                 .build();
-        eventRSVPRepository.deleteById(rsvpId);
+        rsvpRepository.deleteById(rsvpId);
     }
 }

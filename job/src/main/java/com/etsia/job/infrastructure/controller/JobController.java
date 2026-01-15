@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,22 +33,22 @@ public class JobController {
         return ResponseEntity.ok(jobMapper.toResponse(savedJob));
     }
 
-    @Operation(summary = "Get job offer by ID", description = "Retrieves details of a specific job offer")
-    @ApiResponse(responseCode = "200", description = "Job offer found")
-    @ApiResponse(responseCode = "404", description = "Job offer not found")
+    @Operation(summary = "Get a job offer by ID")
     @GetMapping("/{id}")
-    public ResponseEntity<JobResponse> getJobOffer(@PathVariable Integer id) {
+    public ResponseEntity<JobResponse> getJobOfferById(@PathVariable Integer id) {
         return jobService.getJobOffer(id)
-                .map(jobMapper::toResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Get all job offers", description = "Retrieves a paginated list of all active job offers")
-    @ApiResponse(responseCode = "200", description = "Successfully retrieved list of job offers")
+    @Operation(summary = "Get all job offers")
     @GetMapping
-    public ResponseEntity<Page<JobResponse>> getAllJobOffers(Pageable pageable) {
-        return ResponseEntity.ok(jobService.getAllJobOffers(pageable).map(jobMapper::toResponse));
+    public ResponseEntity<Page<JobResponse>> getAllJobOffers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<JobResponse> jobs = jobService.getAllJobOffers(pageable);
+        return ResponseEntity.ok(jobs);
     }
 
     @Operation(summary = "Delete a job offer", description = "Removes a job offer from the system")

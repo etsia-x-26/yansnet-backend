@@ -34,22 +34,21 @@ public class EventController {
         return new ResponseEntity<>(eventMapper.toResponse(savedEvent), HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Get event by ID", description = "Retrieves an event's details by its unique identifier")
+    @Operation(summary = "Get event by ID", description = "Retrieves details of a specific event")
     @ApiResponse(responseCode = "200", description = "Event found")
     @ApiResponse(responseCode = "404", description = "Event not found")
     @GetMapping("/{id}")
     public ResponseEntity<EventResponse> getEventById(@PathVariable Integer id) {
         return eventService.getEvent(id)
-                .map(eventMapper::toResponse)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Get all events", description = "Retrieves a paginated list of events")
+    @Operation(summary = "Get all events", description = "Retrieves a paginated list of all events")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of events")
     @GetMapping
     public ResponseEntity<Page<EventResponse>> getAllEvents(Pageable pageable) {
-        return ResponseEntity.ok(eventService.getAllEvents(pageable).map(eventMapper::toResponse));
+        return ResponseEntity.ok(eventService.getAllEvents(pageable));
     }
 
     @Operation(summary = "Delete an event", description = "Removes an event and its related RSVPs")
